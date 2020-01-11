@@ -44,9 +44,9 @@ class Button:
 
 # creating two buttons and storing them in a list
 buttons = []
-coffeeButton = Button( "coffee-cup.gif", (540, 5), (0, 397))
+coffeeButton = Button( "coffee-cup.gif", (540, 5), (0, 397)) # http://www.afactor.net/adapted/20x20/20cuppa.gif
 buttons.append(coffeeButton)
-pinButton = Button( "pin.gif", (570, 5), (351, 397))
+pinButton = Button( "pin.gif", (570, 5), (351, 397)) # http://www.afactor.net/adapted/20x20/20pin.gif
 buttons.append(pinButton)
 
 # update the screen to show the drawings
