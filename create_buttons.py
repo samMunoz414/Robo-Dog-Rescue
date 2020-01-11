@@ -25,26 +25,29 @@ screen.fill( (255, 255, 255) )
 # class that creates buttons
 class Button:
 	# draws circle on screen and stores the rect object of circle
-	def __init__(self, color, center, radius, position):
-		self.rect = pygame.draw.circle(screen, color, center, radius)
-		self.image = pygame.image.load("dog.png").convert_alpha()
+	def __init__(self, imageName, buttonPosition, dogPosition):
+		self.image = pygame.image.load(imageName).convert_alpha()
 		self.imageRect = self.image.get_rect()
-		self.position = position
+		self.imageRect.move_ip(buttonPosition)
+		self.dogImage = pygame.image.load("dog.png").convert_alpha()
+		self.dogImageRect = self.image.get_rect()
+		self.dogPosition = dogPosition
+		screen.blit(self.image, self.imageRect)
 
 	# checks if the mouses position interlaps with button's position
 	def isClicked(self, mousePosition):
-		return self.rect.collidepoint(mousePosition)
+		return self.imageRect.collidepoint(mousePosition)
 
 	# runs the event that occurs when the button has been pressed
 	def event(self):
-		screen.blit(self.image, self.position)
+		screen.blit(self.dogImage, self.dogPosition)
 
 # creating two buttons and storing them in a list
 buttons = []
-buttonOne = Button( (255, 0, 0), (550, 15), 10, (0, 397))
-buttons.append(buttonOne)
-buttonTwo = Button( (0, 255, 0), (580, 15), 10, (351, 397))
-buttons.append(buttonTwo)
+coffeeButton = Button( "coffee-cup.gif", (540, 5), (0, 397))
+buttons.append(coffeeButton)
+pinButton = Button( "pin.gif", (570, 5), (351, 397))
+buttons.append(pinButton)
 
 # update the screen to show the drawings
 pygame.display.update()
