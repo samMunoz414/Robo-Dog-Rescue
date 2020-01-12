@@ -16,48 +16,147 @@ except:
 	print ("Fonts Unavailable")
 	sys.exit()
 
-# Class for main sprite
-class Player(pygame.sprite.Sprite):
-    def __init__(self):
+######################## Classes ########################
+
+# Class for protagonist
+class Person(pygame.sprite.Sprite):
+    def __init__(self, image, xpos, ypos):
         pygame.sprite.Sprite.__init__(self)
         self.movex = 0 # move along x
         self.movey = 0 # move along y
         self.frame = 0 # count frames
+        self.collision = False # To see if the sprite has collided
+        
         self.images = [] # List of images, nice for animation for future
-        img = pygame.image.load(os.path.join('dog.png')).convert() # Image we want to load
-        img.convert_alpha()
-        img.set_colorkey((255,255,255))
+        # Could have init take in a list of images for animation, and loop through to convert alpha
+        img = pygame.image.load(os.path.join(image)).convert()
+        # img.set_colorkey((255,255,255))
         self.images.append(img)
         self.image = self.images[0]
+        
         self.rect = self.image.get_rect()
-        self.rect.x = 0
-        self.rect.y = 540
+        self.rect.x = xpos # Starting x position
+        self.rect.y = ypos # Starting y position
     
-    # Control Sprite movement
+    # Control movement
     def move(self, x, y):
         self.movex += x
         self.movey += y
+    
+    # Simulate gravity
+    def gravity(self):
+        self.movey += 1 # How fast the player will fall
+        
+        # Go back to this -- need to figure out how to stop when we hit the ground/platform
        
-    # Update sprite position
+    # Update position
     def update(self):
         self.rect.x = self.rect.x + self.movex
         self.rect.y = self.rect.y + self.movey
+        hit_list = pygame.sprite.spritecollide(self, enemy_list, False)
+        for enemy in hit_list:
+            self.collision = True
+            print("Collision Occurred!")
+            # Could quit here
+        
+# Class for enemy scientists
+class Enemy(pygame.sprite.Sprite):
+    def __init__(self, image, xpos, ypos):
+        pygame.sprite.Sprite.__init__(self)
+        
+        self.images = []
+        img = pygame.image.load(os.path.join(image)).convert()
+        img.convert_alpha()
+        self.images.append(img)
+        self.image = self.images[0]
+        
+        self.rect = self.image.get_rect()
+        self.rect.x = xpos
+        self.rect.y = ypos
+        self.counter = 0
+    
+    # Control automated movement of enemy
+    def move(self):
+        # These variables can be changed to fine-tune game
+        distance = 20
+        speed = 5
+        
+        if self.counter >= 0 and self.counter <= distance:
+            self.rect.x += speed
+        elif self.counter >= distance and self.counter <= distance*2:
+            self.rect.x -= speed
+        else:
+            self.counter = 0
+            
+        self.counter += 1
+        
+# Class for Platforms
+class Platform(pygame.sprite.Sprite):
+    def __init__(self, image, xpos, ypos):
+        self.image = pygame.image.load(os.path.join(image)).convert()
+        self.image.convert_alpha()
+        self.rect = self.image.get_rect()
+        self.rect.x = xpos
+        self.rect.y = ypos
+        
+# Class for levels of the game
+class Level():
+    # Create enemies for a level
+    def create(lvl, enemyx, enemyy):
+        if lvl == 1:
+            print("Level " + str(lvl))
+            enemy = Enemy('spider.png', enemyx, enemyy)
+            enemy_list = pygame.sprite.Group() # Create enemy group
+            enemy_list.add(enemy)
+            
+        if lvl == 2:
+            print("Level " + str(lvl))
+            
+        return enemy_list
+    
+    # Make a ground for the program
+    def ground(lvl, xpos, ypos, image):
+        ground_list = pygame.sprite.Group()
+        i = 0
+        if lvl == 1:
+            print ("Level " + str(lvl))
+        
+        if lvl == 2:
+            print ("Level " + str(lvl))
+            
+        return ground_list
+    
+    # Make a platform for the game
+    def platform(lvl, image):
+        platform_list = pygame.sprite.Group()
+        if lvl == 1:
+            print ("Level " + str(lvl))
+            
+        if lvl == 2:
+            print ("Level " + str(lvl))
+            
+        return platform_list
+        
+#################### Create Content #######################
+
 
 # Create a screen (width, height)
-screen = pygame.display.set_mode((960, 720))
-screen.fill((255,255,255))
+screenx = 960
+screeny = 720
+ty = 100
+screen = pygame.display.set_mode((screenx, screeny))
+background = pygame.image.load("background.png").convert_alpha()
+backgroundbox = background.get_rect()
+pygame.display.set_caption('Robo-Dog Rescue')
 
-# Add rectangles to the screen
-pygame.draw.rect(screen, (70, 210, 80), pygame.Rect((240, 240, 120, 120)))
-pygame.draw.rect(screen, (70, 210, 80), pygame.Rect((360, 240, 120, 120)))
 
-grace = Player() # Create Grace Ada Clarke
-steps = 5 # How many pixels to move
-player_list = pygame.sprite.Group()
-player_list.add(grace)
+# Spawn person
+grace = Person('dog.png', 200, 0)
+person_list = pygame.sprite.Group()
+person_list.add(grace)
+steps = 5
 
-# Update the screen
-pygame.display.update()
+enemy_list = Level.create(1, 550, 550)
 
 
 ####################### Main Event Loop #########################
@@ -65,14 +164,8 @@ pygame.display.update()
 
 while 1:
     
-    screen.fill(pygame.Color('white'))
-    grace.update() # Update player position
-    player_list.draw(screen)
-    pygame.display.flip()
-    
     for event in pygame.event.get():
         if event.type == pygame.KEYDOWN:
-            screen.fill((255,255,255), grace.rect)
             if event.key == pygame.K_LEFT or event.key == ord('a'):
                 print('left')
                 grace.move(-steps,0)
@@ -81,6 +174,7 @@ while 1:
                 grace.move(steps,0)
             if event.key == pygame.K_UP or event.key == ord('w'):
                 print('jump')
+                grace.move(0, -5*steps)
                 
         if event.type == pygame.KEYUP:
             if event.key == pygame.K_LEFT or event.key == ord('a'):
@@ -96,5 +190,13 @@ while 1:
 
         if event.type == pygame.QUIT:
             sys.exit()
+    
+    screen.blit(background, backgroundbox)
+    grace.gravity() # Check gravity
+    grace.update() # Update player position
+    person_list.draw(screen) # Refresh player position
+    enemy_list.draw(screen)
+    for enemy in enemy_list:
+        enemy.move()
+    pygame.display.flip()
             
-    pygame.display.update()
