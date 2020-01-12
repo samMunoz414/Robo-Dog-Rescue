@@ -31,7 +31,8 @@ class Button:
 		self.imageRect.move_ip(buttonPosition)
 		self.dogImage = pygame.image.load("dog.png").convert_alpha()
 		self.dogImageRect = self.image.get_rect()
-		self.dogPosition = dogPosition
+		self.dogImageRect.move_ip(dogPosition)
+		self.isDogDrawn = False
 		screen.blit(self.image, self.imageRect)
 
 	# checks if the mouses position interlaps with button's position
@@ -40,7 +41,15 @@ class Button:
 
 	# runs the event that occurs when the button has been pressed
 	def event(self):
-		screen.blit(self.dogImage, self.dogPosition)
+		# print("starting event")
+		if(not self.isDogDrawn):
+			# print("draw dog")
+			screen.blit(self.dogImage, self.dogImageRect)
+		else:
+			# print("erase dog")
+			screen.fill( (255, 255, 255), pygame.Rect(self.dogImageRect.x, self.dogImageRect.y,294,203))
+		self.isDogDrawn = not self.isDogDrawn
+		# print("end event")
 
 # creating two buttons and storing them in a list
 buttons = []
