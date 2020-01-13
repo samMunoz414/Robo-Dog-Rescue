@@ -10,15 +10,14 @@ import os
 
 # Class for protagonist
 class Person(pygame.sprite.Sprite):
-    def __init__(self, image, xpos, ypos, e_list, b_list):
+    def __init__(self, image, xpos, ypos, e_list, f_list, p_list):
         pygame.sprite.Sprite.__init__(self)
         self.movex = 0 # move along x
         self.movey = 0 # move along y
         self.frame = 0 # count frames
         self.enemy_list = e_list
-        self.block_list = b_list
-        self.enemy_collision = False # To see if the sprite hits an enemy
-        self.platform_collision = False # To see if the sprite hits a platform
+        self.floor_list = f_list
+        self.platform_list = p_list
         
         self.images = [] # List of images, nice for animation for future
         # Could have init take in a list of images for animation, and loop through to convert alpha
@@ -39,25 +38,36 @@ class Person(pygame.sprite.Sprite):
     # Simulate gravity
     def gravity(self):
         self.movey += 1 # How fast the player will fall
-        
-        # Go back to this -- need to figure out how to stop when we hit the ground/platform
-        if self.rect.y > 570 and self.movey >= 0:
-            self.movey = 0
-            self.rect.y = 570
-            
 
     # Update position
     def update(self):
         self.rect.x = self.rect.x + self.movex
         self.rect.y = self.rect.y + self.movey
-        hit_list = pygame.sprite.spritecollide(self, self.enemy_list, False)
-        for enemy in hit_list:
-            self.enemy_collision = True
-            print("Collision Occurred!")
-            # Could quit here
-        collide_list = pygame.sprite.spritecollide(self, self.block_list, False)
-        for block in collide_list:
-            print("Collided with block")
+        
+        enemy_collide = pygame.sprite.spritecollide(self, self.enemy_list, False)
+        for enemy in enemy_collide:
+            print("Collision with Enemy!")
+        
+        floor_collide = pygame.sprite.spritecollide(self, self.floor_list, False)
+        for floor in floor_collide:
+            print("Collision with floor!")
+            if self.rect.y > floor.rect.y-90 and self.movey >= 0:
+                self.movey = 0
+                self.rect.y = floor.rect.y-90
+        
+        platform_collide = pygame.sprite.spritecollide(self, self.platform_list, False)
+        for platform in platform_collide:
+            print("Collision with platform!")
+            if self.rect.x >= platform.rect.x and self.rect.x < platform.rect.x + 60 and self.rect.y+90 >= platform.rect.y and self.movey >= 0:
+                print("above")
+                self.movey = 0
+                self.rect.y = platform.rect.y-90
+            elif self.rect.x + 60 >= platform.rect.x and self.rect.y <= platform.rect.y - 60:
+                print("below")
+            elif self.rect.x + 60 >= platform.rect.x:
+                print("left side")
+            elif self.rect.x >= platform.rect.x + 60:
+                print("right side")
         
 # Class for enemy scientists
 class Enemy(pygame.sprite.Sprite):
