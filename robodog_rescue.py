@@ -19,7 +19,6 @@ except:
         
 #################### Create Content #######################
 
-
 # Create a screen (width, height)
 screenx = 960
 screeny = 720
@@ -28,15 +27,19 @@ screen = pygame.display.set_mode((screenx, screeny))
 background = pygame.image.load("background.png").convert_alpha()
 backgroundbox = background.get_rect()
 pygame.display.set_caption('Robo-Dog Rescue')
+
 # Make a list of enemies
-enemy_list = Level.create(1, 550, 550)
-floor_list = Level.floor(1, 0, 0, 'block1_60x60.png')
+enemy_list = Level.enemy(1, 500, 570)
+floor_list = Level.floor(1, 'block1_60x60.png')
+platform_list = Level.platform(1, 'block1_60x60.png')
 
 # Spawn person
 grace = Person('tall_blue.png', 0, 570, enemy_list, floor_list)
 person_list = pygame.sprite.Group()
 person_list.add(grace)
-steps = 5
+steps = 10
+
+# Clock
 clock = pygame.time.Clock()
 
 
@@ -54,8 +57,8 @@ while 1:
                 print('right')
                 grace.move(steps,0)
             if event.key == pygame.K_UP or event.key == ord('w'):
-                print('jump')
-                grace.move(0, -2*steps)
+                print('up')
+                grace.move(0, -1*steps)
                 
         if event.type == pygame.KEYUP:
             if event.key == pygame.K_LEFT or event.key == ord('a'):
@@ -73,11 +76,12 @@ while 1:
             sys.exit()
     
     screen.blit(background, backgroundbox)
-    # grace.gravity() # Check gravity
     grace.update() # Update player position
+    grace.gravity()
     person_list.draw(screen) # Refresh player position
     enemy_list.draw(screen)
     floor_list.draw(screen)
+    platform_list.draw(screen)
     for enemy in enemy_list:
         enemy.move()
     clock.tick(30)
