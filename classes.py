@@ -45,33 +45,47 @@ class Person(pygame.sprite.Sprite):
         self.rect.y = self.rect.y + self.movey
         
         enemy_collide = pygame.sprite.spritecollide(self, self.enemy_list, False)
-        for enemy in enemy_collide:
-            print("Collision with Enemy!")
+#        for enemy in enemy_collide:
+#            print("Collision with Enemy!")
+            
         
         floor_collide = pygame.sprite.spritecollide(self, self.floor_list, False)
         for floor in floor_collide:
-            print("Collision with floor!")
             if self.rect.y > floor.rect.y-90 and self.movey >= 0:
                 self.movey = 0
                 self.rect.y = floor.rect.y-90
         
         platform_collide = pygame.sprite.spritecollide(self, self.platform_list, False)
         for platform in platform_collide:
-            print("Collision with platform!")
-            if self.rect.x + 60 >= platform.rect.x and self.rect.x < platform.rect.x + 60 and self.rect.y+90 >= platform.rect.y and self.movey >= 0:
+            print("Collision with platform! self %d %d  platform %d %d" % (self.rect.x, self.rect.y, platform.rect.x, platform.rect.y))
+            if self.rect.x + 60 >= platform.rect.x and self.rect.x <= platform.rect.x + 60 and self.rect.y+90 <= platform.rect.y+5 and self.movey >= 0:
                 print("above")
                 self.movey = 0
                 self.rect.y = platform.rect.y-90
-            elif self.rect.x + 60 >= platform.rect.x and self.rect.x <= platform.rect.x + 60 and self.rect.y <= platform.rect.y+60 and self.movey >= 0:
-                print("below")
+            elif self.rect.y <= platform.rect.y + 60 - 5 and self.rect.y + 90 >= platform.rect.y + 5 and (self.rect.x + 60 <= platform.rect.x or self.rect.x <= platform.rect.x + 60):
+                print("side")
+                # Position
                 self.movey = 0
+            elif self.rect.x + 60 >= platform.rect.x and self.rect.x <= platform.rect.x + 60 and self.rect.y <= platform.rect.y+60 and self.movey <= 0:
+                print("below")
+                self.movey = 3
+            else:
+                print("else")
                 
-            elif self.rect.x + 60 >= platform.rect.x:
-                print("left side")
-            elif self.rect.x >= platform.rect.x + 60:
-                print("right side")
-                
-        if 
+        # Scroll screen
+        if self.rect.x >= 885:
+            self.rect.x = 30 # Position the person on next "screen"
+            for plat in self.platform_list:
+                plat.rect.x = plat.rect.x - 960
+            for enemy in self.enemy_list:
+                enemy.rect.x = enemy.rect.x - 960
+        if self.rect.x <= 15:
+            self.rect.x = 870 # Position person on previous "screen"
+            for plat in self.platform_list:
+                plat.rect.x = plat.rect.x + 960
+            for enemy in self.enemy_list:
+                enemy.rect.x = enemy.rect.x + 960
+            
 
         
 # Class for enemy scientists
@@ -161,10 +175,13 @@ class Level():
         if lvl == 1:
             print ("Level " + str(lvl))
             for i in range(4):
-                block = Block(image, (i+3)*60, 480)
+                block = Block(image, (i+4)*60, 480)
                 platform_list.add(block)
             for i in range(5):
-                block = Block(image, (i+7)*60, 300)
+                block = Block(image, (i+8)*60, 300)
+                platform_list.add(block)
+            for i in range(5):
+                block = Block(image, (i+20)*60, 360)
                 platform_list.add(block)
             
         if lvl == 2:

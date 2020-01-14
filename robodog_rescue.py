@@ -34,7 +34,7 @@ floor_list = Level.floor(1, 'block1_60x60.png')
 platform_list = Level.platform(1, 'block1_60x60.png')
 
 # Spawn person
-grace = Person('tall_blue.png', 0, 570, enemy_list, floor_list, platform_list)
+grace = Person('tall_blue.png', 90, 570, enemy_list, floor_list, platform_list)
 person_list = pygame.sprite.Group()
 person_list.add(grace)
 steps = 10
