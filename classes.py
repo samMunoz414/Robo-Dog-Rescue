@@ -34,6 +34,10 @@ class Person(pygame.sprite.Sprite):
         print("moving")
         self.movex += x
         self.movey += y
+
+    # stops all motion
+    def stop_x(self):
+    	self.movex = 0
     
     # Simulate gravity
     def gravity(self):
@@ -55,10 +59,34 @@ class Person(pygame.sprite.Sprite):
             # Could quit here
         collide_list = pygame.sprite.spritecollide(self, self.block_list, False)
         for block in collide_list:
-            # checks if the player is moving left and hitting a block
-            print("Collided with block - moving left")
-            print("(" + str(block.rect.x) + ", " + str(block.rect.y) + ")\t(" + str(block.rect.x + block.rect.width) + ", " + str(block.rect.y + block.rect.height) + ")")
-           	if 
+            # checks if the player is moving right
+            if self.movex > 0:
+                if self.rect.x + self.rect.width >= block.rect.x and not (self.rect.x > block.rect.x):
+                    print("Collided with block - moving right")
+                    print("(" + str(block.rect.x) + ", " + str(block.rect.y) + ")\t(" + str(block.rect.x + block.rect.width) + ", " + str(block.rect.y + block.rect.height) + ")")
+                    self.movex = 0
+                    self.rect.x = block.rect.x - self.rect.width
+			# checks if the player is moving left
+            if self.movex < 0:
+                if self.rect.x < block.rect.x + block.rect.width:
+                    print("Collided with block - moving left")
+                    print("(" + str(block.rect.x) + ", " + str(block.rect.y) + ")\t(" + str(block.rect.x + block.rect.width) + ", " + str(block.rect.y + block.rect.height) + ")")
+                    self.movex = 0
+                    self.rect.x = block.rect.x + block.rect.width
+			# checks if the player is moving down onto a block
+            if self.movey > 0:
+                if self.rect.y + self.rect.height > block.rect.y:
+                    print("Collided with block - moving down")
+                    print("(" + str(block.rect.x) + ", " + str(block.rect.y) + ")\t(" + str(block.rect.x + block.rect.width) + ", " + str(block.rect.y + block.rect.height) + ")")
+                    self.movey = 0
+                    self.rect.y = block.rect.y - self.rect.height
+			# checks if the player is hitting a block above their head
+            if self.movey < 0:
+                if self.rect.y < block.rect.y + block.rect.height:
+                    print("Collided with block - moving up")
+                    print("(" + str(block.rect.x) + ", " + str(block.rect.y) + ")\t(" + str(block.rect.x + block.rect.width) + ", " + str(block.rect.y + block.rect.height) + ")")
+                    self.movey = 0
+                    self.rect.y = block.rect.y + block.rect.height
 
 # Class for enemy scientists
 class Enemy(pygame.sprite.Sprite):
@@ -151,6 +179,9 @@ class Level():
                 platform_list.add(block)
             for i in range(5):
                 block = Block(image, (i+7)*60, 300)
+                platform_list.add(block)
+            for i in range(2):
+                block = Block(image, (i+3)*60 + 550, 580)
                 platform_list.add(block)
             
         if lvl == 2:
