@@ -33,7 +33,7 @@ class Person(pygame.sprite.Sprite):
 		if up:
 			# only jumps if the player is on the ground
 			if self.isOnGround:
-				self.movey -= 10
+				self.movey -= 20
 		# if the down button if pressed 
 		if down:
 			pass
@@ -60,20 +60,20 @@ class Person(pygame.sprite.Sprite):
 		self.isOnGround = False
 		# handles collisions in the y direction
 		self.collide(0, self.movey, platforms)
-  
-        # Scrolling screen: move everything a screen width to left or right
-        if self.rect.x <= 15:
-            self.rect.x = 870
-            for p in platforms:
-                p.rect.x = p.rect.x + 960
-            for e in enemies:
-                e.rect.x = e.rect.x + 960
-        if self.rect.x >= 885:
-            self.rect.x = 30
-            for p in platforms:
-                p.rect.x = p.rect.x - 960
-            for e in enemies:
-                e.rect.x = e.rect.x - 960
+		
+		# Scrolling screen: move everything a screen width to left or right
+		if self.rect.x <= 15:
+			self.rect.x = 870
+			for p in platforms:
+				p.rect.x = p.rect.x + 960
+			for e in enemies:
+				e.rect.x = e.rect.x + 960
+		if self.rect.x >= 885:
+			self.rect.x = 30
+			for p in platforms:
+				p.rect.x = p.rect.x - 960
+			for e in enemies:
+				e.rect.x = e.rect.x - 960
         
 	def collide(self, dx, dy, platforms):
 		for block in platforms:
@@ -97,6 +97,7 @@ class Person(pygame.sprite.Sprite):
 				# collision occured when players was moving up
 				if dy < 0:
 					self.rect.top = block.rect.bottom
+					self.movey = 0
 					print("collide bottom")
 				# ----------------------------------------------
 

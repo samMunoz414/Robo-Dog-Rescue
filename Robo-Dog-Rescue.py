@@ -24,7 +24,7 @@ except:
 # Create a screen (width, height)
 screenx = 960
 screeny = 720
-
+# ty = 100
 screen = pygame.display.set_mode((screenx, screeny))
 background = pygame.image.load("background.png").convert_alpha()
 backgroundbox = background.get_rect()
@@ -40,7 +40,6 @@ grace = Person('tall_blue.png', 90, 570)
 person_list = pygame.sprite.Group()
 person_list.add(grace)
 steps = 10
-
 # booleans for input
 up = down = left = right = False
 
