@@ -75,12 +75,18 @@ class Person(pygame.sprite.Sprite):
 		
 		# Scrolling screen: move everything a screen width to left or right
 		if self.rect.x <= 10 and level.screenCount > 1:
+			self.collide(0, self.movey, platforms)
+		
+		# Scrolling screen: move everything a screen width to left or right
+		if self.rect.x <= 10 and level.getScreenCount() > 1:
 			level.decrementScreenCount()
 			self.rect.x = 870
 			for p in platforms:
 				p.rect.x = p.rect.x + 960
 			print("screen count: " + str(level.screenCount))
 		if self.rect.x >= 900 and level.screenCount < level.totalScreenCount:
+			print("screen count: " + str(level.getScreenCount()))
+		if self.rect.x >= 950 and level.getScreenCount() < level.getTotalScreenCount():
 			level.incrementScreenCount()
 			self.rect.x = 30
 			for p in platforms:
@@ -132,27 +138,9 @@ class Person(pygame.sprite.Sprite):
 					self.isAlive = False
 					return
 
-				# ------------ Hitting Walls ---------------------
-				# collision occured when players was moving right
-				if dx > 0:
-					self.rect.right = block.rect.left
-					print("collide right")
-				# collision occured when players was moving left
-				if dx < 0:
-					self.rect.left = block.rect.right
-					print("collide left")
-				# collision occured when players was moving down
-				if dy > 0:
-					self.rect.bottom = block.rect.top
-					self.isOnGround = True
-					self.movey = 0
-					print("collide top")
-				# collision occured when players was moving up
-				if dy < 0:
-					self.rect.top = block.rect.bottom
-					self.movey = 0
-					print("collide bottom")
-				# ----------------------------------------------
+			for e in enemies:
+				e.rect.x = e.rect.x - 960
+			print("screen count: " + str(level.getScreenCount()))
 
         
 # Class for enemy scientists
@@ -183,5 +171,3 @@ class Enemy(pygame.sprite.Sprite):
             self.rect.x -= speed
         else:
             self.counter = 0
-            
-        self.counter += 1
