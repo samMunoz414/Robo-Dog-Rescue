@@ -22,8 +22,14 @@ class Platform(pygame.sprite.Sprite):
      	pass
 
 class Powerup(pygame.sprite.Sprite):
-    def __init__(self, xpos, ypos):
+    def __init__(self):
         pygame.sprite.Sprite.__init__(self)
+        print("Ran")
+
+# Poweup class: it's a powerup class
+class LaserGun(Powerup):
+    def __init__(self, xpos, ypos):
+        super().__init__()
         self.image = pygame.image.load("block4_40x40.png").convert()
         self.image.convert_alpha()
         self.rect = self.image.get_rect()
@@ -33,3 +39,45 @@ class Powerup(pygame.sprite.Sprite):
     # update method here if needed for later development
     def update(self):
     	pass
+
+# Poweup class: it's a powerup class
+class LightingRod(Powerup):
+    def __init__(self, xpos, ypos):
+        super().__init__()
+        self.image = pygame.image.load("block4_40x40.png").convert()
+        self.image.convert_alpha()
+        self.rect = self.image.get_rect()
+        self.rect.x = xpos
+        self.rect.y = ypos
+
+    # update method here if needed for later development
+    def update(self):
+        pass
+
+# Poweup class: it's a powerup class
+class Gear(Powerup):
+    def __init__(self, xpos, ypos):
+        super().__init__()
+        self.image = pygame.image.load("block4_40x40.png").convert()
+        self.image.convert_alpha()
+        self.rect = self.image.get_rect()
+        self.rect.x = xpos
+        self.rect.y = ypos
+
+    # update method here if needed for later development
+    def update(self):
+        pass
+
+# Poweup class: it's a powerup class
+class Cosmo(Powerup):
+    def __init__(self, xpos, ypos):
+        super().__init__()
+        self.image = pygame.image.load("block4_40x40.png").convert()
+        self.image.convert_alpha()
+        self.rect = self.image.get_rect()
+        self.rect.x = xpos
+        self.rect.y = ypos
+
+    # update method here if needed for later development
+    def update(self):
+        pass

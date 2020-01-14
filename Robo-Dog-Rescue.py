@@ -36,7 +36,7 @@ platform_list = Level.platform(1)
 platform_list.add(Level.floor(1))
 
 # Spawn person and add input booleans
-grace = Person('tall_blue.png', 90, 570)
+grace = Person('tall_blue.png', 60, 570)
 person_list = pygame.sprite.Group()
 person_list.add(grace)
 steps = 10

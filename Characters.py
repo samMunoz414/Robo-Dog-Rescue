@@ -7,6 +7,7 @@
 import sys
 import pygame
 import os
+from Blocks import *
 
 # Class for protagonist
 class Person(pygame.sprite.Sprite):
@@ -62,7 +63,7 @@ class Person(pygame.sprite.Sprite):
 		self.collide(0, self.movey, platforms)
 		
 		# Scrolling screen: move everything a screen width to left or right
-		if self.rect.x <= 15:
+		if self.rect.x <= 10:
 			self.rect.x = 870
 			for p in platforms:
 				p.rect.x = p.rect.x + 960
@@ -78,7 +79,8 @@ class Person(pygame.sprite.Sprite):
 	def collide(self, dx, dy, platforms):
 		for block in platforms:
 			if pygame.sprite.collide_rect(self, block):
-				print("some collision occured")
+				if isinstance(block, Powerup):
+					return
 				# ------------ Hitting Walls ---------------------
 				# collision occured when players was moving right
 				if dx > 0:
