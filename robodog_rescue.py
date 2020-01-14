@@ -47,7 +47,7 @@ clock = pygame.time.Clock()
 # go into a holding pattern until someone clicks a mouse or hits a key
 
 while 1:
-    
+
     for event in pygame.event.get():
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_LEFT or event.key == ord('a'):
@@ -76,9 +76,11 @@ while 1:
             sys.exit()
     
     screen.blit(background, backgroundbox)
+    
+    
     grace.update()
     grace.gravity()
-    person_list.draw(screen) # Refresh player position
+    person_list.draw(screen)
     enemy_list.draw(screen)
     floor_list.draw(screen)
     platform_list.draw(screen)

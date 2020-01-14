@@ -58,16 +58,21 @@ class Person(pygame.sprite.Sprite):
         platform_collide = pygame.sprite.spritecollide(self, self.platform_list, False)
         for platform in platform_collide:
             print("Collision with platform!")
-            if self.rect.x >= platform.rect.x and self.rect.x < platform.rect.x + 60 and self.rect.y+90 >= platform.rect.y and self.movey >= 0:
+            if self.rect.x + 60 >= platform.rect.x and self.rect.x < platform.rect.x + 60 and self.rect.y+90 >= platform.rect.y and self.movey >= 0:
                 print("above")
                 self.movey = 0
                 self.rect.y = platform.rect.y-90
-            elif self.rect.x + 60 >= platform.rect.x and self.rect.y <= platform.rect.y - 60:
+            elif self.rect.x + 60 >= platform.rect.x and self.rect.x <= platform.rect.x + 60 and self.rect.y <= platform.rect.y+60 and self.movey >= 0:
                 print("below")
+                self.movey = 0
+                
             elif self.rect.x + 60 >= platform.rect.x:
                 print("left side")
             elif self.rect.x >= platform.rect.x + 60:
                 print("right side")
+                
+        if 
+
         
 # Class for enemy scientists
 class Enemy(pygame.sprite.Sprite):
