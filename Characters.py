@@ -62,8 +62,10 @@ class Person(pygame.sprite.Sprite):
 		# handles collisions in the y direction
 		self.collide(0, self.movey, platforms)
 		
+		print("Position: (" + str(self.rect.x) + ", " + str(self.rect.y) + ")")
+
 		# Scrolling screen: move everything a screen width to left or right
-		if self.rect.x <= 10:
+		if self.rect.x < 0:
 			self.rect.x = 870
 			for p in platforms:
 				p.rect.x = p.rect.x + 960
