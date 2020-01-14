@@ -65,7 +65,7 @@ class Level():
                 block = Platform("block1_60x60.png", i*60, -60)
                 platform_list.add(block)
             for i in range(12):
-                block = Platform("block1_60x60.png", -60, i*60)
+                block = Platform("block1_60x60.png", -40, i*60)
                 platform_list.add(block)
             for i in range(12):
                 block = Platform("block1_60x60.png", 1900, i*60)
