@@ -24,6 +24,8 @@ class Person(pygame.sprite.Sprite):
 		self.image = pygame.image.load("tall_blue.png").convert_alpha()
 		# stores player's rect object
 		self.rect = pygame.Rect(xpos, ypos, 60, 90)
+		# stores the number of gears the player has
+		self.gearCount = 0
 
 	# Handles any updates based on keyboard inputs and 
 	# up -> boolean storing if the player moves up
@@ -81,11 +83,17 @@ class Person(pygame.sprite.Sprite):
 				e.rect.x = e.rect.x - 960
 			print("screen count: " + str(level.getScreenCount()))
         
+	def incrementGear(self):
+		if self.gearCount < 100:
+			self.gearCount += 1
+			print("Gear Count: " + str(self.gearCount))
+
 	def collide(self, dx, dy, platforms):
 		for block in platforms:
 			if pygame.sprite.collide_rect(self, block):
-				if isinstance(block, Powerup):
-					return
+				if isinstance(block, Gear):
+					self.incrementGear()
+
 				# ------------ Hitting Walls ---------------------
 				# collision occured when players was moving right
 				if dx > 0:

@@ -1,4 +1,4 @@
-# Robo-Dog-Rescue
+ # Robo-Dog-Rescue
 # January 14, 2020
 
 # NOTE: Much of the code is copied from the stackoverflow thread located here: https://stackoverflow.com/questions/14354171/add-scrolling-to-a-platformer-in-pygame

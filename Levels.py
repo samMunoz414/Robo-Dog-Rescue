@@ -51,10 +51,18 @@ class Level():
             
         return enemy_list
     
+    def powerups(lvl):
+    	powerups_list = pygame.sprite.Group()
+    	if lvl == 1:
+    		print("Level 1")
+    		for i in range(3):
+    			gear = Gear(((i+22)*60)+10, 70)
+    			powerups_list.add(gear)
+    	return powerups_list
+
     # Make a ground for the program
     def floor(lvl):
         floor_list = pygame.sprite.Group()
-        i = 0
         if lvl == 1:
             print ("Level " + str(lvl))
             for i in range(32):
@@ -98,9 +106,6 @@ class Level():
             for i in range(12):
                 block = Platform("block1_60x60.png", 1920, i*60)
                 platform_list.add(block)
-            for i in range(3):
-                gear = Gear(((i+22)*60)+10, 70)
-                platform_list.add(gear)
             
         if lvl == 2:
             print ("Level " + str(lvl))

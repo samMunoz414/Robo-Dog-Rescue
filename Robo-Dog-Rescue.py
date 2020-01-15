@@ -37,6 +37,7 @@ level = Level()
 enemy_list = Level.enemy(1, 500, 570)
 platform_list = Level.platform(1)
 platform_list.add(Level.floor(1))
+platform_list.add(Level.powerups(1))
 
 # Spawn person and add input booleans
 grace = Person('tall_blue.png', 60, 570)
@@ -90,6 +91,7 @@ while 1:
     person_list.draw(screen)
     enemy_list.draw(screen)
     platform_list.draw(screen)
+    # powerups_list.draw(screen)
     for enemy in enemy_list:
         enemy.move()
     clock.tick(30)
