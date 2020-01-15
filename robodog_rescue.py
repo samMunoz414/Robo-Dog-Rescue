@@ -5,9 +5,7 @@
 import sys
 import pygame
 import os
-from Levels import *
-from Characters import *
-from Blocks import *
+from classes import *
 
 # Initialize pygame
 pygame.init()
@@ -24,27 +22,24 @@ except:
 # Create a screen (width, height)
 screenx = 960
 screeny = 720
-# ty = 100
+ty = 100
 screen = pygame.display.set_mode((screenx, screeny))
 background = pygame.image.load("background.png").convert_alpha()
 backgroundbox = background.get_rect()
 pygame.display.set_caption('Robo-Dog Rescue')
 
-# create a level object
-level = Level()
-
 # Make a list of enemies
 enemy_list = Level.enemy(1, 500, 570)
-platform_list = Level.platform(1)
-platform_list.add(Level.floor(1))
+floor_list = Level.floor(1, 'block1_60x60.png')
+platform_list = Level.platform(1, 'block1_60x60.png')
 
-# Spawn person and add input booleans
-grace = Person('tall_blue.png', 60, 570)
+emptyList = []
+
+# Spawn person
+grace = Person('tall_blue.png', 0, 570, emptyList, platform_list) # replace emptyList with enemy_list
 person_list = pygame.sprite.Group()
 person_list.add(grace)
 steps = 10
-# booleans for input
-up = down = left = right = False
 
 # Clock
 clock = pygame.time.Clock()
@@ -54,29 +49,26 @@ clock = pygame.time.Clock()
 # go into a holding pattern until someone clicks a mouse or hits a key
 
 while 1:
-
+    
     for event in pygame.event.get():
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_LEFT or event.key == ord('a'):
                 print('left')
-                left = True
+                grace.move(-steps,0)
             if event.key == pygame.K_RIGHT or event.key == ord('d'):
                 print('right')
-                right = True
+                grace.move(steps,0)
             if event.key == pygame.K_UP or event.key == ord('w'):
                 print('up')
-                up = True
+                grace.move(0, -1*steps)
                 
         if event.type == pygame.KEYUP:
             if event.key == pygame.K_LEFT or event.key == ord('a'):
                 print('left stop')
-                left = False
+                grace.stop_x()
             if event.key == pygame.K_RIGHT or event.key == ord('d'):
                 print('right stop')
-                right = False
-            if event.key == pygame.K_UP or event.key == ord('w'):
-                print('up stop')
-                up = False
+                grace.stop_x()
             if event.key == ord('q'):
                 print("Exiting Robo-Dog Rescue")
                 pygame.quit()
@@ -86,9 +78,11 @@ while 1:
             sys.exit()
     
     screen.blit(background, backgroundbox)
-    grace.update(up, down, left, right, level, platform_list, enemy_list)
-    person_list.draw(screen)
+    grace.update() # Update player position
+    grace.gravity()
+    person_list.draw(screen) # Refresh player position
     enemy_list.draw(screen)
+    floor_list.draw(screen)
     platform_list.draw(screen)
     for enemy in enemy_list:
         enemy.move()

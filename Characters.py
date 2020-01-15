@@ -8,6 +8,7 @@ import sys
 import pygame
 import os
 from Blocks import *
+from Levels import *
 
 # Class for protagonist
 class Person(pygame.sprite.Sprite):
@@ -30,7 +31,7 @@ class Person(pygame.sprite.Sprite):
 	# left -> boolean storing if the player moves up
 	# right -> boolean storing if the player moves up
 	# platforms -> list storing all the platforms
-	def update(self, up, down, left, right, platforms, enemies):
+	def update(self, up, down, left, right, level, platforms, enemies):
 		if up:
 			# only jumps if the player is on the ground
 			if self.isOnGround:
@@ -62,21 +63,23 @@ class Person(pygame.sprite.Sprite):
 		# handles collisions in the y direction
 		self.collide(0, self.movey, platforms)
 		
-		print("Position: (" + str(self.rect.x) + ", " + str(self.rect.y) + ")")
-
 		# Scrolling screen: move everything a screen width to left or right
-		if self.rect.x < 0:
+		if self.rect.x <= 10 and level.getScreenCount() > 1:
+			level.decrementScreenCount()
 			self.rect.x = 870
 			for p in platforms:
 				p.rect.x = p.rect.x + 960
 			for e in enemies:
 				e.rect.x = e.rect.x + 960
-		if self.rect.x >= 885:
+			print("screen count: " + str(level.getScreenCount()))
+		if self.rect.x >= 900 and level.getScreenCount() < level.getTotalScreenCount():
+			level.incrementScreenCount()
 			self.rect.x = 30
 			for p in platforms:
 				p.rect.x = p.rect.x - 960
 			for e in enemies:
 				e.rect.x = e.rect.x - 960
+			print("screen count: " + str(level.getScreenCount()))
         
 	def collide(self, dx, dy, platforms):
 		for block in platforms:

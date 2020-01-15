@@ -1,5 +1,5 @@
 # Robo-Dog Rescue
-# January 14, 2020
+# January 13, 2020
 
 # Imports
 import sys
@@ -10,6 +10,34 @@ from Blocks import *
 
 # Class for levels of the game
 class Level():
+    # sets basic variables
+    def  __init__(self):
+        self.lvl = 1
+        self.screenCount = 1
+        self.totalScreenCount = 2
+
+    # returns the current level
+    def getLvl(self):
+        return self.lvl
+
+    # allows the level to be reset
+    def setLvl(self, lvl):
+        self.lvl = lvl
+
+    def getScreenCount(self):
+        return self.screenCount
+
+    # increases the screen count value by one
+    def incrementScreenCount(self):
+        self.screenCount += 1
+
+    # decreases the screen count value by one
+    def decrementScreenCount(self):
+        self.screenCount -= 1
+
+    def getTotalScreenCount(self):
+        return self.totalScreenCount
+
     # Create enemies for a level
     def enemy(lvl, enemyx, enemyy):
         if lvl == 1:
@@ -65,10 +93,10 @@ class Level():
                 block = Platform("block1_60x60.png", i*60, -60)
                 platform_list.add(block)
             for i in range(12):
-                block = Platform("block1_60x60.png", -40, i*60)
+                block = Platform("block1_60x60.png", -60, i*60)
                 platform_list.add(block)
             for i in range(12):
-                block = Platform("block1_60x60.png", 1900, i*60)
+                block = Platform("block1_60x60.png", 1920, i*60)
                 platform_list.add(block)
             for i in range(3):
                 gear = Gear(((i+22)*60)+10, 70)

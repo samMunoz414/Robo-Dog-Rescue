@@ -6,144 +6,88 @@ import sys
 import pygame
 import os
 
-# NOTE: Much of the code is copied from the stackoverflow thread located here: https://stackoverflow.com/questions/14354171/add-scrolling-to-a-platformer-in-pygame
-
 ############# Classes Needed for Robodog Game ##############
 
 # Class for protagonist
 class Person(pygame.sprite.Sprite):
-    def __init__(self, image, xpos, ypos):
+    def __init__(self, image, xpos, ypos, e_list, b_list):
         pygame.sprite.Sprite.__init__(self)
-        # velocity in the x direction
-        self.movex = 0
-        # velocity in the y direction
-        self.movey = 0 
-        # boolean storing if the character is on the ground
-        self.isOnGround = False
-        # stores player's image
-        self.image = pygame.image.load("tall_blue.png").convert_alpha()
-        # stores player's rect object
-        self.rect = pygame.Rect(xpos, ypos, 60, 90)
+        self.movex = 0 # move along x
+        self.movey = 0 # move along y
+        self.frame = 0 # count frames
+        self.enemy_list = e_list
+        self.block_list = b_list
+        
+        self.images = [] # List of images, nice for animation for future
+        # Could have init take in a list of images for animation, and loop through to convert alpha
+        img = pygame.image.load(os.path.join(image)).convert()
+        # img.set_colorkey((255,255,255))
+        self.images.append(img)
+        self.image = self.images[0]
+        
+        self.rect = self.image.get_rect()
+        self.rect.x = xpos # Starting x position
+        self.rect.y = ypos # Starting y position
+    
+    # Control movement
+    def move(self, x, y):
+        print("moving")
+        self.movex += x
+        self.movey += y
 
-<<<<<<< HEAD
+    # stops all motion
+    def stop_x(self):
+    	self.movex = 0
+    
+    # Simulate gravity
+    def gravity(self):
+        self.movey += 1 # How fast the player will fall
+        
+        # Go back to this -- need to figure out how to stop when we hit the ground/platform
+        if self.rect.y > 570 and self.movey >= 0:
+            self.movey = 0
+            self.rect.y = 570
+            
+
     # Update position
     def update(self):
         self.rect.x = self.rect.x + self.movex
         self.rect.y = self.rect.y + self.movey
-        
-        enemy_collide = pygame.sprite.spritecollide(self, self.enemy_list, False)
-#        for enemy in enemy_collide:
-#            print("Collision with Enemy!")
-            
-        
-        floor_collide = pygame.sprite.spritecollide(self, self.floor_list, False)
-        for floor in floor_collide:
-            if self.rect.y > floor.rect.y-90 and self.movey >= 0:
-                self.movey = 0
-                self.rect.y = floor.rect.y-90
-        
-        platform_collide = pygame.sprite.spritecollide(self, self.platform_list, False)
-        for platform in platform_collide:
-            print("Collision with platform! self %d %d  platform %d %d" % (self.rect.x, self.rect.y, platform.rect.x, platform.rect.y))
-            if self.rect.x + 60 >= platform.rect.x and self.rect.x <= platform.rect.x + 60 and self.rect.y+90 <= platform.rect.y+5 and self.movey >= 0:
-                print("above")
-                self.movey = 0
-                self.rect.y = platform.rect.y-90
-            elif self.rect.y <= platform.rect.y + 60 - 5 and self.rect.y + 90 >= platform.rect.y + 5 and (self.rect.x + 60 <= platform.rect.x or self.rect.x <= platform.rect.x + 60):
-                print("side")
-                # Position
-                self.movey = 0
-            elif self.rect.x + 60 >= platform.rect.x and self.rect.x <= platform.rect.x + 60 and self.rect.y <= platform.rect.y+60 and self.movey <= 0:
-                print("below")
-                self.movey = 3
-            else:
-                print("else")
-                
-        # Scroll screen
-        if self.rect.x >= 885:
-            self.rect.x = 30 # Position the person on next "screen"
-            for plat in self.platform_list:
-                plat.rect.x = plat.rect.x - 960
-            for enemy in self.enemy_list:
-                enemy.rect.x = enemy.rect.x - 960
-        if self.rect.x <= 15:
-            self.rect.x = 870 # Position person on previous "screen"
-            for plat in self.platform_list:
-                plat.rect.x = plat.rect.x + 960
-            for enemy in self.enemy_list:
-                enemy.rect.x = enemy.rect.x + 960
-            
-=======
-    # Handles any updates based on keyboard inputs and 
-    def update(self, 
-        # boolean storing if the player moves up
-        up, 
-        # boolean storing if the player moves up
-        down, 
-        # boolean storing if the player moves up
-        left, 
-        # boolean storing if the player moves up
-        right, 
-        # boolean storing if the player is running
-        running, 
-        # list storing all the platforms
-        platforms):
-
-            if up:
-                # only jumps if the player is on the ground
-                if self.isOnGround:
-                    self.movey -= 10
-            # if the down button if pressed 
-            if down:
-                pass
-            if running:
-                self.movex = 12
-            if left:
-                self.movex = -8
-            if right:
-                slef.movex = 8
-            if not self.isOnGround:
-                # this is gravity
-                self.movey += 0.3
-                # caps max velocity in the y direction
-                if self.movey > 100:
-                    self.movey = 100
-            if not (left or right):
-                self.movex = 0
-
-            # increments in the x direction
-            self.rect.left += self.movex
-            # handles collisions in the x direction
-            self.collide(self.movex, 0, platforms)
-            # increments in the y direction
-            self.rect.top += self.movey
-            # assuming player is in the air
-            self.isOnGround = False
-            # handles collisions in the y direction
-            self.collide(0, self.movex, platforms)
-        
-        def collide(self, dx, dy, platforms):
-            collisions = pygame.sprite.spritecollide(self, platforms, False)
-            for block in collisions:
-                # collision occured when players was moving right
-                if dx > 0:
-                    self.rect.right = block.rect.left
-                    print("collide right")
-                # collision occured when players was moving left
-                if dx < 0:
-                    self.rect.left = block.rect.right
-                    print("collide left")
-                # collision occured when players was moving down
-                if dy > 0:
-                    self.rect.bottom = block.rect.top
-                    self.isOnGround = True
+        hit_list = pygame.sprite.spritecollide(self, self.enemy_list, False)
+        for enemy in hit_list:
+            print("Collision Occurred!")
+            # Could quit here
+        collide_list = pygame.sprite.spritecollide(self, self.block_list, False)
+        for block in collide_list:
+            # checks if the player is moving right
+            if self.movex > 0:
+                if self.rect.x + self.rect.width >= block.rect.x and not (self.rect.x > block.rect.x):
+                    print("Collided with block - moving right")
+                    print("(" + str(block.rect.x) + ", " + str(block.rect.y) + ")\t(" + str(block.rect.x + block.rect.width) + ", " + str(block.rect.y + block.rect.height) + ")")
+                    self.movex = 0
+                    self.rect.x = block.rect.x - self.rect.width
+			# checks if the player is moving left
+            if self.movex < 0:
+                if self.rect.x < block.rect.x + block.rect.width:
+                    print("Collided with block - moving left")
+                    print("(" + str(block.rect.x) + ", " + str(block.rect.y) + ")\t(" + str(block.rect.x + block.rect.width) + ", " + str(block.rect.y + block.rect.height) + ")")
+                    self.movex = 0
+                    self.rect.x = block.rect.x + block.rect.width
+			# checks if the player is moving down onto a block
+            if self.movey > 0:
+                if self.rect.y + self.rect.height > block.rect.y:
+                    print("Collided with block - moving down")
+                    print("(" + str(block.rect.x) + ", " + str(block.rect.y) + ")\t(" + str(block.rect.x + block.rect.width) + ", " + str(block.rect.y + block.rect.height) + ")")
                     self.movey = 0
-                # collision occured when players was moving up
-                if dy < 0:
-                    self.rect.top = block.rect.bottom
->>>>>>> 356cf1f9e8e438bcb4abf68198ae3dd8b170caf1
+                    self.rect.y = block.rect.y - self.rect.height
+			# checks if the player is hitting a block above their head
+            if self.movey < 0:
+                if self.rect.y < block.rect.y + block.rect.height:
+                    print("Collided with block - moving up")
+                    print("(" + str(block.rect.x) + ", " + str(block.rect.y) + ")\t(" + str(block.rect.x + block.rect.width) + ", " + str(block.rect.y + block.rect.height) + ")")
+                    self.movey = 0
+                    self.rect.y = block.rect.y + block.rect.height
 
-        
 # Class for enemy scientists
 class Enemy(pygame.sprite.Sprite):
     def __init__(self, image, xpos, ypos):
@@ -231,13 +175,13 @@ class Level():
         if lvl == 1:
             print ("Level " + str(lvl))
             for i in range(4):
-                block = Block(image, (i+4)*60, 480)
+                block = Block(image, (i+3)*60, 480)
                 platform_list.add(block)
             for i in range(5):
-                block = Block(image, (i+8)*60, 300)
+                block = Block(image, (i+7)*60, 300)
                 platform_list.add(block)
-            for i in range(5):
-                block = Block(image, (i+20)*60, 360)
+            for i in range(2):
+                block = Block(image, (i+3)*60 + 550, 580)
                 platform_list.add(block)
             
         if lvl == 2:
