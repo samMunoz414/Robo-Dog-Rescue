@@ -13,12 +13,17 @@ from Buttons import *
 # Initialize pygame
 pygame.init()
 
+# Initialize pygame mixer
+pygame.mixer.init()
+
 # Initialize fonts
 try:
 	pygame.font.init()
 except:
 	print ("Fonts Unavailable")
 	sys.exit()
+
+########################### METHODS FOR GAME LOOP ###########################
 
 # Game loop for start screen
 def start():
@@ -28,11 +33,12 @@ def start():
 
     # Buttons on the start screen
     buttons = []
-    howtoplaybutton = Button(50, 640, 260, 30)
+    howtoplaybutton = Button(50, 640, 260, 30, 'PROLOGUE')
     buttons.append(howtoplaybutton)
 
     # Music for start screen 
     pygame.mixer.music.load('maintitletheme.mp3')
+    pygame.mixer.music.set_volume(0.5)
     pygame.mixer.music.play(-1) # Infinite loop
 
     while 1:
@@ -44,10 +50,7 @@ def start():
                 for button in buttons:
                     if button.isClicked(mousePosition):
                         pygame.mixer.music.stop()
-                        # selectsound = pygame.mixer.Sound('optionselect2.wav')
-                        # selectsound.play()
-                        state = 'TUTORIAL'
-                        return state
+                        return button.state
         screen.blit(background, backgroundbox)
         clock.tick(30)
         pygame.display.flip()
@@ -58,9 +61,8 @@ def tutorial():
     background = pygame.image.load("background.png").convert_alpha()
     backgroundbox = background.get_rect()
     
-    # Music for tutorial level
+    # # Music for tutorial level
     pygame.mixer.music.load('song1.mp3')
-    pygame.mixer.music.play(-1)
     
     # create a level object
     level = Level()
@@ -121,11 +123,52 @@ def tutorial():
             enemy.move()
         clock.tick(30)
         pygame.display.flip()
+
+def prologue():
+    print('Prologue Screen')
+
+    # Backgrounds for prologue
+    backgrounds = [] # Put the backgrounds in a list
+    for i in range(5):
+        backgrounds.append('blue_background'+ str(i+1) + '.png')
+    background = pygame.image.load(backgrounds[0]).convert_alpha()
+    backgroundbox = background.get_rect()
+
+    # Next image and button
+    nextimage = pygame.image.load('green_button.png')
+    nextbutton = Button(810, 630, 120, 60, 'TUTORIAL')
+
+    # Skip image and button
+    skipimage = pygame.image.load('skip_button.png')
+    skipbutton = Button(810, 30, 120, 60, 'TUTORIAL')
+
+    j = 1
+    while 1:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                sys.exit()
+            if event.type == pygame.MOUSEBUTTONUP:
+                mousePosition = pygame.mouse.get_pos()
+                if nextbutton.isClicked(mousePosition):
+                    if j<5:
+                        background = pygame.image.load(backgrounds[j]).convert_alpha()
+                        j += 1 
+                    else:
+                        return nextbutton.state
+                if skipbutton.isClicked(mousePosition):
+                    return skipbutton.state
+        screen.blit(background, backgroundbox)
+        screen.blit(nextimage, (810, 630))
+        screen.blit(skipimage, (810, 30))
+        clock.tick(30)
+        pygame.display.flip()
+
         
 #################### Create Content #######################
 
 # Fields needed for running program
 running = True
+# state = 'START'
 state = 'START'
 
 # Create a screen (width, height)
@@ -139,18 +182,22 @@ clock = pygame.time.Clock()
 
 while running:
     print(state)
-    if state == 'LEVELONE':
-        pass
     if state == 'START':
-        print('In the start state')
+        print('In start screen')
         state = start()
     if state == 'END':
         pass
     if state == 'TUTORIAL':
+        print('In tutorial')
         tutorial()
     if state == 'PROLOGUE':
-        pass
+        print("In prologue")
+        state = prologue()
+    if state == 'PROLOGUE2':
+        print("In prologue")
     if state == 'WIN':
         pass
     if state == 'LOSE':
+        pass
+    if state == 'LEVELONE':
         pass
