@@ -48,8 +48,10 @@ class Level():
     		for i in range(3):
     			gear = Gear(((i+22)*60)+10, 70)
     			powerups_list.add(gear)
-    		lightingrod = LightingRod(800, 600)
+    		lightingrod = LightingRod(425, 250)
     		powerups_list.add(lightingrod)
+    		lasergun = LaserGun(1450, 430)
+    		powerups_list.add(lasergun)
     	return powerups_list
 
     # Make a ground for the program

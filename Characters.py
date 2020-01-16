@@ -98,13 +98,21 @@ class Person(pygame.sprite.Sprite):
 				if isinstance(block, LightingRod):
 					self.heldPowerup = "lighting rod"
 					platforms.remove(block)
+					return
+
+				if isinstance(block, LaserGun):
+					self.heldPowerup = "laser gun"
+					platforms.remove(block)
+					return
 
 				if isinstance(block, Gear):
 					self.incrementGear()
 					platforms.remove(block)
+					return
 
 				if isinstance(block, Enemy):
 					self.isAlive = False
+					return
 
 				# ------------ Hitting Walls ---------------------
 				# collision occured when players was moving right
