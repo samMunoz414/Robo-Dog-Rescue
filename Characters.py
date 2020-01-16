@@ -24,6 +24,14 @@ class Person(pygame.sprite.Sprite):
 		self.image = pygame.image.load("tall_blue.png").convert_alpha()
 		# stores player's rect object
 		self.rect = pygame.Rect(xpos, ypos, 60, 90)
+		# stores the number of gears the player has
+		self.gearCount = 0
+		# string holding what powerup the character is holding on to. choices: 'none', 'lighting rod', 'laser gun', 'cosmo'
+		self.heldPowerup = "none"
+		# boolean storing if the powerup state of the player changed
+		self.powerupChange = False
+		# stores the life state of the player
+		self.isAlive = True
 
 	# Handles any updates based on keyboard inputs and 
 	# up -> boolean storing if the player moves up
@@ -31,7 +39,7 @@ class Person(pygame.sprite.Sprite):
 	# left -> boolean storing if the player moves up
 	# right -> boolean storing if the player moves up
 	# platforms -> list storing all the platforms
-	def update(self, up, down, left, right, level, platforms, enemies):
+	def update(self, up, down, left, right, collect_powerup, level, platforms):
 		if up:
 			# only jumps if the player is on the ground
 			if self.isOnGround:
@@ -55,37 +63,75 @@ class Person(pygame.sprite.Sprite):
 		# increments in the x direction
 		self.rect.left += self.movex
 		# handles collisions in the x direction
-		self.collide(self.movex, 0, platforms)
+		self.collide(self.movex, 0, collect_powerup, platforms)
 		# increments in the y direction
 		self.rect.top += self.movey
 		# assuming player is in the air
 		self.isOnGround = False
 		# handles collisions in the y direction
-		self.collide(0, self.movey, platforms)
+		self.collide(0, self.movey, collect_powerup, platforms)
+		# changes the player's image
+		self.updatePlayerImage()
 		
 		# Scrolling screen: move everything a screen width to left or right
-		if self.rect.x <= 10 and level.getScreenCount() > 1:
+		if self.rect.x <= 10 and level.screenCount > 1:
 			level.decrementScreenCount()
 			self.rect.x = 870
 			for p in platforms:
 				p.rect.x = p.rect.x + 960
-			for e in enemies:
-				e.rect.x = e.rect.x + 960
-			print("screen count: " + str(level.getScreenCount()))
-		if self.rect.x >= 900 and level.getScreenCount() < level.getTotalScreenCount():
+			print("screen count: " + str(level.screenCount))
+		if self.rect.x >= 900 and level.screenCount < level.totalScreenCount:
 			level.incrementScreenCount()
 			self.rect.x = 30
 			for p in platforms:
 				p.rect.x = p.rect.x - 960
-			for e in enemies:
-				e.rect.x = e.rect.x - 960
-			print("screen count: " + str(level.getScreenCount()))
+			print("screen count: " + str(level.screenCount))
+
+	def updatePlayerImage(self):
+		if self.powerupChange:
+			if self.heldPowerup == "none":
+				self.image = pygame.image.load("tall_blue.png").convert_alpha()
+			if self.heldPowerup == "lighting rod":
+				self.image = pygame.image.load("Player/PlayerLightingRod.png").convert_alpha()
+			if self.heldPowerup == "laser gun":
+				self.image = pygame.image.load("Player/PlayerLaserGun.png").convert_alpha()
+			self.powerupChange = False
         
-	def collide(self, dx, dy, platforms):
+	def powerupChange(self):
+		pass
+
+
+	def incrementGear(self):
+		if self.gearCount < 100:
+			self.gearCount += 1
+			print("Gear Count: " + str(self.gearCount))
+
+	def collide(self, dx, dy, collect_powerup, platforms):
 		for block in platforms:
 			if pygame.sprite.collide_rect(self, block):
-				if isinstance(block, Powerup):
+				if isinstance(block, LightingRod):
+					if collect_powerup:
+						self.heldPowerup = "lighting rod"
+						self.powerupChange = True
+						platforms.remove(block)
 					return
+
+				if isinstance(block, LaserGun):
+					if collect_powerup:
+						self.heldPowerup = "laser gun"
+						self.powerupChange = True
+						platforms.remove(block)
+					return
+
+				if isinstance(block, Gear):
+					self.incrementGear()
+					platforms.remove(block)
+					return
+
+				if isinstance(block, Enemy):
+					self.isAlive = False
+					return
+
 				# ------------ Hitting Walls ---------------------
 				# collision occured when players was moving right
 				if dx > 0:

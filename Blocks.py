@@ -1,4 +1,4 @@
-# Robo-Dog-Rescue
+ # Robo-Dog-Rescue
 # January 14, 2020
 
 # NOTE: Much of the code is copied from the stackoverflow thread located here: https://stackoverflow.com/questions/14354171/add-scrolling-to-a-platformer-in-pygame
@@ -30,7 +30,7 @@ class Powerup(pygame.sprite.Sprite):
 class LaserGun(Powerup):
     def __init__(self, xpos, ypos):
         super().__init__()
-        self.image = pygame.image.load("block4_40x40.png").convert()
+        self.image = pygame.image.load("orange_block_40x40.png").convert()
         self.image.convert_alpha()
         self.rect = self.image.get_rect()
         self.rect.x = xpos
@@ -44,7 +44,7 @@ class LaserGun(Powerup):
 class LightingRod(Powerup):
     def __init__(self, xpos, ypos):
         super().__init__()
-        self.image = pygame.image.load("block4_40x40.png").convert()
+        self.image = pygame.image.load("pink_block_40x40.png").convert()
         self.image.convert_alpha()
         self.rect = self.image.get_rect()
         self.rect.x = xpos
