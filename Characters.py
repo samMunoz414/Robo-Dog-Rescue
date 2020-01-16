@@ -26,6 +26,8 @@ class Person(pygame.sprite.Sprite):
 		self.rect = pygame.Rect(xpos, ypos, 60, 90)
 		# stores the number of gears the player has
 		self.gearCount = 0
+		# string holding what powerup the character is holding on to. choices: 'none', 'lighting rod', 'laser gun', 'cosmo'
+		self.heldPowerup = "none"
 		# stores the life state of the player
 		self.isAlive = True
 
@@ -93,6 +95,10 @@ class Person(pygame.sprite.Sprite):
 	def collide(self, dx, dy, platforms):
 		for block in platforms:
 			if pygame.sprite.collide_rect(self, block):
+				if isinstance(block, LightingRod):
+					self.heldPowerup = "lighting rod"
+					platforms.remove(block)
+
 				if isinstance(block, Gear):
 					self.incrementGear()
 					platforms.remove(block)
