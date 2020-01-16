@@ -8,14 +8,14 @@ import pygame
 # class that creates buttons
 class Button:
 	# buttons with no images
-	def __init__(self, position, width, height):
-		self.rect = pygame.Rect(position, (width, height))
+	def __init__(self, posx, posy, width, height):
+		self.rect = pygame.Rect((posx, posy), (width, height))
 
-	# buttons with images
-	def __init__(self, image, position):
-		self.image = pygame.image.load(image).convert_alpha()
-		self.rect = self.image.get_rect()
-		self.rect.move_ip(buttonPosition)
+	# # buttons with images
+	# def __init__(self, image, posx, posy):
+	# 	self.image = pygame.image.load(image).convert_alpha()
+	# 	self.rect = self.image.get_rect()
+	# 	self.rect.move_ip((posx, posy))
 
 	# checks if the mouses position interlaps with button's position
 	def isClicked(self, mousePosition):

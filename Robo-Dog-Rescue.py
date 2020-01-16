@@ -8,7 +8,7 @@ import os
 from Levels import *
 from Characters import *
 from Blocks import *
-from enum import Enum
+from Buttons import *
 
 # Initialize pygame
 pygame.init()
@@ -22,16 +22,33 @@ except:
 
 # Game loop for start screen
 def start():
-	print('On start screen')
-	background = pygame.image.load('startScreen.png').convert_alpha()
-	backgroundbox = background.get_rect()
-	while 1:
-		screen.blit(background, backgroundbox)
-		clock.tick(30)
-		pygame.display.flip()
+    print('On start screen')
+    background = pygame.image.load('startscreen.png').convert_alpha()
+    backgroundbox = background.get_rect()
+    buttons = []
+    howtoplaybutton = Button(50, 640, 260, 30)
+    buttons.append(howtoplaybutton)
+    startmusictheme = pygame.mixer.Sound('maintitletheme.wav')
+    startmusictheme.play()
+    while 1:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                sys.exit()
+            if event.type == pygame.MOUSEBUTTONUP:
+                mousePosition = pygame.mouse.get_pos()
+                for button in buttons:
+                    if button.isClicked(mousePosition):
+                        startmusictheme.stop()
+                        # selectsound = pygame.mixer.Sound('optionselect2.wav')
+                        # selectsound.play()
+                        state = 'TUTORIAL'
+                        return state
+        screen.blit(background, backgroundbox)
+        clock.tick(30)
+        pygame.display.flip()
 
-# Game loop for level one
-def levelone():
+# Game loop for tutorial
+def tutorial():
     print('In level one function')
     background = pygame.image.load("background.png").convert_alpha()
     backgroundbox = background.get_rect()
@@ -40,10 +57,10 @@ def levelone():
     level = Level()
         
     # Make a list of enemies
-    platform_list = Level.platform(1)
-    platform_list.add(Level.floor(1))
-    platform_list.add(Level.powerups(1))
-    enemy_list = Level.enemy(1, 500, 570)
+    platform_list = Level.platform(0)
+    platform_list.add(Level.floor(0))
+    platform_list.add(Level.powerups(0))
+    enemy_list = Level.enemy(0, 500, 570)
     platform_list.add(enemy_list)
     
     # Spawn person and add input booleans
@@ -112,16 +129,16 @@ pygame.display.set_caption('Robo-Dog Rescue')
 clock = pygame.time.Clock()
 
 while running:
+    print(state)
     if state == 'LEVELONE':
-        print('In level one state')
-        levelone()
+        pass
     if state == 'START':
         print('In the start state')
-        start()
+        state = start()
     if state == 'END':
         pass
     if state == 'TUTORIAL':
-        pass
+        tutorial()
     if state == 'PROLOGUE':
         pass
     if state == 'WIN':
