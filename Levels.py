@@ -29,11 +29,13 @@ class Level():
         self.screenCount -= 1
 
     # Create enemies for a level
-    def enemy(lvl, enemyx, enemyy):
+    def enemy(lvl):
         if lvl == 0:
             print("Level " + str(lvl))
-            enemy = Enemy('tall_red.png', enemyx, enemyy)
             enemy_list = pygame.sprite.Group() # Create enemy group
+            enemy = Enemy('tall_red.png', 500, 570)
+            enemy_list.add(enemy)
+            enemy = Enemy('tall_red.png', 1400, 390)
             enemy_list.add(enemy)
             
         if lvl == 1:
@@ -42,15 +44,17 @@ class Level():
         return enemy_list
     
     def powerups(lvl):
-    	powerups_list = pygame.sprite.Group()
-    	if lvl == 0:
-    		print("Level 0")
-    		for i in range(3):
-    			gear = Gear(((i+22)*60)+10, 70)
-    			powerups_list.add(gear)
-    		lightingrod = LightingRod(800, 600)
-    		powerups_list.add(lightingrod)
-    	return powerups_list
+        powerups_list = pygame.sprite.Group()
+        if lvl == 0:
+            print("Level 0")
+            for i in range(3):
+                gear = Gear(((i+22)*60)+10, 70)
+                powerups_list.add(gear)
+            lightingrod = LightingRod(800, 600)
+            powerups_list.add(lightingrod)
+            lasergun = LaserGun(430, 250)
+            powerups_list.add(lasergun)
+            return powerups_list
 
     # Make a ground for the program
     def floor(lvl):

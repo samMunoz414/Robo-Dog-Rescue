@@ -25,11 +25,16 @@ def start():
     print('On start screen')
     background = pygame.image.load('startscreen.png').convert_alpha()
     backgroundbox = background.get_rect()
+
+    # Buttons on the start screen
     buttons = []
     howtoplaybutton = Button(50, 640, 260, 30)
     buttons.append(howtoplaybutton)
-    startmusictheme = pygame.mixer.Sound('maintitletheme.wav')
-    startmusictheme.play()
+
+    # Music for start screen 
+    pygame.mixer.music.load('maintitletheme.mp3')
+    pygame.mixer.music.play(-1) # Infinite loop
+
     while 1:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -38,7 +43,7 @@ def start():
                 mousePosition = pygame.mouse.get_pos()
                 for button in buttons:
                     if button.isClicked(mousePosition):
-                        startmusictheme.stop()
+                        pygame.mixer.music.stop()
                         # selectsound = pygame.mixer.Sound('optionselect2.wav')
                         # selectsound.play()
                         state = 'TUTORIAL'
@@ -53,6 +58,10 @@ def tutorial():
     background = pygame.image.load("background.png").convert_alpha()
     backgroundbox = background.get_rect()
     
+    # Music for tutorial level
+    pygame.mixer.music.load('song1.mp3')
+    pygame.mixer.music.play(-1)
+    
     # create a level object
     level = Level()
         
@@ -60,7 +69,7 @@ def tutorial():
     platform_list = Level.platform(0)
     platform_list.add(Level.floor(0))
     platform_list.add(Level.powerups(0))
-    enemy_list = Level.enemy(0, 500, 570)
+    enemy_list = Level.enemy(0)
     platform_list.add(enemy_list)
     
     # Spawn person and add input booleans
