@@ -100,11 +100,6 @@ class Person(pygame.sprite.Sprite):
 					platforms.remove(block)
 					return
 
-				if isinstance(block, LaserGun):
-					self.heldPowerup = "laser gun"
-					platforms.remove(block)
-					return
-
 				if isinstance(block, Gear):
 					self.incrementGear()
 					platforms.remove(block)
