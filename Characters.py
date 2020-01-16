@@ -70,23 +70,23 @@ class Person(pygame.sprite.Sprite):
 		self.collide(0, self.movey, platforms)
 		
 		# Scrolling screen: move everything a screen width to left or right
-		if self.rect.x <= 10 and level.getScreenCount() > 1:
+		if self.rect.x <= 10 and level.screenCount > 1:
 			level.decrementScreenCount()
 			self.rect.x = 870
 			for p in platforms:
 				p.rect.x = p.rect.x + 960
-			for e in enemies:
-				e.rect.x = e.rect.x + 960
-			print("screen count: " + str(level.getScreenCount()))
-		if self.rect.x >= 900 and level.getScreenCount() < level.getTotalScreenCount():
+			print("screen count: " + str(level.screenCount))
+		if self.rect.x >= 900 and level.screenCount < level.totalScreenCount:
 			level.incrementScreenCount()
 			self.rect.x = 30
 			for p in platforms:
 				p.rect.x = p.rect.x - 960
-			for e in enemies:
-				e.rect.x = e.rect.x - 960
-			print("screen count: " + str(level.getScreenCount()))
+			print("screen count: " + str(level.screenCount))
         
+	def powerupChange(self):
+		pass
+
+
 	def incrementGear(self):
 		if self.gearCount < 100:
 			self.gearCount += 1
