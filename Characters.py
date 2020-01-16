@@ -26,6 +26,8 @@ class Person(pygame.sprite.Sprite):
 		self.rect = pygame.Rect(xpos, ypos, 60, 90)
 		# stores the number of gears the player has
 		self.gearCount = 0
+		# stores the life state of the player
+		self.isAlive = True
 
 	# Handles any updates based on keyboard inputs and 
 	# up -> boolean storing if the player moves up
@@ -33,7 +35,7 @@ class Person(pygame.sprite.Sprite):
 	# left -> boolean storing if the player moves up
 	# right -> boolean storing if the player moves up
 	# platforms -> list storing all the platforms
-	def update(self, up, down, left, right, level, platforms, enemies):
+	def update(self, up, down, left, right, level, platforms):
 		if up:
 			# only jumps if the player is on the ground
 			if self.isOnGround:
@@ -93,6 +95,10 @@ class Person(pygame.sprite.Sprite):
 			if pygame.sprite.collide_rect(self, block):
 				if isinstance(block, Gear):
 					self.incrementGear()
+					platforms.remove(block)
+
+				if isinstance(block, Enemy):
+					self.isAlive = False
 
 				# ------------ Hitting Walls ---------------------
 				# collision occured when players was moving right

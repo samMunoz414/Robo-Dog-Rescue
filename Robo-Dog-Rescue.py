@@ -34,8 +34,9 @@ pygame.display.set_caption('Robo-Dog Rescue')
 level = Level()
 
 # Make a list of enemies
-enemy_list = Level.enemy(1, 500, 570)
 platform_list = Level.platform(1)
+enemy_list = Level.enemy(1, 500, 570)
+platform_list.add(enemy_list)
 platform_list.add(Level.floor(1))
 platform_list.add(Level.powerups(1))
 
@@ -55,45 +56,47 @@ clock = pygame.time.Clock()
 # go into a holding pattern until someone clicks a mouse or hits a key
 
 while 1:
+	# runs death sequence if the player dies
+	if not grace.isAlive:
+		print("You lose")
+		sys.exit()
 
-    for event in pygame.event.get():
-        if event.type == pygame.KEYDOWN:
-            if event.key == pygame.K_LEFT or event.key == ord('a'):
-                print('left')
-                left = True
-            if event.key == pygame.K_RIGHT or event.key == ord('d'):
-                print('right')
-                right = True
-            if event.key == pygame.K_UP or event.key == ord('w'):
-                print('up')
-                up = True
-                
-        if event.type == pygame.KEYUP:
-            if event.key == pygame.K_LEFT or event.key == ord('a'):
-                print('left stop')
-                left = False
-            if event.key == pygame.K_RIGHT or event.key == ord('d'):
-                print('right stop')
-                right = False
-            if event.key == pygame.K_UP or event.key == ord('w'):
-                print('up stop')
-                up = False
-            if event.key == ord('q'):
-                print("Exiting Robo-Dog Rescue")
-                pygame.quit()
-                sys.exit()
+	for event in pygame.event.get():
+		if event.type == pygame.KEYDOWN:
+			if event.key == pygame.K_LEFT or event.key == ord('a'):
+			    print('left')
+			    left = True
+			if event.key == pygame.K_RIGHT or event.key == ord('d'):
+			    print('right')
+			    right = True
+			if event.key == pygame.K_UP or event.key == ord('w'):
+			    print('up')
+			    up = True
+		    
+		if event.type == pygame.KEYUP:
+			if event.key == pygame.K_LEFT or event.key == ord('a'):
+			    print('left stop')
+			    left = False
+			if event.key == pygame.K_RIGHT or event.key == ord('d'):
+			    print('right stop')
+			    right = False
+			if event.key == pygame.K_UP or event.key == ord('w'):
+			    print('up stop')
+			    up = False
+			if event.key == ord('q'):
+			    print("Exiting Robo-Dog Rescue")
+			    pygame.quit()
+			    sys.exit()
 
-        if event.type == pygame.QUIT:
-            sys.exit()
+		if event.type == pygame.QUIT:
+			sys.exit()
     
-    screen.blit(background, backgroundbox)
-    grace.update(up, down, left, right, level, platform_list, enemy_list)
-    person_list.draw(screen)
-    enemy_list.draw(screen)
-    platform_list.draw(screen)
-    # powerups_list.draw(screen)
-    for enemy in enemy_list:
-        enemy.move()
-    clock.tick(30)
-    pygame.display.flip()
+	screen.blit(background, backgroundbox)
+	grace.update(up, down, left, right, level, platform_list)
+	person_list.draw(screen)
+	platform_list.draw(screen)
+	for enemy in enemy_list:
+		enemy.move()
+	clock.tick(30)
+	pygame.display.flip()
             

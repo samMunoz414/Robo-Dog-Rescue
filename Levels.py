@@ -12,20 +12,13 @@ from Blocks import *
 class Level():
     # sets basic variables
     def  __init__(self):
-        self.lvl = 1
+        # self.lvl = 1
         self.screenCount = 1
         self.totalScreenCount = 2
 
-    # returns the current level
-    def getLvl(self):
-        return self.lvl
-
-    # allows the level to be reset
-    def setLvl(self, lvl):
-        self.lvl = lvl
-
-    def getScreenCount(self):
-        return self.screenCount
+    # # allows the level to be reset
+    # def setLvl(self, lvl):
+    #     self.lvl = lvl
 
     # increases the screen count value by one
     def incrementScreenCount(self):
@@ -34,9 +27,6 @@ class Level():
     # decreases the screen count value by one
     def decrementScreenCount(self):
         self.screenCount -= 1
-
-    def getTotalScreenCount(self):
-        return self.totalScreenCount
 
     # Create enemies for a level
     def enemy(lvl, enemyx, enemyy):
@@ -58,6 +48,8 @@ class Level():
     		for i in range(3):
     			gear = Gear(((i+22)*60)+10, 70)
     			powerups_list.add(gear)
+    		lightingrod = LightingRod(800, 600)
+    		powerups_list.add(lightingrod)
     	return powerups_list
 
     # Make a ground for the program
