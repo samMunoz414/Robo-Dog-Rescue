@@ -13,6 +13,9 @@ from Buttons import *
 # Initialize pygame
 pygame.init()
 
+# Initalize the mixer
+pygame.mixer.init()
+
 # Initialize fonts
 try:
 	pygame.font.init()
@@ -31,10 +34,15 @@ def start():
     howtoplaybutton = Button(50, 640, 260, 30)
     buttons.append(howtoplaybutton)
 
-    # Music for start screen 
-    pygame.mixer.music.load('maintitletheme.mp3')
-    pygame.mixer.music.play(-1) # Infinite loop
+    # creates two channels for music
+    channelOne = pygame.mixer.Channel(1)
+    channelTwo = pygame.mixer.Channel(2)
 
+    # creates Sound objects
+    mainTitleMusic = pygame.mixer.Sound("maintitletheme.wav")
+    optionselect2 = pygame.mixer.Sound("optionselect2.wav")
+
+    channelOne.play(mainTitleMusic, loops=-1)
     while 1:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -57,7 +65,7 @@ def tutorial():
     print('In level one function')
     background = pygame.image.load("background.png").convert_alpha()
     backgroundbox = background.get_rect()
-    
+
     # Music for tutorial level
     pygame.mixer.music.load('song1.mp3')
     pygame.mixer.music.play(-1)
@@ -78,7 +86,7 @@ def tutorial():
     person_list.add(grace)
     
     # booleans for input
-    up = down = left = right = False
+    up = down = left = right = collect_powerup = False
 
     while 1:
         
@@ -93,6 +101,9 @@ def tutorial():
                 if event.key == pygame.K_UP or event.key == ord('w'):
                     print('up')
                     up = True
+                if event.key == pygame.K_DOWN or event.key == ord('s'):
+                	print("collect powerup")
+                	collect_powerup = True
         
             if event.type == pygame.KEYUP:
                 if event.key == pygame.K_LEFT or event.key == ord('a'):
@@ -104,6 +115,9 @@ def tutorial():
                 if event.key == pygame.K_UP or event.key == ord('w'):
                     print('up stop')
                     up = False
+                if event.key == pygame.K_DOWN or event.key == ord('s'):
+                	print('stop collecting powerups')
+                	collect_powerup = False
                 if event.key == ord('q'):
                     print("Exiting Robo-Dog Rescue")
                     pygame.quit()
@@ -113,7 +127,7 @@ def tutorial():
                 sys.exit()
                         
         screen.blit(background, backgroundbox)
-        grace.update(up, down, left, right, level, platform_list)
+        grace.update(up, down, left, right, collect_powerup, level, platform_list)
         person_list.draw(screen)
         platform_list.draw(screen)
         # powerups_list.draw(screen)

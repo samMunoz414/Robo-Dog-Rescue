@@ -37,7 +37,7 @@ class Person(pygame.sprite.Sprite):
 	# left -> boolean storing if the player moves up
 	# right -> boolean storing if the player moves up
 	# platforms -> list storing all the platforms
-	def update(self, up, down, left, right, level, platforms):
+	def update(self, up, down, left, right, collect_powerup, level, platforms):
 		if up:
 			# only jumps if the player is on the ground
 			if self.isOnGround:
@@ -61,13 +61,13 @@ class Person(pygame.sprite.Sprite):
 		# increments in the x direction
 		self.rect.left += self.movex
 		# handles collisions in the x direction
-		self.collide(self.movex, 0, platforms)
+		self.collide(self.movex, 0, collect_powerup, platforms)
 		# increments in the y direction
 		self.rect.top += self.movey
 		# assuming player is in the air
 		self.isOnGround = False
 		# handles collisions in the y direction
-		self.collide(0, self.movey, platforms)
+		self.collide(0, self.movey, collect_powerup, platforms)
 		
 		# Scrolling screen: move everything a screen width to left or right
 		if self.rect.x <= 10 and level.screenCount > 1:
@@ -92,17 +92,19 @@ class Person(pygame.sprite.Sprite):
 			self.gearCount += 1
 			print("Gear Count: " + str(self.gearCount))
 
-	def collide(self, dx, dy, platforms):
+	def collide(self, dx, dy, collect_powerup, platforms):
 		for block in platforms:
 			if pygame.sprite.collide_rect(self, block):
 				if isinstance(block, LightingRod):
-					self.heldPowerup = "lighting rod"
-					platforms.remove(block)
+					if collect_powerup:
+						self.heldPowerup = "lighting rod"
+						platforms.remove(block)
 					return
 
 				if isinstance(block, LaserGun):
-					self.heldPowerup = "laser gun"
-					platforms.remove(block)
+					if collect_powerup:
+						self.heldPowerup = "laser gun"
+						platforms.remove(block)
 					return
 
 				if isinstance(block, Gear):
