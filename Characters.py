@@ -30,6 +30,8 @@ class Person(pygame.sprite.Sprite):
 		self.heldPowerup = "none"
 		# stores the life state of the player
 		self.isAlive = True
+		# stores if the player is alive
+		self.win = False
 
 	# Handles any updates based on keyboard inputs and 
 	# up -> boolean storing if the player moves up
@@ -82,6 +84,8 @@ class Person(pygame.sprite.Sprite):
 			for p in platforms:
 				p.rect.x = p.rect.x - 960
 			print("screen count: " + str(level.screenCount))
+		if self.rect.x >= 900 and level.screenCount == level.totalScreenCount:
+			self.win = True
         
 	def powerupChange(self):
 		pass
