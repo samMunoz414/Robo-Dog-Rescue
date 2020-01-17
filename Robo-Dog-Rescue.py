@@ -33,8 +33,10 @@ def start():
 
     # Buttons on the start screen
     buttons = []
-    howtoplaybutton = Button(50, 640, 260, 30, 'PROLOGUE')
+    howtoplaybutton = Button(50, 640, 260, 30, 'CONTROLS')
     buttons.append(howtoplaybutton)
+    startbutton = Button(770, 640, 130, 30, 'PROLOGUE')
+    buttons.append(startbutton)
 
     # Music for start screen 
     pygame.mixer.music.load('maintitletheme.mp3')
@@ -55,11 +57,29 @@ def start():
         clock.tick(30)
         pygame.display.flip()
 
+# Show the controls to the player
+def controls():
+    print("In control screen")
+    background = pygame.image.load("green_background.png").convert_alpha()
+    backgroundbox = background.get_rect()
+
+    while 1:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                sys.exit()
+        screen.blit(background, backgroundbox)
+        clock.tick(30)
+        pygame.display.flip()
+
 # Game loop for tutorial
 def tutorial():
     print('In level one function')
     background = pygame.image.load("background.png").convert_alpha()
     backgroundbox = background.get_rect()
+
+    # Skip image and button for corner of screen
+    skipimage = pygame.image.load('skip_button.png')
+    skipbutton = Button(810, 30, 120, 60, 'CUTSCENE')
     
     # # Music for tutorial level
     pygame.mixer.music.load('song1.mp3')
@@ -110,12 +130,20 @@ def tutorial():
                     print("Exiting Robo-Dog Rescue")
                     pygame.quit()
                     sys.exit()
+
+            if event.type == pygame.MOUSEBUTTONUP:
+                mousePosition = pygame.mouse.get_pos()
+                if skipbutton.isClicked(mousePosition):
+                    return skipbutton.state
                 
             if event.type == pygame.QUIT:
                 sys.exit()
                         
-        screen.blit(background, backgroundbox)
+        screen.blit(background, backgroundbox) # Add background to screen
+        screen.blit(skipimage, (810, 30))
         grace.update(up, down, left, right, level, platform_list)
+        if grace.win == True:
+            return 'WIN'
         person_list.draw(screen)
         platform_list.draw(screen)
         # powerups_list.draw(screen)
@@ -124,6 +152,7 @@ def tutorial():
         clock.tick(30)
         pygame.display.flip()
 
+# Game loop for the prologue - goes through 5 screens with arrow button, can skip with skip button
 def prologue():
     print('Prologue Screen')
 
@@ -163,6 +192,117 @@ def prologue():
         clock.tick(30)
         pygame.display.flip()
 
+# Cut scene - after the tutorial level and before the level selection screen
+def cutscene():
+    print("In cut scene")
+    background = pygame.image.load("blue_background1.png").convert_alpha()
+    backgroundbox = background.get_rect()
+
+    # Next image and button
+    nextimage = pygame.image.load('green_button.png')
+    nextbutton = Button(810, 630, 120, 60, 'SELECTLEVEL')
+
+    while 1:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                sys.exit()
+            if event.type == pygame.MOUSEBUTTONUP:
+                mousePosition = pygame.mouse.get_pos()
+                if nextbutton.isClicked(mousePosition):
+                    return nextbutton.state
+        screen.blit(background, backgroundbox)
+        screen.blit(nextimage, (810, 630))
+        clock.tick(30)
+        pygame.display.flip()
+
+# Win screen for the tutorial
+def win():
+    print("In control screen")
+    background = pygame.image.load("green_background.png").convert_alpha()
+    backgroundbox = background.get_rect()
+
+    # List of buttons for the screen
+    buttons = []
+    continueimage = pygame.image.load("pink_block_40x40.png").convert_alpha()
+    continuebutton = Button(460, 340, 40, 40, 'CUTSCENE')
+    buttons.append(continuebutton)
+
+    while 1:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                sys.exit()
+            if event.type == pygame.MOUSEBUTTONUP:
+                mousePosition = pygame.mouse.get_pos()
+                for button in buttons:
+                    if button.isClicked(mousePosition):
+                        return button.state
+        screen.blit(background, backgroundbox)
+        screen.blit(continueimage, (460, 340))
+        clock.tick(30)
+        pygame.display.flip()
+
+# Allow the user to select what level they are on
+def selectlevel(lvls):
+    print("In select level screen")
+    background = pygame.image.load("background.png").convert_alpha()
+    backgroundbox = background.get_rect()
+
+    # List of buttons
+    buttons = []
+    # Add three buttons, one for each level
+    for i in range(3):
+        button = Button(400+(60*i), 340, 60, 60, 'LEVEL'+str(i+1))
+        buttons.append(button)
+
+    # Make image for buttons
+    yesimages = []
+    yeslevel1 = pygame.image.load("pink_block_40x40.png").convert_alpha()
+    yesimages.append(yeslevel1)
+    yeslevel2 = pygame.image.load("pink_block_40x40.png").convert_alpha()
+    yesimages.append(yeslevel2)
+    yeslevel3 = pygame.image.load("pink_block_40x40.png").convert_alpha()
+    yesimages.append(yeslevel3)
+    noimages = []
+    nolevel1 = pygame.image.load("orange_block_40x40.png").convert_alpha()
+    noimages.append(nolevel1)
+    nolevel2 = pygame.image.load("orange_block_40x40.png").convert_alpha()
+    noimages.append(nolevel2)
+    nolevel3 = pygame.image.load("orange_block_40x40.png").convert_alpha()
+    noimages.append(nolevel3)
+
+    while 1:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                sys.exit()
+            if event.type == pygame.MOUSEBUTTONUP:
+                mousePosition = pygame.mouse.get_pos()
+                seenbuttons = buttons[:lvls] # User can only click on what levels they have achieved
+                for button in seenbuttons:
+                    if button.isClicked(mousePosition):
+                        return button.state
+        screen.blit(background, backgroundbox)
+        for i in range(3):
+            screen.blit(noimages[i], (400+(60*i), 340))
+        for i in range(lvls):
+            screen.blit(yesimages[i], (400+(60*i), 340))
+        clock.tick(30)
+        pygame.display.flip()
+
+# Level one of the game
+def levelone():
+    print("In level one")
+    background = pygame.image.load("background.png").convert_alpha()
+    backgroundbox = background.get_rect()
+
+    while 1:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                sys.exit()
+        screen.blit(background, backgroundbox)
+        clock.tick(30)
+        pygame.display.flip()
+
+
         
 #################### Create Content #######################
 
@@ -170,6 +310,7 @@ def prologue():
 running = True
 # state = 'START'
 state = 'START'
+lvls = 1
 
 # Create a screen (width, height)
 screenx = 960
@@ -183,21 +324,26 @@ clock = pygame.time.Clock()
 while running:
     print(state)
     if state == 'START':
-        print('In start screen')
         state = start()
-    if state == 'END':
-        pass
     if state == 'TUTORIAL':
-        print('In tutorial')
-        tutorial()
+        state = tutorial()
     if state == 'PROLOGUE':
-        print("In prologue")
         state = prologue()
-    if state == 'PROLOGUE2':
-        print("In prologue")
+    if state == 'CUTSCENE':
+        state = cutscene()
     if state == 'WIN':
-        pass
+        state = win()
     if state == 'LOSE':
         pass
-    if state == 'LEVELONE':
+    if state == 'LEVEL1':
+        levelone()
+    if state == 'LEVEL2':
+        pass
+    if state == 'LEVEL3':
+        pass
+    if state == 'CONTROLS':
+        controls()
+    if state == 'SELECTLEVEL':
+        state = selectlevel(lvls)
+    if state == 'END':
         pass
