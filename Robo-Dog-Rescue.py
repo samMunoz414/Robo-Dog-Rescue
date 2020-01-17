@@ -5,17 +5,11 @@
 import sys
 import pygame
 import os
-<<<<<<< HEAD
 from time import sleep
 from Levels import *
 from Characters import *
 from Blocks import *
 from Buttons import *
-=======
-from Levels import *
-from Characters import *
-from Blocks import *
->>>>>>> created suggested changes
 
 # Initialize pygame
 pygame.init()
@@ -181,6 +175,7 @@ while running:
     if state == 'WIN':
         pass
     if state == 'LOSE':
+<<<<<<< HEAD
         pass
 =======
         
@@ -259,5 +254,3 @@ while 1:
         enemy.move()
     clock.tick(30)
     pygame.display.flip()
-            
->>>>>>> created suggested changes
