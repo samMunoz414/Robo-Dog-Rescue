@@ -99,7 +99,7 @@ class Person(pygame.sprite.Sprite):
 	def collide(self, dx, dy, platforms):
 		for block in platforms:
 			if pygame.sprite.collide_rect(self, block):
-				if isinstance(block, LightingRod):
+				if isinstance(block, LightningRod):
 					self.heldPowerup = "lighting rod"
 					platforms.remove(block)
 					return

@@ -83,11 +83,13 @@ def tutorial():
     
     # # Music for tutorial level
     pygame.mixer.music.load('song1.mp3')
+    pygame.mixer.music.set_volume(0.5)
+    pygame.mixer.music.play()
     
     # create a level object
     level = Level()
         
-    # Make a list of enemies
+    # Make a list platforms (enemies, floor, powerups, etc.)
     platform_list = Level.platform(0)
     platform_list.add(Level.floor(0))
     platform_list.add(Level.powerups(0))
@@ -134,6 +136,7 @@ def tutorial():
             if event.type == pygame.MOUSEBUTTONUP:
                 mousePosition = pygame.mouse.get_pos()
                 if skipbutton.isClicked(mousePosition):
+                    pygame.mixer.music.stop() # Stop the music
                     return skipbutton.state
                 
             if event.type == pygame.QUIT:
@@ -143,10 +146,10 @@ def tutorial():
         screen.blit(skipimage, (810, 30))
         grace.update(up, down, left, right, level, platform_list)
         if grace.win == True:
+            pygame.mixer.music.stop() # Stop the music
             return 'WIN'
         person_list.draw(screen)
         platform_list.draw(screen)
-        # powerups_list.draw(screen)
         for enemy in enemy_list:
             enemy.move()
         clock.tick(30)
@@ -294,11 +297,63 @@ def levelone():
     background = pygame.image.load("background.png").convert_alpha()
     backgroundbox = background.get_rect()
 
+    # Create a level object
+    level = Level()
+    level.setTotalScreenCount(4) # Set number of screen
+
+    # Make a list of platforms (floor, powerup, enemies, etc.)
+    platform_list = Level.platform(1)
+    platform_list.add(Level.floor(1))
+    platform_list.add(Level.powerups(1))
+    enemy_list = Level.enemy(1)
+    platform_list.add(enemy_list)
+
+    # Spawn person and add input booleans
+    grace = Person('tall_blue.png', 60, 570)
+    person_list = pygame.sprite.Group()
+    person_list.add(grace)
+    
+    # booleans for input
+    up = down = left = right = False
+
     while 1:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 sys.exit()
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_LEFT or event.key == ord('a'):
+                    print('left')
+                    left = True
+                if event.key == pygame.K_RIGHT or event.key == ord('d'):
+                    print('right')
+                    right = True
+                if event.key == pygame.K_UP or event.key == ord('w'):
+                    print('up')
+                    up = True
+        
+            if event.type == pygame.KEYUP:
+                if event.key == pygame.K_LEFT or event.key == ord('a'):
+                    print('left stop')
+                    left = False
+                if event.key == pygame.K_RIGHT or event.key == ord('d'):
+                    print('right stop')
+                    right = False
+                if event.key == pygame.K_UP or event.key == ord('w'):
+                    print('up stop')
+                    up = False
+                if event.key == ord('q'):
+                    print("Exiting Robo-Dog Rescue")
+                    pygame.quit()
+                    sys.exit()
+
         screen.blit(background, backgroundbox)
+        grace.update(up, down, left, right, level, platform_list)
+        if grace.win == True:
+            return 'WIN', 2
+        person_list.draw(screen)
+        platform_list.draw(screen)
+        for enemy in enemy_list:
+            enemy.move()
         clock.tick(30)
         pygame.display.flip()
 
@@ -336,7 +391,7 @@ while running:
     if state == 'LOSE':
         pass
     if state == 'LEVEL1':
-        levelone()
+        state, lvls = levelone()
     if state == 'LEVEL2':
         pass
     if state == 'LEVEL3':
