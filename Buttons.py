@@ -8,8 +8,9 @@ import pygame
 # class that creates buttons
 class Button:
 	# buttons with no images
-	def __init__(self, posx, posy, width, height):
+	def __init__(self, posx, posy, width, height, state):
 		self.rect = pygame.Rect((posx, posy), (width, height))
+		self.state = state
 
 	# # buttons with images
 	# def __init__(self, image, posx, posy):

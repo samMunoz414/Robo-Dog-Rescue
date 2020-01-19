@@ -1,4 +1,3 @@
-
  # Robo-Dog-Rescue
 # January 14, 2020
 
@@ -31,7 +30,8 @@ class Powerup(pygame.sprite.Sprite):
 class LaserGun(Powerup):
     def __init__(self, xpos, ypos):
         super().__init__()
-        self.image = pygame.image.load("orange_block_40x40.png").convert_alpha()
+        self.image = pygame.image.load("orange_block_40x40.png").convert()
+        self.image.convert_alpha()
         self.rect = self.image.get_rect()
         self.rect.x = xpos
         self.rect.y = ypos
@@ -41,10 +41,11 @@ class LaserGun(Powerup):
     	pass
 
 # Poweup class: it's a powerup class
-class LightingRod(Powerup):
+class LightningRod(Powerup):
     def __init__(self, xpos, ypos):
         super().__init__()
-        self.image = pygame.image.load("pink_block_40x40.png").convert_alpha()
+        self.image = pygame.image.load("pink_block_40x40.png").convert()
+        self.image.convert_alpha()
         self.rect = self.image.get_rect()
         self.rect.x = xpos
         self.rect.y = ypos

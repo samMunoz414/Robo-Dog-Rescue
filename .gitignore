@@ -1,2 +1,3 @@
+# prevents these files from uploading to the github page
 /.DS_Store
 /__pycache__
