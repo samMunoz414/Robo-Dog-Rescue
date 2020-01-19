@@ -28,6 +28,8 @@ class Person(pygame.sprite.Sprite):
 		self.gearCount = 0
 		# string holding what powerup the character is holding on to. choices: 'none', 'lighting rod', 'laser gun', 'cosmo'
 		self.heldPowerup = "none"
+		# boolean storing if powerup changed
+		self.powerup_change = False
 		# stores the life state of the player
 		self.isAlive = True
 		# stores if the player is alive
@@ -39,7 +41,7 @@ class Person(pygame.sprite.Sprite):
 	# left -> boolean storing if the player moves up
 	# right -> boolean storing if the player moves up
 	# platforms -> list storing all the platforms
-	def update(self, up, down, left, right, level, platforms):
+	def update(self, up, down, left, right, powerup, level, platforms):
 		if up:
 			# only jumps if the player is on the ground
 			if self.isOnGround:
@@ -63,13 +65,16 @@ class Person(pygame.sprite.Sprite):
 		# increments in the x direction
 		self.rect.left += self.movex
 		# handles collisions in the x direction
-		self.collide(self.movex, 0, platforms)
+		self.collide(self.movex, 0, powerup, platforms)
 		# increments in the y direction
 		self.rect.top += self.movey
 		# assuming player is in the air
 		self.isOnGround = False
 		# handles collisions in the y direction
-		self.collide(0, self.movey, platforms)
+		self.collide(0, self.movey, powerup, platforms)
+
+		self.powerupChange()
+
 		
 		# Scrolling screen: move everything a screen width to left or right
 		if self.rect.x <= 10 and level.screenCount > 1:
@@ -88,7 +93,14 @@ class Person(pygame.sprite.Sprite):
 			self.win = True
         
 	def powerupChange(self):
-		pass
+		if self.powerup_change:
+			if self.heldPowerup == 'none':
+				self.image = pygame.image.load("tall_blue.png").convert_alpha()
+			if self.heldPowerup == 'lightning rod':
+				self.image = pygame.image.load("tall_yellow.png").convert_alpha()
+			if self.heldPowerup == 'laser gun':
+				self.image = pygame.image.load("tall_orange.png").convert_alpha()
+			self.powerup_change = False
 
 
 	def incrementGear(self):
@@ -96,17 +108,21 @@ class Person(pygame.sprite.Sprite):
 			self.gearCount += 1
 			print("Gear Count: " + str(self.gearCount))
 
-	def collide(self, dx, dy, platforms):
+	def collide(self, dx, dy, powerup, platforms):
 		for block in platforms:
 			if pygame.sprite.collide_rect(self, block):
 				if isinstance(block, LightningRod):
-					self.heldPowerup = "lighting rod"
-					platforms.remove(block)
+					if powerup:
+						self.heldPowerup = "lightning rod"
+						self.powerup_change = True
+						platforms.remove(block)
 					return
 
 				if isinstance(block, LaserGun):
-					self.heldPowerup = "laser gun"
-					platforms.remove(block)
+					if powerup:
+						self.heldPowerup = "laser gun"
+						self.powerup_change = True
+						platforms.remove(block)
 					return
 
 				if isinstance(block, Gear):
