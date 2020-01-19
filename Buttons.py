@@ -21,3 +21,7 @@ class Button:
 	# checks if the mouses position interlaps with button's position
 	def isClicked(self, mousePosition):
 		return self.rect.collidepoint(mousePosition)
+
+	# tester method two
+	def disable(self):
+		pass
