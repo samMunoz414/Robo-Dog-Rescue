@@ -175,9 +175,7 @@ while running:
     if state == 'WIN':
         pass
     if state == 'LOSE':
-<<<<<<< HEAD
         pass
-=======
         
 #################### Create Content #######################
 

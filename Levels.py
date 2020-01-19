@@ -12,29 +12,9 @@ from Blocks import *
 class Level():
     # sets basic variables
     def  __init__(self):
-<<<<<<< HEAD
         # self.lvl = 1
         self.screenCount = 1
         self.totalScreenCount = 2
-
-    # # allows the level to be reset
-    # def setLvl(self, lvl):
-    #     self.lvl = lvl
-=======
-        self.lvl = 1
-        self.screenCount = 1
-        self.totalScreenCount = 2
-
-    # returns the current level
-    def getLvl(self):
-        return self.lvl
-
-    # allows the level to be reset
-    def setLvl(self, lvl):
-        self.lvl = lvl
-
-    def getScreenCount(self):
-        return self.screenCount
 
     # increases the screen count value by one
     def incrementScreenCount(self):
