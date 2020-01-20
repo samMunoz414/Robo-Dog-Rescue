@@ -99,6 +99,7 @@ def tutorial():
 
     # Creates Soudn object to store music
     music_theme = pygame.mixer.Sound("song1.wav")
+    buttonMusic = pygame.mixer.Sound("optionselect2.wav")
 
     # create a level object
     level = Level()
@@ -165,6 +166,8 @@ def tutorial():
     		if event.type == pygame.MOUSEBUTTONUP:
     			mousePosition = pygame.mouse.get_pos()
     			if skipbutton.isClicked(mousePosition):
+    				channelTwo.play(buttonMusic)
+    				sleep(0.1)
     				channelOne.stop() # Stop the music
     				return skipbutton.state
 
@@ -203,6 +206,9 @@ def prologue():
     skipimage = pygame.image.load('skip_button.png')
     skipbutton = Button(810, 30, 120, 60, 'TUTORIAL')
 
+    # Create sound objects to store music
+    buttonMusic = pygame.mixer.Sound("optionselect2.wav")
+
     j = 1
     while 1:
         for event in pygame.event.get():
@@ -211,13 +217,17 @@ def prologue():
             if event.type == pygame.MOUSEBUTTONUP:
                 mousePosition = pygame.mouse.get_pos()
                 if nextbutton.isClicked(mousePosition):
-                    if j<5:
-                        background = pygame.image.load(backgrounds[j]).convert_alpha()
-                        j += 1 
-                    else:
-                        return nextbutton.state
+                	channelOne.play(buttonMusic)
+                	sleep(0.1)
+                	if j<5:
+                		background = pygame.image.load(backgrounds[j]).convert_alpha()
+                		j += 1 
+                	else:
+                		return nextbutton.state
                 if skipbutton.isClicked(mousePosition):
-                    return skipbutton.state
+                	channelOne.play(buttonMusic)
+                	sleep(0.1)
+                	return skipbutton.state
         screen.blit(background, backgroundbox)
         screen.blit(nextimage, (810, 630))
         screen.blit(skipimage, (810, 30))
@@ -234,68 +244,8 @@ def cutscene():
     nextimage = pygame.image.load('green_button.png')
     nextbutton = Button(810, 630, 120, 60, 'SELECTLEVEL')
 
-    while 1:
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                sys.exit()
-            if event.type == pygame.MOUSEBUTTONUP:
-                mousePosition = pygame.mouse.get_pos()
-                if nextbutton.isClicked(mousePosition):
-                    return nextbutton.state
-        screen.blit(background, backgroundbox)
-        screen.blit(nextimage, (810, 630))
-        clock.tick(30)
-        pygame.display.flip()
-
-# Game loop for the prologue - goes through 5 screens with arrow button, can skip with skip button
-def prologue():
-    print('Prologue Screen')
-
-    # Backgrounds for prologue
-    backgrounds = [] # Put the backgrounds in a list
-    for i in range(5):
-        backgrounds.append('blue_background'+ str(i+1) + '.png')
-    background = pygame.image.load(backgrounds[0]).convert_alpha()
-    backgroundbox = background.get_rect()
-
-    # Next image and button
-    nextimage = pygame.image.load('green_button.png')
-    nextbutton = Button(810, 630, 120, 60, 'TUTORIAL')
-
-    # Skip image and button
-    skipimage = pygame.image.load('skip_button.png')
-    skipbutton = Button(810, 30, 120, 60, 'TUTORIAL')
-
-    j = 1
-    while 1:
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                sys.exit()
-            if event.type == pygame.MOUSEBUTTONUP:
-                mousePosition = pygame.mouse.get_pos()
-                if nextbutton.isClicked(mousePosition):
-                    if j<5:
-                        background = pygame.image.load(backgrounds[j]).convert_alpha()
-                        j += 1 
-                    else:
-                        return nextbutton.state
-                if skipbutton.isClicked(mousePosition):
-                    return skipbutton.state
-        screen.blit(background, backgroundbox)
-        screen.blit(nextimage, (810, 630))
-        screen.blit(skipimage, (810, 30))
-        clock.tick(30)
-        pygame.display.flip()
-
-# Cut scene - after the tutorial level and before the level selection screen
-def cutscene():
-    print("In cut scene")
-    background = pygame.image.load("blue_background1.png").convert_alpha()
-    backgroundbox = background.get_rect()
-
-    # Next image and button
-    nextimage = pygame.image.load('green_button.png')
-    nextbutton = Button(810, 630, 120, 60, 'SELECTLEVEL')
+    # Create sound object to store music
+    buttonMusic = pygame.mixer.Sound("optionselect2.wav")
 
     while 1:
         for event in pygame.event.get():
@@ -304,7 +254,9 @@ def cutscene():
             if event.type == pygame.MOUSEBUTTONUP:
                 mousePosition = pygame.mouse.get_pos()
                 if nextbutton.isClicked(mousePosition):
-                    return nextbutton.state
+                	channelOne.play(buttonMusic)
+                	sleep(0.1)
+                	return nextbutton.state
         screen.blit(background, backgroundbox)
         screen.blit(nextimage, (810, 630))
         clock.tick(30)
@@ -322,6 +274,9 @@ def win():
     continuebutton = Button(460, 340, 40, 40, 'CUTSCENE')
     buttons.append(continuebutton)
 
+    # Add Sound objects to store music
+    buttonMusic = pygame.mixer.Sound("optionselect2.wav")
+
     while 1:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -330,7 +285,10 @@ def win():
                 mousePosition = pygame.mouse.get_pos()
                 for button in buttons:
                     if button.isClicked(mousePosition):
-                        return button.state
+                    	channelOne.play(buttonMusic)
+                    	sleep(0.1)
+                    	return button.state
+
         screen.blit(background, backgroundbox)
         screen.blit(continueimage, (460, 340))
         clock.tick(30)
@@ -365,6 +323,9 @@ def selectlevel(lvls):
     nolevel3 = pygame.image.load("orange_block_40x40.png").convert_alpha()
     noimages.append(nolevel3)
 
+    # Sound objects to store music
+    buttonMusic = pygame.mixer.Sound("optionselect2.wav")
+
     while 1:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -374,7 +335,9 @@ def selectlevel(lvls):
                 seenbuttons = buttons[:lvls] # User can only click on what levels they have achieved
                 for button in seenbuttons:
                     if button.isClicked(mousePosition):
-                        return button.state
+                    	channelOne.play(buttonMusic)
+                    	sleep(0.1)
+                    	return button.state
         screen.blit(background, backgroundbox)
         for i in range(3):
             screen.blit(noimages[i], (400+(60*i), 340))

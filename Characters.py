@@ -28,8 +28,8 @@ class Person(pygame.sprite.Sprite):
 		self.gearCount = 0
 		# string holding what powerup the character is holding on to. choices: 'none', 'lighting rod', 'laser gun', 'cosmo'
 		self.heldPowerup = "none"
-		# boolean storing if powerup changed
-		self.powerup_change = False
+		# boolean tracks recent powerup changes
+		self.recentPowerupChange = False
 		# stores the life state of the player
 		self.isAlive = True
 		# stores if the player is alive
@@ -62,6 +62,9 @@ class Person(pygame.sprite.Sprite):
 		if not (left or right):
 			self.movex = 0
 
+		if powerup == False:
+			self.recentPowerupChange = False
+
 		# increments in the x direction
 		self.rect.left += self.movex
 		# handles collisions in the x direction
@@ -72,8 +75,6 @@ class Person(pygame.sprite.Sprite):
 		self.isOnGround = False
 		# handles collisions in the y direction
 		self.collide(0, self.movey, powerup, platforms)
-
-		self.powerupChange()
 		
 		# Scrolling screen: move everything a screen width to left or right
 		if self.rect.x <= 10 and level.screenCount > 1:
@@ -92,15 +93,20 @@ class Person(pygame.sprite.Sprite):
 			self.win = True
         
 	def powerupChange(self):
-		if self.powerup_change:
-			if self.heldPowerup == 'none':
-				self.image = pygame.image.load("tall_blue.png").convert_alpha()
-			if self.heldPowerup == 'lightning rod':
-				self.image = pygame.image.load("tall_yellow.png").convert_alpha()
-			if self.heldPowerup == 'laser gun':
-				self.image = pygame.image.load("tall_orange.png").convert_alpha()
-			self.powerup_change = False
+		if self.heldPowerup == 'none':
+			self.image = pygame.image.load("tall_blue.png").convert_alpha()
+		elif self.heldPowerup == 'lightning rod':
+			print("lighting rod image")
+			self.image = pygame.image.load("tall_yellow.png").convert_alpha()
+		elif self.heldPowerup == 'laser gun':
+			print("laser gun image")
+			self.image = pygame.image.load("tall_orange.png").convert_alpha()
 
+	def createNewPowerup(self, blockType, xpos, ypos):
+		if blockType == "lightning rod":
+			return LightningRod(xpos, ypos)
+		elif blockType == "laser gun":
+			return LaserGun(xpos, ypos)
 
 	def incrementGear(self):
 		if self.gearCount < 100:
@@ -110,18 +116,35 @@ class Person(pygame.sprite.Sprite):
 	def collide(self, dx, dy, powerup, platforms):
 		for block in platforms:
 			if pygame.sprite.collide_rect(self, block):
+				
 				if isinstance(block, LightningRod):
 					if powerup:
-						self.heldPowerup = "lightning rod"
-						self.powerup_change = True
-						platforms.remove(block)
+						if self.heldPowerup == 'none':
+							self.heldPowerup = "lightning rod"
+							self.powerupChange()
+							platforms.remove(block)
+						else:
+							if self.recentPowerupChange == False:
+								platforms.add(self.createNewPowerup(self.heldPowerup, block.rect.x, block.rect.y))
+								self.heldPowerup = "lightning rod"
+								self.powerupChange()
+								platforms.remove(block)
+								self.recentPowerupChange = True
 					return
 
 				if isinstance(block, LaserGun):
 					if powerup:
-						self.heldPowerup = "laser gun"
-						self.powerup_change = True
-						platforms.remove(block)
+						if self.heldPowerup == 'none':
+							self.heldPowerup = 'laser gun'
+							self.powerupChange()
+							platforms.remove(block)
+						else:
+							if self.recentPowerupChange == False:
+								platforms.add(self.createNewPowerup(self.heldPowerup, block.rect.x, block.rect.y))
+								self.heldPowerup = 'laser gun'
+								self.powerupChange()
+								platforms.remove(block)
+								self.recentPowerupChange = True
 					return
 
 				if isinstance(block, Gear):
@@ -130,6 +153,10 @@ class Person(pygame.sprite.Sprite):
 					return
 
 				if isinstance(block, Enemy):
+					self.isAlive = False
+					return
+
+				if isinstance(block, Spike):
 					self.isAlive = False
 					return
 

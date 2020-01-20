@@ -21,6 +21,14 @@ class Platform(pygame.sprite.Sprite):
     def update(self):
      	pass
 
+class Spike(pygame.sprite.Sprite):
+	def __init__(self, xpos, ypos):
+		pygame.sprite.Sprite.__init__(self)
+		self.image = pygame.image.load("SpikeFiller.png").convert_alpha()
+		self.rect = self.image.get_rect()
+		self.rect.x = xpos
+		self.rect.y = ypos
+
 class Powerup(pygame.sprite.Sprite):
     def __init__(self):
         pygame.sprite.Sprite.__init__(self)

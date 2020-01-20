@@ -87,6 +87,7 @@ class Level():
         floor_list = pygame.sprite.Group()
         if lvl == 0:
             print ("Level 0")
+            floor_list.add(Spike(180, 640))
             for i in range(32): # 2 screens of floor blocks
                 block = Platform("block1_60x60.png", i*60, 660)
                 floor_list.add(block)
