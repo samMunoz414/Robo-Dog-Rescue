@@ -21,9 +21,11 @@ class Person(pygame.sprite.Sprite):
 		# boolean storing if the character is on the ground
 		self.isOnGround = False
 		# stores player's image
-		self.image = pygame.image.load("tall_blue.png").convert_alpha()
+		self.image = pygame.image.load(image).convert_alpha()
 		# stores player's rect object
-		self.rect = pygame.Rect(xpos, ypos, 60, 90)
+		self.rect = self.image.get_rect()
+		self.rect.x = xpos
+		self.rect.y = ypos
 		# stores the number of gears the player has
 		self.gearCount = 0
 		# string holding what powerup the character is holding on to. choices: 'none', 'lighting rod', 'laser gun', 'cosmo'
