@@ -41,7 +41,7 @@ class LaserGun(Powerup):
     	pass
 
 # Poweup class: it's a powerup class
-class LightingRod(Powerup):
+class LightningRod(Powerup):
     def __init__(self, xpos, ypos):
         super().__init__()
         self.image = pygame.image.load("pink_block_40x40.png").convert()

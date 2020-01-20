@@ -5,6 +5,8 @@
 import sys
 import pygame
 import os
+
+from time import sleep
 from Levels import *
 from Characters import *
 from Blocks import *
@@ -38,10 +40,16 @@ def start():
     startbutton = Button(770, 640, 130, 30, 'PROLOGUE')
     buttons.append(startbutton)
 
-    # Music for start screen 
-    pygame.mixer.music.load('maintitletheme.mp3')
-    pygame.mixer.music.set_volume(0.5)
-    pygame.mixer.music.play(-1) # Infinite loop
+    # Create Sound objects to store music
+    mainMusic = pygame.mixer.Sound("maintitletheme.wav")
+    buttonMusic = pygame.mixer.Sound("optionselect2.wav")
+    woofwoof = pygame.mixer.Sound("woofwoof.wav")
+
+    # Balance volumes between the channels
+    channelOne.set_volume(0.2)
+
+    # Run music
+    channelOne.play(mainMusic, loops=-1)
 
     while 1:
         for event in pygame.event.get():
@@ -51,8 +59,16 @@ def start():
                 mousePosition = pygame.mouse.get_pos()
                 for button in buttons:
                     if button.isClicked(mousePosition):
-                        pygame.mixer.music.stop()
-                        return button.state
+                    	if button.state == 'CONTROLS':
+                    		channelTwo.play(buttonMusic)
+                    		sleep(0.5)
+                    	if button.state == 'PROLOGUE':
+                            channelTwo.play(woofwoof)
+                            sleep(0.5)
+                    	channelOne.stop()
+                    	channelTwo.stop()
+                    	channelOne.set_volume(1.0)
+                    	return button.state
         screen.blit(background, backgroundbox)
         clock.tick(30)
         pygame.display.flip()
@@ -80,75 +96,154 @@ def tutorial():
     # Skip image and button for corner of screen
     skipimage = pygame.image.load('skip_button.png')
     skipbutton = Button(810, 30, 120, 60, 'CUTSCENE')
-    
-    # # Music for tutorial level
-    pygame.mixer.music.load('song1.mp3')
-    
+
+    # Creates Soudn object to store music
+    music_theme = pygame.mixer.Sound("song1.wav")
+
     # create a level object
     level = Level()
-        
-    # Make a list of enemies
+
+    # Make a list platforms (enemies, floor, powerups, etc.)
     platform_list = Level.platform(0)
     platform_list.add(Level.floor(0))
     platform_list.add(Level.powerups(0))
     enemy_list = Level.enemy(0)
     platform_list.add(enemy_list)
-    
+
     # Spawn person and add input booleans
     grace = Person('tall_blue.png', 60, 570)
     person_list = pygame.sprite.Group()
     person_list.add(grace)
-    
+
     # booleans for input
-    up = down = left = right = False
+    up = down = left = right = powerup = False
+
+    # Start playing music
+    channelOne.play(music_theme, loops=-1)
 
     while 1:
-        
-        for event in pygame.event.get():
-            if event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_LEFT or event.key == ord('a'):
-                    print('left')
-                    left = True
-                if event.key == pygame.K_RIGHT or event.key == ord('d'):
-                    print('right')
-                    right = True
-                if event.key == pygame.K_UP or event.key == ord('w'):
-                    print('up')
-                    up = True
-        
-            if event.type == pygame.KEYUP:
-                if event.key == pygame.K_LEFT or event.key == ord('a'):
-                    print('left stop')
-                    left = False
-                if event.key == pygame.K_RIGHT or event.key == ord('d'):
-                    print('right stop')
-                    right = False
-                if event.key == pygame.K_UP or event.key == ord('w'):
-                    print('up stop')
-                    up = False
-                if event.key == ord('q'):
-                    print("Exiting Robo-Dog Rescue")
-                    pygame.quit()
-                    sys.exit()
+    	# run death sequence if player dies
+    	if not grace.isAlive:
+    		print("You lose")
+    		channelOne.stop()
+    		return 'START' # Change to lose screen later
 
-            if event.type == pygame.MOUSEBUTTONUP:
-                mousePosition = pygame.mouse.get_pos()
-                if skipbutton.isClicked(mousePosition):
-                    return skipbutton.state
-                
+    	for event in pygame.event.get():
+    		if event.type == pygame.KEYDOWN:
+    			if event.key == pygame.K_LEFT or event.key == ord('a'):
+    				print('left')
+    				left = True
+    			if event.key == pygame.K_RIGHT or event.key == ord('d'):
+    				print('right')
+    				right = True
+    			if event.key == pygame.K_UP or event.key == ord('w'):
+    				print('up')
+    				up = True
+    			if event.key == pygame.K_DOWN or event.key == ord('s'):
+    				print("collect powerup")
+    				powerup = True
+
+    		if event.type == pygame.KEYUP:
+    			if event.key == pygame.K_LEFT or event.key == ord('a'):
+    				print('left stop')
+    				left = False
+    			if event.key == pygame.K_RIGHT or event.key == ord('d'):
+    				print('right stop')
+    				right = False
+    			if event.key == pygame.K_UP or event.key == ord('w'):
+    				print('up stop')
+    				up = False
+    			if event.key == pygame.K_DOWN or event.key == ord('s'):
+    				print("stop collecting powerup")
+    				powerup = False
+
+    			if event.key == ord('q'):
+    				print("Exiting Robo-Dog Rescue")
+    				pygame.quit()
+    				sys.exit()
+
+    		if event.type == pygame.MOUSEBUTTONUP:
+    			mousePosition = pygame.mouse.get_pos()
+    			if skipbutton.isClicked(mousePosition):
+    				channelOne.stop() # Stop the music
+    				return skipbutton.state
+
+    		if event.type == pygame.QUIT:
+    			sys.exit()
+
+    	screen.blit(background, backgroundbox) # Add background to screen
+    	screen.blit(skipimage, (810, 30))
+    	grace.update(up, down, left, right, powerup, level, platform_list)
+    	if grace.win == True:
+    		channelOne.stop() # Stop the music
+    		return 'WIN'
+    	person_list.draw(screen)
+    	platform_list.draw(screen)
+    	for enemy in enemy_list:
+    		enemy.move()
+    	clock.tick(30)
+    	pygame.display.flip()
+
+# Game loop for the prologue - goes through 5 screens with arrow button, can skip with skip button
+def prologue():
+    print('Prologue Screen')
+
+    # Backgrounds for prologue
+    backgrounds = [] # Put the backgrounds in a list
+    for i in range(5):
+        backgrounds.append('blue_background'+ str(i+1) + '.png')
+    background = pygame.image.load(backgrounds[0]).convert_alpha()
+    backgroundbox = background.get_rect()
+
+    # Next image and button
+    nextimage = pygame.image.load('green_button.png')
+    nextbutton = Button(810, 630, 120, 60, 'TUTORIAL')
+
+    # Skip image and button
+    skipimage = pygame.image.load('skip_button.png')
+    skipbutton = Button(810, 30, 120, 60, 'TUTORIAL')
+
+    j = 1
+    while 1:
+        for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 sys.exit()
-                        
-        screen.blit(background, backgroundbox) # Add background to screen
+            if event.type == pygame.MOUSEBUTTONUP:
+                mousePosition = pygame.mouse.get_pos()
+                if nextbutton.isClicked(mousePosition):
+                    if j<5:
+                        background = pygame.image.load(backgrounds[j]).convert_alpha()
+                        j += 1 
+                    else:
+                        return nextbutton.state
+                if skipbutton.isClicked(mousePosition):
+                    return skipbutton.state
+        screen.blit(background, backgroundbox)
+        screen.blit(nextimage, (810, 630))
         screen.blit(skipimage, (810, 30))
-        grace.update(up, down, left, right, level, platform_list)
-        if grace.win == True:
-            return 'WIN'
-        person_list.draw(screen)
-        platform_list.draw(screen)
-        # powerups_list.draw(screen)
-        for enemy in enemy_list:
-            enemy.move()
+        clock.tick(30)
+        pygame.display.flip()
+
+# Cut scene - after the tutorial level and before the level selection screen
+def cutscene():
+    print("In cut scene")
+    background = pygame.image.load("blue_background1.png").convert_alpha()
+    backgroundbox = background.get_rect()
+
+    # Next image and button
+    nextimage = pygame.image.load('green_button.png')
+    nextbutton = Button(810, 630, 120, 60, 'SELECTLEVEL')
+
+    while 1:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                sys.exit()
+            if event.type == pygame.MOUSEBUTTONUP:
+                mousePosition = pygame.mouse.get_pos()
+                if nextbutton.isClicked(mousePosition):
+                    return nextbutton.state
+        screen.blit(background, backgroundbox)
+        screen.blit(nextimage, (810, 630))
         clock.tick(30)
         pygame.display.flip()
 
@@ -294,15 +389,77 @@ def levelone():
     background = pygame.image.load("background.png").convert_alpha()
     backgroundbox = background.get_rect()
 
+    # Create a level object
+    level = Level()
+    level.setTotalScreenCount(4) # Set number of screen
+
+    # Make a list of platforms (floor, powerup, enemies, etc.)
+    platform_list = Level.platform(1)
+    platform_list.add(Level.floor(1))
+    platform_list.add(Level.powerups(1))
+    enemy_list = Level.enemy(1)
+    platform_list.add(enemy_list)
+
+    # Spawn person and add input booleans
+    grace = Person('tall_blue.png', 60, 570)
+    person_list = pygame.sprite.Group()
+    person_list.add(grace)
+
+    # booleans for input
+    up = down = left = right = powerup = False
+
     while 1:
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                sys.exit()
-        screen.blit(background, backgroundbox)
-        clock.tick(30)
-        pygame.display.flip()
+    	# run death sequence if player dies
+    	if not grace.isAlive:
+    		print("You lose")
+    		channelOne.stop()
+    		return 'START', 1
 
+    	for event in pygame.event.get():
+    		if event.type == pygame.QUIT:
+    			sys.exit()
+    		if event.type == pygame.KEYDOWN:
+    			if event.key == pygame.K_LEFT or event.key == ord('a'):
+    				print('left')
+    				left = True
+    			if event.key == pygame.K_RIGHT or event.key == ord('d'):
+    				print('right')
+    				right = True
+    			if event.key == pygame.K_UP or event.key == ord('w'):
+    				print('up')
+    				up = True
+    			if event.key == pygame.K_DOWN or event.key == ord('s'):
+    				print("collect powerup")
+    				powerup = True
 
+    		if event.type == pygame.KEYUP:
+    			if event.key == pygame.K_LEFT or event.key == ord('a'):
+    				print('left stop')
+    				left = False
+    			if event.key == pygame.K_RIGHT or event.key == ord('d'):
+    				print('right stop')
+    				right = False
+    			if event.key == pygame.K_UP or event.key == ord('w'):
+    				print('up stop')
+    				up = False
+    			if event.key == pygame.K_DOWN or event.key == ord('s'):
+    				print("collect powerup")
+    				powerup = False
+    			if event.key == ord('q'):
+    				print("Exiting Robo-Dog Rescue")
+    				pygame.quit()
+    				sys.exit()
+
+    	screen.blit(background, backgroundbox)
+    	grace.update(up, down, left, right, powerup, level, platform_list)
+    	if grace.win == True:
+    		return 'WIN', 2
+    	person_list.draw(screen)
+    	platform_list.draw(screen)
+    	for enemy in enemy_list:
+    		enemy.move()
+    	clock.tick(30)
+    	pygame.display.flip()
         
 #################### Create Content #######################
 
@@ -321,6 +478,10 @@ pygame.display.set_caption('Robo-Dog Rescue')
 # Clock
 clock = pygame.time.Clock()
 
+# Creating channels to play music
+channelOne = pygame.mixer.Channel(0)
+channelTwo = pygame.mixer.Channel(1)
+
 while running:
     print(state)
     if state == 'START':
@@ -336,7 +497,7 @@ while running:
     if state == 'LOSE':
         pass
     if state == 'LEVEL1':
-        levelone()
+        state, lvls = levelone()
     if state == 'LEVEL2':
         pass
     if state == 'LEVEL3':
