@@ -421,64 +421,68 @@ def levelone():
     channelTwo.set_volume(0.1)
 
     while 1:
-    	# run death sequence if player dies
-    	if not grace.isAlive:
-    		print("You lose")
-    		channelOne.stop()
-    		return 'LOSE', 1
+        # run death sequence if player dies
+        if not grace.isAlive:
+            print("You lose")
+            channelOne.stop()
+            return 'LOSE', 1
 
-    	for event in pygame.event.get():
-    		if event.type == pygame.QUIT:
-    			sys.exit()
-    		if event.type == pygame.KEYDOWN:
-    			if event.key == pygame.K_LEFT or event.key == ord('a'):
-    				print('left')
-    				left = True
-    			if event.key == pygame.K_RIGHT or event.key == ord('d'):
-    				print('right')
-    				right = True
-    			if event.key == pygame.K_UP or event.key == ord('w'):
-    				print('up')
-    				up = True
-    			if event.key == pygame.K_DOWN or event.key == ord('s'):
-    				print("collect powerup")
-    				powerup = True
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                sys.exit()
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_LEFT or event.key == ord('a'):
+                    print('left')
+                    left = True
+                if event.key == pygame.K_RIGHT or event.key == ord('d'):
+                    print('right')
+                    right = True
+                if event.key == pygame.K_UP or event.key == ord('w'):
+                    print('up')
+                    up = True
+                if event.key == pygame.K_DOWN or event.key == ord('s'):
+                    print("collect powerup")
+                    powerup = True
 
-    		if event.type == pygame.KEYUP:
-    			if event.key == pygame.K_LEFT or event.key == ord('a'):
-    				print('left stop')
-    				left = False
-    			if event.key == pygame.K_RIGHT or event.key == ord('d'):
-    				print('right stop')
-    				right = False
-    			if event.key == pygame.K_UP or event.key == ord('w'):
-    				print('up stop')
-    				up = False
-    			if event.key == pygame.K_DOWN or event.key == ord('s'):
-    				print("collect powerup")
-    				powerup = False
-    			if event.key == ord('q'):
-    				print("Exiting Robo-Dog Rescue")
-    				pygame.quit()
-    				sys.exit()
+            if event.type == pygame.KEYUP:
+                if event.key == pygame.K_LEFT or event.key == ord('a'):
+                    print('left stop')
+                    left = False
+                if event.key == pygame.K_RIGHT or event.key == ord('d'):
+                    print('right stop')
+                    right = False
+                if event.key == pygame.K_UP or event.key == ord('w'):
+                    print('up stop')
+                    up = False
+                if event.key == pygame.K_DOWN or event.key == ord('s'):
+                    print("collect powerup")
+                    powerup = False
+                if event.key == ord('q'):
+                    print("Exiting Robo-Dog Rescue")
+                    pygame.quit()
+                    sys.exit()
 
-    	screen.blit(background, backgroundbox)
-    	grace.update(up, down, left, right, powerup, level, platform_list, channelTwo, jumpMusic)
-    	if grace.win == True:
-    		return 'WIN', 2
-    	person_list.draw(screen)
-    	platform_list.draw(screen)
-    	for enemy in enemy_list:
-    		enemy.move()
-    	clock.tick(30)
-    	pygame.display.flip()
+        screen.blit(background, backgroundbox)
+        displayGearCount = font.render("Gears: " + str(grace.gearCount), True, (0, 0, 0) )
+        displayPowerup = font.render("Powerup: " + str(grace.heldPowerup), True, (0, 0, 0) )
+        screen.blit(displayGearCount, (10 ,10))
+        screen.blit(displayPowerup, (10, 50) )
+        grace.update(up, down, left, right, powerup, level, platform_list, channelTwo, jumpMusic)
+        if grace.win == True:
+        	return 'WIN', 2
+        person_list.draw(screen)
+        platform_list.draw(screen)
+        for enemy in enemy_list:
+        	enemy.move()
+        clock.tick(30)
+        pygame.display.flip()
         
 #################### Create Content #######################
 
 # Fields needed for running program
 running = True
-state = 'START'
-# state = 'LEVEL1'
+# state = 'START'
+state = 'LEVEL1'
 lvls = 1
 
 # Create a screen (width, height)

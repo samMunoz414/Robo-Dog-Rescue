@@ -114,7 +114,7 @@ class Person(pygame.sprite.Sprite):
 			for p in platforms:
 				p.rect.x = p.rect.x + 960
 			print("screen count: " + str(level.screenCount))
-		if self.rect.x >= 900 and level.screenCount < level.totalScreenCount:
+		if self.rect.x >= 920 and level.screenCount < level.totalScreenCount:
 			level.incrementScreenCount()
 			self.rect.x = 30
 			for p in platforms:
