@@ -90,7 +90,7 @@ def controls():
 # Game loop for tutorial
 def tutorial():
     print('In level one function')
-    background = pygame.image.load("tempbackground.png").convert_alpha()
+    background = pygame.image.load("title.png").convert_alpha()
     backgroundbox = background.get_rect()
 
     # Skip image and button for corner of screen
@@ -347,7 +347,7 @@ def lose():
 # Allow the user to select what level they are on
 def selectlevel(lvls):
     print("In select level screen")
-    background = pygame.image.load("levelscreen.png").convert_alpha()
+    background = pygame.image.load("selectscreen.png").convert_alpha()
     backgroundbox = background.get_rect()
 
     # List of buttons
@@ -361,7 +361,7 @@ def selectlevel(lvls):
     yesimages = []
     noimages = []
     for i in range(3):
-        yesimage = pygame.image.load("green" + str(i+1) + ".png").convert_alpha()
+        yesimage = pygame.image.load("unlocked" + str(i+1) + ".png").convert_alpha()
         yesimages.append(yesimage)
         noimage = pygame.image.load("red" + str(i+1) + ".png").convert_alpha()
         noimages.append(noimage)
@@ -394,7 +394,7 @@ def selectlevel(lvls):
 # Level one of the game
 def levelone():
     print("In level one")
-    background = pygame.image.load("tempbackground.png").convert_alpha()
+    background = pygame.image.load("title.png").convert_alpha()
     backgroundbox = background.get_rect()
 
     # Create a level object
