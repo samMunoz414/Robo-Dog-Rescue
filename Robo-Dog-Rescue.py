@@ -122,6 +122,7 @@ def tutorial():
 
     # Creates font to display information
     font = pygame.font.SysFont("Times New Roman", 32)
+    smallfont = pygame.font.SysFont("Times New Roman", 26)
 
     # Start playing music
     channelOne.set_volume(0.2)
@@ -182,8 +183,8 @@ def tutorial():
 
     	screen.blit(background, backgroundbox) # Add background to screen
     	screen.blit(skipimage, (860, 10))
-    	displayGearCount = font.render("Gears: " + str(grace.gearCount), True, (0, 0, 0) )
-    	displayPowerup = font.render("Powerup: " + str(grace.heldPowerup), True, (0, 0, 0) )
+    	displayGearCount = font.render("Gears: " + str(grace.gearCount), True, (255, 255, 255) )
+    	displayPowerup = smallfont.render("Powerup: " + str(grace.heldPowerup), True, (255, 255, 255) )
     	screen.blit(displayGearCount, (10 ,10))
     	screen.blit(displayPowerup, (10, 50) )
     	grace.update(up, down, left, right, powerup, level, platform_list, channelTwo, jumpMusic)
@@ -240,9 +241,14 @@ def prologue():
     skipbutton = Button(860, 10, 90, 60, 'TUTORIAL')
 
     # Create sound objects to store music
+    backgroundMusic = pygame.mixer.Sound("Varun - RoboDog Rescue 135 No Rythm.wav")
     buttonMusic = pygame.mixer.Sound("optionselect2.wav")
     glassBreaking = pygame.mixer.Sound("glassbreak.wav")
 
+    channelOne.set_volume(0.2)
+    channelTwo.set_volume(1.0)
+
+    channelOne.play(backgroundMusic, loops=-1)
     j = 1
     while 1:
         for event in pygame.event.get():
@@ -251,19 +257,22 @@ def prologue():
             if event.type == pygame.MOUSEBUTTONUP:
                 mousePosition = pygame.mouse.get_pos()
                 if nextbutton.isClicked(mousePosition):
-                	channelOne.play(buttonMusic)
-                	sleep(0.1)
-                	if j<4:
-                		background = pygame.image.load(backgrounds[j]).convert_alpha()
-                		if j == 2:
-                			channelOne.play(glassBreaking)
-                		j += 1 
-                	else:
-                		return nextbutton.state
+                    channelTwo.play(buttonMusic)
+                    sleep(0.1)
+                    if j<4:
+                        background = pygame.image.load(backgrounds[j]).convert_alpha()
+                        if j == 2:
+                            channelTwo.set_volume(0.2)
+                            channelTwo.play(glassBreaking)
+                        if j == 3:
+                            channelTwo.set_volume(1.0)
+                        j += 1 
+                    else:
+                        return nextbutton.state
                 if skipbutton.isClicked(mousePosition):
-                	channelOne.play(buttonMusic)
-                	sleep(0.1)
-                	return skipbutton.state
+                    channelTwo.play(buttonMusic)
+                    sleep(0.1)
+                    return skipbutton.state
         screen.blit(background, backgroundbox)
         screen.blit(nextimage, (860, 650))
         screen.blit(skipimage, (860, 10))
@@ -397,6 +406,7 @@ def levelone():
 
     # Creates font to display information
     font = pygame.font.SysFont("Times New Roman", 32)
+    smallfont = pygame.font.SysFont("Times New Roman", 26)
 
     # Create sound objects
     jumpMusic = pygame.mixer.Sound("jump.wav")
@@ -421,57 +431,61 @@ def levelone():
     channelTwo.set_volume(0.1)
 
     while 1:
-    	# run death sequence if player dies
-    	if not grace.isAlive:
-    		print("You lose")
-    		channelOne.stop()
-    		return 'LOSE', 1
+        # run death sequence if player dies
+        if not grace.isAlive:
+            print("You lose")
+            channelOne.stop()
+            return 'LOSE', 1
 
-    	for event in pygame.event.get():
-    		if event.type == pygame.QUIT:
-    			sys.exit()
-    		if event.type == pygame.KEYDOWN:
-    			if event.key == pygame.K_LEFT or event.key == ord('a'):
-    				print('left')
-    				left = True
-    			if event.key == pygame.K_RIGHT or event.key == ord('d'):
-    				print('right')
-    				right = True
-    			if event.key == pygame.K_UP or event.key == ord('w'):
-    				print('up')
-    				up = True
-    			if event.key == pygame.K_DOWN or event.key == ord('s'):
-    				print("collect powerup")
-    				powerup = True
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                sys.exit()
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_LEFT or event.key == ord('a'):
+                    print('left')
+                    left = True
+                if event.key == pygame.K_RIGHT or event.key == ord('d'):
+                    print('right')
+                    right = True
+                if event.key == pygame.K_UP or event.key == ord('w'):
+                    print('up')
+                    up = True
+                if event.key == pygame.K_DOWN or event.key == ord('s'):
+                    print("collect powerup")
+                    powerup = True
 
-    		if event.type == pygame.KEYUP:
-    			if event.key == pygame.K_LEFT or event.key == ord('a'):
-    				print('left stop')
-    				left = False
-    			if event.key == pygame.K_RIGHT or event.key == ord('d'):
-    				print('right stop')
-    				right = False
-    			if event.key == pygame.K_UP or event.key == ord('w'):
-    				print('up stop')
-    				up = False
-    			if event.key == pygame.K_DOWN or event.key == ord('s'):
-    				print("collect powerup")
-    				powerup = False
-    			if event.key == ord('q'):
-    				print("Exiting Robo-Dog Rescue")
-    				pygame.quit()
-    				sys.exit()
+            if event.type == pygame.KEYUP:
+                if event.key == pygame.K_LEFT or event.key == ord('a'):
+                    print('left stop')
+                    left = False
+                if event.key == pygame.K_RIGHT or event.key == ord('d'):
+                    print('right stop')
+                    right = False
+                if event.key == pygame.K_UP or event.key == ord('w'):
+                    print('up stop')
+                    up = False
+                if event.key == pygame.K_DOWN or event.key == ord('s'):
+                    print("collect powerup")
+                    powerup = False
+                if event.key == ord('q'):
+                    print("Exiting Robo-Dog Rescue")
+                    pygame.quit()
+                    sys.exit()
 
-    	screen.blit(background, backgroundbox)
-    	grace.update(up, down, left, right, powerup, level, platform_list, channelTwo, jumpMusic)
-    	if grace.win == True:
-    		return 'WIN', 2
-    	person_list.draw(screen)
-    	platform_list.draw(screen)
-    	for enemy in enemy_list:
-    		enemy.move()
-    	clock.tick(30)
-    	pygame.display.flip()
+        screen.blit(background, backgroundbox)
+        displayGearCount = font.render("Gears: " + str(grace.gearCount), True, (255, 255, 255) )
+        displayPowerup = smallfont.render("Powerup: " + str(grace.heldPowerup), True, (255, 255, 255) )
+        screen.blit(displayGearCount, (10 ,10))
+        screen.blit(displayPowerup, (10, 50) )
+        grace.update(up, down, left, right, powerup, level, platform_list, channelTwo, jumpMusic)
+        if grace.win == True:
+        	return 'WIN', 2
+        person_list.draw(screen)
+        platform_list.draw(screen)
+        for enemy in enemy_list:
+        	enemy.move()
+        clock.tick(30)
+        pygame.display.flip()
         
 #################### Create Content #######################
 
