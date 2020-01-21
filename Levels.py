@@ -35,13 +35,13 @@ class Level():
     def enemy(lvl):
         enemy_list = pygame.sprite.Group() # Create enemy group
         if lvl == 0:
-            print("Level 0")
+            # First screen
             enemy_list.add(Enemy('tall_red.png', 500, 570))
+            # Second screen
             enemy_list.add(Enemy('tall_red.png', 1350, 210))
             enemy_list.add(Enemy('tall_red.png', 1600, 570))
             
         if lvl == 1:
-            print("Level 1")
             # First screen
             enemy_list.add(Enemy('tall_red.png', 680, 570))
             enemy_list.add(Enemy('tall_red.png', 560, 30))
@@ -55,19 +55,23 @@ class Level():
             enemy_list.add(Enemy('tall_red.png', 3350, 570))
             enemy_list.add(Enemy('tall_red.png', 3200, 30))
             enemy_list.add(Enemy('tall_red.png', 2950, 210))
+
+        if lvl == 2:
+            # First screen
+            enemy_list.add(Enemy('tall_red.png', 560, 570))
+            enemy_list.add(Enemy('tall_red.png', 310, 390))
             
         return enemy_list
     
     def powerups(lvl):
         powerups_list = pygame.sprite.Group()
         if lvl == 0:
-            print("Level 0")
             for i in range(3):
                 powerups_list.add(Gear(((i+24)*60)+10, 70))
             powerups_list.add(LightningRod(1090, 430))
             powerups_list.add(LaserGun(430, 250))
+
         if lvl == 1:
-            print("Level 1")
             # First screen
             for i in range(4):
                 powerups_list.add(Gear(((i+3)*60)+10, 430))
@@ -105,6 +109,18 @@ class Level():
             for i in range(2):
                 powerups_list.add(Gear(((i+52)*60)+10, 70))
                 powerups_list.add(Gear(((i+49)*60)+10, 250))
+        if lvl == 2:
+            # First screen
+            for i in range(3):
+                powerups_list.add(Gear(((i+2)*60)+10, 610))
+                powerups_list.add(Gear(((i+11)*60)+10, 430))
+            for i in range(2):
+                powerups_list.add(Gear(((i+6)*60)+10, 610))
+                powerups_list.add(Gear(((i+4)*60)+10, 430))
+                powerups_list.add(Gear(((i+6)*60)+10, 250))
+                powerups_list.add(Gear(((i+4)*60)+10, 70))
+                powerups_list.add(Gear(((i+10)*60)+10, 250))
+            powerups_list.add(LaserGun(190,70))
 
         return powerups_list
 
@@ -112,13 +128,12 @@ class Level():
     def floor(lvl):
         floor_list = pygame.sprite.Group()
         if lvl == 0:
-            print ("Level 0")
             for i in range(32): # 2 screens of floor blocks
                 floor_list.add(Platform("block1_60x60.png", i*60, 660))
-        if lvl == 1:
-            print ("Level 1")
-            # Floor for all screens
-            for i in range(96): # 6 screens of floor blocks
+
+        if lvl == 1 or lvl == 2 or lvl == 3:
+            # Used for levels 1, 2 and 3
+            for i in range(64): # 4 screens of floor blocks
                 floor_list.add(Platform("block1_60x60.png", i*60, 660))
         return floor_list
     
@@ -126,8 +141,8 @@ class Level():
     def platform(lvl):
         platform_list = pygame.sprite.Group()
         if lvl == 0:
-            print ("Level 0")
-            for i in range(32): # Ceiling blocks
+            # Ceiling blocks
+            for i in range(32):
                 platform_list.add(Platform("tempblock.png", i*60, -60))
             platform_list.add(Spike(180, 640))
             # First screen
@@ -144,17 +159,20 @@ class Level():
                 platform_list.add(Platform("tempblock.png", (i+17)*60, 480))
             for i in range(3):
                 platform_list.add(Platform("tempblock.png", (i+24)*60, 120))
-            # Block off beginning and end of game
-            for i in range(12):
-                platform_list.add(Platform("tempblock.png", -60, i*60))
+            # Block off beginning of game
             for i in range(12):
                 platform_list.add(Platform("tempblock.png", -60, i*60))
             
-        if lvl == 1:
-            print ("Level 1")
+        if lvl == 1 or lvl == 2 or lvl == 3:
             # Ceiling blocks
-            for i in range(96):
+            for i in range(64):
                 platform_list.add(Platform("tempblock.png", i*60, -60))
+            # Block off beginning of game
+            for i in range(12):
+                platform_list.add(Platform("tempblock.png", -60, i*60))
+
+        if lvl == 1:
+            # Spikes
             platform_list.add(Spike(2100, 460))
             platform_list.add(Spike(3120, 640))
             # First screen
@@ -191,8 +209,24 @@ class Level():
                 platform_list.add(Platform("tempblock.png", (i+56)*60, 300))
             for i in range(4):
                 platform_list.add(Platform("tempblock.png", (i+59)*60, 480))
-            # Block off beginning and end of game
-            for i in range(12):
-                platform_list.add(Platform("tempblock.png", -60, i*60))
+
+        if lvl == 2:
+            # Spikes
+            platform_list.add(Spike(300, 640))
+            platform_list.add(Spike(840, 460))
+            # First screen
+            for i in range(5):
+                platform_list.add(Platform("tempblock.png", (i+4)*60, 480))
+            for i in range(4):
+                platform_list.add(Platform("tempblock.png", (i+11)*60, 480))
+            for i in range(2):
+                platform_list.add(Platform("tempblock.png", (i+6)*60, 300))
+                platform_list.add(Platform("tempblock.png", (i+10)*60, 300))
+            for i in range(3):
+                platform_list.add(Platform("tempblock.png", (i+3)*60, 120))
+
+        if lvl == 3:
+            pass
+            # First screen
             
         return platform_list

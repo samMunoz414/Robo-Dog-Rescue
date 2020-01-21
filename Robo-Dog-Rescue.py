@@ -394,15 +394,16 @@ def selectlevel(lvls):
         clock.tick(30)
         pygame.display.flip()
 
-# Level one of the game
-def levelone():
-    print("In level one")
+# Levels of the game
+def level(level, music):
+    lvl = level
+    print("In level " + str(lvl))
     background = pygame.image.load("title.png").convert_alpha()
     backgroundbox = background.get_rect()
 
     # Create a level object
     level = Level()
-    level.setTotalScreenCount(6) # Set number of screen
+    level.setTotalScreenCount(4) # Set number of screen
 
     # Creates font to display information
     font = pygame.font.SysFont("Times New Roman", 32)
@@ -410,13 +411,13 @@ def levelone():
 
     # Create sound objects
     jumpMusic = pygame.mixer.Sound("jump.wav")
-    levelmusic = pygame.mixer.Sound('songs1and2.wav')
+    levelmusic = pygame.mixer.Sound(music)
 
     # Make a list of platforms (floor, powerup, enemies, etc.)
-    platform_list = Level.platform(1)
-    platform_list.add(Level.floor(1))
-    platform_list.add(Level.powerups(1))
-    enemy_list = Level.enemy(1)
+    platform_list = Level.platform(lvl)
+    platform_list.add(Level.floor(lvl))
+    platform_list.add(Level.powerups(lvl))
+    enemy_list = Level.enemy(lvl)
     platform_list.add(enemy_list)
 
     # Spawn person and add input booleans
@@ -437,7 +438,7 @@ def levelone():
         if not grace.isAlive:
             print("You lose")
             channelOne.stop()
-            return 'LOSE', 1
+            return 'LOSE', lvl
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -481,7 +482,7 @@ def levelone():
         screen.blit(displayPowerup, (10, 50) )
         grace.update(up, down, left, right, powerup, level, platform_list, channelTwo, jumpMusic)
         if grace.win == True:
-        	return 'WIN', 2
+        	return 'WIN', lvl+1
         person_list.draw(screen)
         platform_list.draw(screen)
         for enemy in enemy_list:
@@ -493,8 +494,9 @@ def levelone():
 
 # Fields needed for running program
 running = True
-state = 'START'
+# state = 'START'
 # state = 'LEVEL1'
+state = 'LEVEL2'
 lvls = 1
 
 # Create a screen (width, height)
@@ -525,11 +527,11 @@ while running:
     if state == 'LOSE':
         state = lose()
     if state == 'LEVEL1':
-        state, lvls = levelone()
+        state, lvls = level(1, 'songs1and2.wav')
     if state == 'LEVEL2':
-        pass
+        state, lvls = level(2, 'songs1and2.wav')
     if state == 'LEVEL3':
-        pass
+        state, lvls = level(3, 'songs1and2.wav')
     if state == 'CONTROLS':
         controls()
     if state == 'SELECTLEVEL':
