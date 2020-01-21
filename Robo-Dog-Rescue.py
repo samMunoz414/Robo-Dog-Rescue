@@ -410,6 +410,7 @@ def levelone():
 
     # Create sound objects
     jumpMusic = pygame.mixer.Sound("jump.wav")
+    levelmusic = pygame.mixer.Sound('songs1and2.wav')
 
     # Make a list of platforms (floor, powerup, enemies, etc.)
     platform_list = Level.platform(1)
@@ -429,6 +430,7 @@ def levelone():
     # balance channel volumes
     channelOne.set_volume(0.2)
     channelTwo.set_volume(0.1)
+    channelOne.play(levelmusic, loops=-1)
 
     while 1:
         # run death sequence if player dies
