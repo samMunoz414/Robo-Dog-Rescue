@@ -246,7 +246,7 @@ def prologue():
     glassBreaking = pygame.mixer.Sound("glassbreak.wav")
 
     channelOne.set_volume(0.2)
-    channelTwo.set_volume(0.2)
+    channelTwo.set_volume(1.0)
 
     channelOne.play(backgroundMusic, loops=-1)
     j = 1
@@ -257,19 +257,22 @@ def prologue():
             if event.type == pygame.MOUSEBUTTONUP:
                 mousePosition = pygame.mouse.get_pos()
                 if nextbutton.isClicked(mousePosition):
-                	channelTwo.play(buttonMusic)
-                	sleep(0.1)
-                	if j<4:
-                		background = pygame.image.load(backgrounds[j]).convert_alpha()
-                		if j == 2:
-                			channelTwo.play(glassBreaking)
-                		j += 1 
-                	else:
-                		return nextbutton.state
+                    channelTwo.play(buttonMusic)
+                    sleep(0.1)
+                    if j<4:
+                        background = pygame.image.load(backgrounds[j]).convert_alpha()
+                        if j == 2:
+                            channelTwo.set_volume(0.2)
+                            channelTwo.play(glassBreaking)
+                        if j == 3:
+                            channelTwo.set_volume(1.0)
+                        j += 1 
+                    else:
+                        return nextbutton.state
                 if skipbutton.isClicked(mousePosition):
-                	channelTwo.play(buttonMusic)
-                	sleep(0.1)
-                	return skipbutton.state
+                    channelTwo.play(buttonMusic)
+                    sleep(0.1)
+                    return skipbutton.state
         screen.blit(background, backgroundbox)
         screen.blit(nextimage, (860, 650))
         screen.blit(skipimage, (860, 10))
