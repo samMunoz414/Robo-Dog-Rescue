@@ -226,7 +226,7 @@ def prologue():
 
     # Backgrounds for prologue
     backgrounds = [] # Put the backgrounds in a list
-    for i in range(5):
+    for i in range(4):
         backgrounds.append('panel'+ str(i+1) + '.png')
     background = pygame.image.load(backgrounds[0]).convert_alpha()
     backgroundbox = background.get_rect()
@@ -253,7 +253,7 @@ def prologue():
                 if nextbutton.isClicked(mousePosition):
                 	channelOne.play(buttonMusic)
                 	sleep(0.1)
-                	if j<5:
+                	if j<4:
                 		background = pygame.image.load(backgrounds[j]).convert_alpha()
                 		if j == 2:
                 			channelOne.play(glassBreaking)
@@ -477,8 +477,8 @@ def levelone():
 
 # Fields needed for running program
 running = True
-# state = 'START'
 state = 'START'
+# state = 'LEVEL1'
 lvls = 1
 
 # Create a screen (width, height)

@@ -120,7 +120,11 @@ class Person(pygame.sprite.Sprite):
 			for p in platforms:
 				p.rect.x = p.rect.x - 960
 			print("screen count: " + str(level.screenCount))
+# <<<<<<< HEAD
 		if self.rect.x >= 920 and level.screenCount == level.totalScreenCount:
+# =======
+		# if self.rect.x >= 850 and level.screenCount == level.totalScreenCount:
+# >>>>>>> 88600c2cbb76999c6aa546663afc58e31bc47e5e
 			self.win = True
         
 	def powerupChange(self):

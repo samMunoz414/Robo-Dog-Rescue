@@ -24,7 +24,7 @@ class Platform(pygame.sprite.Sprite):
 class Spike(pygame.sprite.Sprite):
 	def __init__(self, xpos, ypos):
 		pygame.sprite.Sprite.__init__(self)
-		self.image = pygame.image.load("SpikeFiller.png").convert_alpha()
+		self.image = pygame.image.load("spikeFiller.png").convert_alpha()
 		self.rect = self.image.get_rect()
 		self.rect.x = xpos
 		self.rect.y = ypos
@@ -38,7 +38,7 @@ class Powerup(pygame.sprite.Sprite):
 class LaserGun(Powerup):
     def __init__(self, xpos, ypos):
         super().__init__()
-        self.image = pygame.image.load("orange_block_40x40.png").convert()
+        self.image = pygame.image.load("powerupGreen.png").convert()
         self.image.convert_alpha()
         self.rect = self.image.get_rect()
         self.rect.x = xpos
@@ -52,7 +52,7 @@ class LaserGun(Powerup):
 class LightningRod(Powerup):
     def __init__(self, xpos, ypos):
         super().__init__()
-        self.image = pygame.image.load("pink_block_40x40.png").convert()
+        self.image = pygame.image.load("powerupBlue.png").convert()
         self.image.convert_alpha()
         self.rect = self.image.get_rect()
         self.rect.x = xpos
@@ -66,7 +66,7 @@ class LightningRod(Powerup):
 class Gear(Powerup):
     def __init__(self, xpos, ypos):
         super().__init__()
-        self.image = pygame.image.load("block4_40x40.png").convert()
+        self.image = pygame.image.load("coin.png").convert()
         self.image.convert_alpha()
         self.rect = self.image.get_rect()
         self.rect.x = xpos
@@ -80,7 +80,7 @@ class Gear(Powerup):
 class Cosmo(Powerup):
     def __init__(self, xpos, ypos):
         super().__init__()
-        self.image = pygame.image.load("block4_40x40.png").convert()
+        self.image = pygame.image.load("powerupRed.png").convert()
         self.image.convert_alpha()
         self.rect = self.image.get_rect()
         self.rect.x = xpos
