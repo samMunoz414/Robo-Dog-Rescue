@@ -494,9 +494,9 @@ def level(level, music):
 
 # Fields needed for running program
 running = True
-# state = 'START'
+state = 'START'
 # state = 'LEVEL1'
-state = 'LEVEL2'
+# state = 'LEVEL2'
 lvls = 1
 
 # Create a screen (width, height)
