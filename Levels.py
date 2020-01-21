@@ -128,71 +128,71 @@ class Level():
         if lvl == 0:
             print ("Level 0")
             for i in range(32): # Ceiling blocks
-                platform_list.add(Platform("block1_60x60.png", i*60, -60))
+                platform_list.add(Platform("tempblock.png", i*60, -60))
             platform_list.add(Spike(180, 640))
             # First screen
             for i in range(3):
-                platform_list.add(Platform("block1_60x60.png", (i+3)*60, 480))
+                platform_list.add(Platform("tempblock.png", (i+3)*60, 480))
             for i in range(3):
-                platform_list.add(Platform("block1_60x60.png", (i+6)*60, 300))
+                platform_list.add(Platform("tempblock.png", (i+6)*60, 300))
             for i in range(3):
-                platform_list.add(Platform("block1_60x60.png", (i+9)*60, 480))
+                platform_list.add(Platform("tempblock.png", (i+9)*60, 480))
             # Second screen
             for i in range(5):
-                platform_list.add(Platform("block1_60x60.png", (i+21)*60, 300))
+                platform_list.add(Platform("tempblock.png", (i+21)*60, 300))
             for i in range(3):
-                platform_list.add(Platform("block1_60x60.png", (i+17)*60, 480))
+                platform_list.add(Platform("tempblock.png", (i+17)*60, 480))
             for i in range(3):
-                platform_list.add(Platform("block1_60x60.png", (i+24)*60, 120))
+                platform_list.add(Platform("tempblock.png", (i+24)*60, 120))
             # Block off beginning and end of game
             for i in range(12):
-                platform_list.add(Platform("block1_60x60.png", -60, i*60))
+                platform_list.add(Platform("tempblock.png", -60, i*60))
             for i in range(12):
-                platform_list.add(Platform("block1_60x60.png", -60, i*60))
+                platform_list.add(Platform("tempblock.png", -60, i*60))
             
         if lvl == 1:
             print ("Level 1")
             # Ceiling blocks
             for i in range(96):
-                platform_list.add(Platform("block1_60x60.png", i*60, -60))
+                platform_list.add(Platform("tempblock.png", i*60, -60))
             platform_list.add(Spike(2100, 460))
             platform_list.add(Spike(3120, 640))
             # First screen
             for i in range(4):
-                platform_list.add(Platform("block1_60x60.png", (i+3)*60, 480))
+                platform_list.add(Platform("tempblock.png", (i+3)*60, 480))
             for i in range(5):
-                platform_list.add(Platform("block1_60x60.png", (i+6)*60, 300))
+                platform_list.add(Platform("tempblock.png", (i+6)*60, 300))
             for i in range(4):
-                platform_list.add(Platform("block1_60x60.png", (i+9)*60, 120))
+                platform_list.add(Platform("tempblock.png", (i+9)*60, 120))
             # Second screen
             for i in range(5):
-                platform_list.add(Platform("block1_60x60.png", (i+18)*60, 480))
+                platform_list.add(Platform("tempblock.png", (i+18)*60, 480))
             for i in range(3):
-                platform_list.add(Platform("block1_60x60.png", (i+21)*60, 120))
+                platform_list.add(Platform("tempblock.png", (i+21)*60, 120))
             for i in range(3):
-                platform_list.add(Platform("block1_60x60.png", (i+23)*60, 300))
+                platform_list.add(Platform("tempblock.png", (i+23)*60, 300))
             for i in range(5):
-                platform_list.add(Platform("block1_60x60.png", (i+25)*60, 480))
+                platform_list.add(Platform("tempblock.png", (i+25)*60, 480))
             # Third screen
             for i in range(3):
-                platform_list.add(Platform("block1_60x60.png", (i+34)*60, 480))
+                platform_list.add(Platform("tempblock.png", (i+34)*60, 480))
             for i in range(5):
-                platform_list.add(Platform("block1_60x60.png", (i+36)*60, 120))
+                platform_list.add(Platform("tempblock.png", (i+36)*60, 120))
             for i in range(3):
-                platform_list.add(Platform("block1_60x60.png", (i+42)*60, 300))
+                platform_list.add(Platform("tempblock.png", (i+42)*60, 300))
             for i in range(4):
-                platform_list.add(Platform("block1_60x60.png", (i+40)*60, 480))
+                platform_list.add(Platform("tempblock.png", (i+40)*60, 480))
             # Fourth screen
             for i in range(5):
-                platform_list.add(Platform("block1_60x60.png", (i+49)*60, 300))
+                platform_list.add(Platform("tempblock.png", (i+49)*60, 300))
             for i in range(5):
-                platform_list.add(Platform("block1_60x60.png", (i+52)*60, 120))
+                platform_list.add(Platform("tempblock.png", (i+52)*60, 120))
             for i in range(3):
-                platform_list.add(Platform("block1_60x60.png", (i+56)*60, 300))
+                platform_list.add(Platform("tempblock.png", (i+56)*60, 300))
             for i in range(4):
-                platform_list.add(Platform("block1_60x60.png", (i+59)*60, 480))
+                platform_list.add(Platform("tempblock.png", (i+59)*60, 480))
             # Block off beginning and end of game
             for i in range(12):
-                platform_list.add(Platform("block1_60x60.png", -60, i*60))
+                platform_list.add(Platform("tempblock.png", -60, i*60))
             
         return platform_list
