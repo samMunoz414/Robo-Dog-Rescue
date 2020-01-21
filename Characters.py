@@ -26,16 +26,20 @@ class Person(pygame.sprite.Sprite):
 		self.rect = self.image.get_rect()
 		self.rect.x = xpos
 		self.rect.y = ypos
+		self.rect.width = 40
+		self.rect.height = 90
 		# stores the number of gears the player has
 		self.gearCount = 0
 		# string holding what powerup the character is holding on to. choices: 'none', 'lighting rod', 'laser gun', 'cosmo'
-		self.heldPowerup = "none"
+		self.heldPowerup = "None"
 		# boolean tracks recent powerup changes
 		self.recentPowerupChange = False
 		# stores the life state of the player
 		self.isAlive = True
 		# stores if the player is alive
 		self.win = False
+		# animation boolean
+		self.animation = False
 
 	# Handles any updates based on keyboard inputs and 
 	# up -> boolean storing if the player moves up
@@ -43,17 +47,42 @@ class Person(pygame.sprite.Sprite):
 	# left -> boolean storing if the player moves up
 	# right -> boolean storing if the player moves up
 	# platforms -> list storing all the platforms
-	def update(self, up, down, left, right, powerup, level, platforms):
+	def update(self, up, down, left, right, powerup, level, platforms, channel, music):
 		if up:
 			# only jumps if the player is on the ground
 			if self.isOnGround:
 				self.movey -= 20
+				channel.play(music)
 		# if the down button if pressed 
 		if down:
 			pass
 		if left:
+			if self.isOnGround:
+				if self.animation == True:
+					self.image = pygame.image.load("Grace9040Left1 -- Cropped.png").convert_alpha()
+					self.animation = False
+				elif self.animation == False:
+					self.image = pygame.image.load("Grace9040Left2 -- Cropped.png").convert_alpha()
+					self.animation = True
+			else:
+				if self.animation == True:
+					self.image = pygame.image.load("Grace9040Left1 -- Cropped.png").convert_alpha()
+				elif self.animation == False:
+					self.image = pygame.image.load("Grace9040Left2 -- Cropped.png").convert_alpha()
 			self.movex = -8
 		if right:
+			if self.isOnGround:
+				if self.animation == True:
+					self.image = pygame.image.load("Grace9040Right1.png").convert_alpha()
+					self.animation = False
+				elif self.animation == False:
+					self.image = pygame.image.load("Grace9040Right2.png").convert_alpha()
+					self.animation = True
+			else:
+				if self.animation == True:
+					self.image = pygame.image.load("Grace9040Right1 -- Cropped.png").convert_alpha()
+				elif self.animation == False:
+					self.image = pygame.image.load("Grace9040Right2 -- Cropped.png").convert_alpha()
 			self.movex = 8
 		if not self.isOnGround:
 			# this is gravity
@@ -91,23 +120,23 @@ class Person(pygame.sprite.Sprite):
 			for p in platforms:
 				p.rect.x = p.rect.x - 960
 			print("screen count: " + str(level.screenCount))
-		if self.rect.x >= 900 and level.screenCount == level.totalScreenCount:
+		if self.rect.x >= 920 and level.screenCount == level.totalScreenCount:
 			self.win = True
         
 	def powerupChange(self):
 		if self.heldPowerup == 'none':
 			self.image = pygame.image.load("tall_blue.png").convert_alpha()
-		elif self.heldPowerup == 'lightning rod':
+		elif self.heldPowerup == 'Lightning Rod':
 			print("lighting rod image")
 			self.image = pygame.image.load("tall_yellow.png").convert_alpha()
-		elif self.heldPowerup == 'laser gun':
+		elif self.heldPowerup == 'Laser Gun':
 			print("laser gun image")
 			self.image = pygame.image.load("tall_orange.png").convert_alpha()
 
 	def createNewPowerup(self, blockType, xpos, ypos):
-		if blockType == "lightning rod":
+		if blockType == "Lightning Rod":
 			return LightningRod(xpos, ypos)
-		elif blockType == "laser gun":
+		elif blockType == "Laser Gun":
 			return LaserGun(xpos, ypos)
 
 	def incrementGear(self):
@@ -121,30 +150,30 @@ class Person(pygame.sprite.Sprite):
 				
 				if isinstance(block, LightningRod):
 					if powerup:
-						if self.heldPowerup == 'none':
-							self.heldPowerup = "lightning rod"
-							self.powerupChange()
+						if self.heldPowerup == 'None':
+							self.heldPowerup = "Lightning Rod"
+							# self.powerupChange()
 							platforms.remove(block)
 						else:
 							if self.recentPowerupChange == False:
 								platforms.add(self.createNewPowerup(self.heldPowerup, block.rect.x, block.rect.y))
-								self.heldPowerup = "lightning rod"
-								self.powerupChange()
+								self.heldPowerup = "Lightning Rod"
+								# self.powerupChange()
 								platforms.remove(block)
 								self.recentPowerupChange = True
 					return
 
 				if isinstance(block, LaserGun):
 					if powerup:
-						if self.heldPowerup == 'none':
-							self.heldPowerup = 'laser gun'
-							self.powerupChange()
+						if self.heldPowerup == 'None':
+							self.heldPowerup = 'Laser Gun'
+							# self.powerupChange()
 							platforms.remove(block)
 						else:
 							if self.recentPowerupChange == False:
 								platforms.add(self.createNewPowerup(self.heldPowerup, block.rect.x, block.rect.y))
-								self.heldPowerup = 'laser gun'
-								self.powerupChange()
+								self.heldPowerup = 'Laser Gun'
+								# self.powerupChange()
 								platforms.remove(block)
 								self.recentPowerupChange = True
 					return

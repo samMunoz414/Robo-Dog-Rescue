@@ -95,11 +95,12 @@ def tutorial():
 
     # Skip image and button for corner of screen
     skipimage = pygame.image.load('skipbutton.png')
-    skipbutton = Button(860, 10, 120, 60, 'CUTSCENE')
+    skipbutton = Button(860, 10, 90, 60, 'CUTSCENE')
 
-    # Creates Soudn object to store music
+    # Creates Sound object to store music
     music_theme = pygame.mixer.Sound("songs1and2.wav")
     buttonMusic = pygame.mixer.Sound("optionselect2.wav")
+    jumpMusic =  pygame.mixer.Sound("jump.wav")
 
     # create a level object
     level = Level()
@@ -112,16 +113,20 @@ def tutorial():
     platform_list.add(enemy_list)
 
     # Spawn person and add input booleans
-    grace = Person('GraceMediumForward.png', 60, 570)
+    grace = Person('Grace9040Right2 -- Cropped.png', 60, 570)
     person_list = pygame.sprite.Group()
     person_list.add(grace)
 
     # booleans for input
     up = down = left = right = powerup = False
 
+    # Creates font to display information
+    font = pygame.font.SysFont("Times New Roman", 32)
+
     # Start playing music
     channelOne.set_volume(0.2)
     channelOne.play(music_theme, loops=-1)
+    channelTwo.set_volume(0.1)
 
     while 1:
     	# run death sequence if player dies
@@ -177,7 +182,11 @@ def tutorial():
 
     	screen.blit(background, backgroundbox) # Add background to screen
     	screen.blit(skipimage, (860, 10))
-    	grace.update(up, down, left, right, powerup, level, platform_list)
+    	displayGearCount = font.render("Gears: " + str(grace.gearCount), True, (0, 0, 0) )
+    	displayPowerup = font.render("Powerup: " + str(grace.heldPowerup), True, (0, 0, 0) )
+    	screen.blit(displayGearCount, (10 ,10))
+    	screen.blit(displayPowerup, (10, 50) )
+    	grace.update(up, down, left, right, powerup, level, platform_list, channelTwo, jumpMusic)
     	if grace.win == True:
     		channelOne.stop() # Stop the music
     		return 'WIN'
@@ -196,7 +205,7 @@ def cutscene():
 
     # Next image and button
     nextimage = pygame.image.load('arrowbutton.png')
-    nextbutton = Button(860, 650, 120, 60, 'SELECTLEVEL')
+    nextbutton = Button(860, 650, 90, 60, 'SELECTLEVEL')
 
     while 1:
         for event in pygame.event.get():
@@ -224,14 +233,15 @@ def prologue():
 
     # Next image and button
     nextimage = pygame.image.load('arrowbutton.png')
-    nextbutton = Button(860, 650, 120, 60, 'TUTORIAL')
+    nextbutton = Button(860, 650, 90, 60, 'TUTORIAL')
 
     # Skip image and button
     skipimage = pygame.image.load('skipbutton.png')
-    skipbutton = Button(860, 10, 120, 60, 'TUTORIAL')
+    skipbutton = Button(860, 10, 90, 60, 'TUTORIAL')
 
     # Create sound objects to store music
     buttonMusic = pygame.mixer.Sound("optionselect2.wav")
+    glassBreaking = pygame.mixer.Sound("glassbreak.wav")
 
     j = 1
     while 1:
@@ -245,6 +255,8 @@ def prologue():
                 	sleep(0.1)
                 	if j<5:
                 		background = pygame.image.load(backgrounds[j]).convert_alpha()
+                		if j == 2:
+                			channelOne.play(glassBreaking)
                 		j += 1 
                 	else:
                 		return nextbutton.state
@@ -383,6 +395,12 @@ def levelone():
     level = Level()
     level.setTotalScreenCount(6) # Set number of screen
 
+    # Creates font to display information
+    font = pygame.font.SysFont("Times New Roman", 32)
+
+    # Create sound objects
+    jumpMusic = pygame.mixer.Sound("jump.wav")
+
     # Make a list of platforms (floor, powerup, enemies, etc.)
     platform_list = Level.platform(1)
     platform_list.add(Level.floor(1))
@@ -391,12 +409,16 @@ def levelone():
     platform_list.add(enemy_list)
 
     # Spawn person and add input booleans
-    grace = Person('tall_blue.png', 60, 570)
+    grace = Person('Grace9040Right2 -- Cropped.png', 60, 570)
     person_list = pygame.sprite.Group()
     person_list.add(grace)
 
     # booleans for input
     up = down = left = right = powerup = False
+
+    # balance channel volumes
+    channelOne.set_volume(0.2)
+    channelTwo.set_volume(0.1)
 
     while 1:
     	# run death sequence if player dies
@@ -441,7 +463,7 @@ def levelone():
     				sys.exit()
 
     	screen.blit(background, backgroundbox)
-    	grace.update(up, down, left, right, powerup, level, platform_list)
+    	grace.update(up, down, left, right, powerup, level, platform_list, channelTwo, jumpMusic)
     	if grace.win == True:
     		return 'WIN', 2
     	person_list.draw(screen)
