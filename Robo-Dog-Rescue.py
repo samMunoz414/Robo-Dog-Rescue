@@ -549,9 +549,9 @@ def level(level, music):
 
 # Fields needed for running program
 running = True
-state = 'START'
+# state = 'START'
 # state = 'TUTORIAL'
-# state = 'LEVEL1'
+state = 'LEVEL1'
 # state = 'LEVEL2'
 lvls = 1
 
