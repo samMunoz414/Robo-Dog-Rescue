@@ -113,7 +113,7 @@ def tutorial():
     platform_list.add(enemy_list)
 
     # Spawn person and add input booleans
-    grace = Person('Grace9040Right2 -- Cropped.png', 60, 570)
+    grace = Person('Grace9040Right2.png', 60, 570)
     person_list = pygame.sprite.Group()
     person_list.add(grace)
 
@@ -184,9 +184,7 @@ def tutorial():
     	screen.blit(background, backgroundbox) # Add background to screen
     	screen.blit(skipimage, (860, 10))
     	displayGearCount = font.render("Gears: " + str(grace.gearCount), True, (255, 255, 255) )
-    	displayPowerup = smallfont.render("Powerup: " + str(grace.heldPowerup), True, (255, 255, 255) )
     	screen.blit(displayGearCount, (10 ,10))
-    	screen.blit(displayPowerup, (10, 50) )
     	grace.update(up, down, left, right, powerup, level, platform_list, channelTwo, jumpMusic)
     	if grace.win == True:
     		channelOne.stop() # Stop the music
@@ -398,7 +396,7 @@ def selectlevel(lvls):
 def level(level, music):
     lvl = level
     print("In level " + str(lvl))
-    background = pygame.image.load("title.png").convert_alpha()
+    background = pygame.image.load("blue_background1.png").convert_alpha()
     backgroundbox = background.get_rect()
 
     # Create a level object
@@ -421,12 +419,20 @@ def level(level, music):
     platform_list.add(enemy_list)
 
     # Spawn person and add input booleans
-    grace = Person('Grace9040Right2 -- Cropped.png', 60, 570)
+    grace = Person('Grace9040Right2.png', 60, 570)
     person_list = pygame.sprite.Group()
     person_list.add(grace)
 
+    # Create bullet list
+    bullet_list = pygame.sprite.Group()
+
+    # Creates cosmo list
+    cosmo_list = pygame.sprite.Group()
+
     # booleans for input
-    up = down = left = right = powerup = False
+    up = down = left = right = space = cosmo = powerup = False
+
+    frameCount = 0
 
     # balance channel volumes
     channelOne.set_volume(0.2)
@@ -456,6 +462,12 @@ def level(level, music):
                 if event.key == pygame.K_DOWN or event.key == ord('s'):
                     print("collect powerup")
                     powerup = True
+                if event.key == pygame.K_SPACE:
+                	print("activate powerup")
+                	space = True
+               	if event.key == ord('c'):
+               		print("activate cosmo")
+               		cosmo = True
 
             if event.type == pygame.KEYUP:
                 if event.key == pygame.K_LEFT or event.key == ord('a'):
@@ -470,6 +482,9 @@ def level(level, music):
                 if event.key == pygame.K_DOWN or event.key == ord('s'):
                     print("collect powerup")
                     powerup = False
+                if event.key == ord('c'):
+                	print("deactivate cosmo")
+                	cosmo = False
                 if event.key == ord('q'):
                     print("Exiting Robo-Dog Rescue")
                     pygame.quit()
@@ -477,14 +492,33 @@ def level(level, music):
 
         screen.blit(background, backgroundbox)
         displayGearCount = font.render("Gears: " + str(grace.gearCount), True, (255, 255, 255) )
-        displayPowerup = smallfont.render("Powerup: " + str(grace.heldPowerup), True, (255, 255, 255) )
         screen.blit(displayGearCount, (10 ,10))
-        screen.blit(displayPowerup, (10, 50) )
-        grace.update(up, down, left, right, powerup, level, platform_list, channelTwo, jumpMusic)
+        grace.update(up, down, left, right, space, powerup, level, platform_list, channelTwo, jumpMusic)
+        if cosmo == True:
+        	cosmo = grace.activateCosmo()
+        	if isinstance(cosmo, Cosmo):
+        		cosmo_list.add(cosmo)
+        for bullet in bullet_list:
+        	removeBullet = bullet.update(platform_list)
+        	if removeBullet:
+        		print("Removed bullet")
+        		bullet_list.remove(bullet)
+        for cosmo in cosmo_list:
+        	cosmo.update(platform_list)
+        if space == True:
+        	frameCount += 1
+        	if frameCount == 3:
+        		space = False
+        		frameCount = 0
+        	if grace.heldPowerup == "Laser Gun":
+        		if frameCount == 1:
+        			bullet_list.add(grace.fire())
         if grace.win == True:
         	return 'WIN', lvl+1
         person_list.draw(screen)
         platform_list.draw(screen)
+        bullet_list.draw(screen)
+        cosmo_list.draw(screen)
         for enemy in enemy_list:
         	enemy.move()
         clock.tick(30)
@@ -494,8 +528,9 @@ def level(level, music):
 
 # Fields needed for running program
 running = True
-state = 'START'
-# state = 'LEVEL1'
+# state = 'START'
+# state = 'TUTORIAL'
+state = 'LEVEL1'
 # state = 'LEVEL2'
 lvls = 1
 

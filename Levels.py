@@ -5,7 +5,7 @@
 import sys
 import pygame
 import os
-from Characters import Enemy
+from Characters import *
 from Blocks import *
 
 # Class for levels of the game
@@ -36,30 +36,30 @@ class Level():
         enemy_list = pygame.sprite.Group() # Create enemy group
         if lvl == 0:
             # First screen
-            enemy_list.add(Enemy('tall_red.png', 500, 570))
+            enemy_list.add(Enemy('LeftFacingBlackScientist.png', 'RightFacingBlackScientist.png', 500, 601))
             # Second screen
-            enemy_list.add(Enemy('tall_red.png', 1350, 210))
-            enemy_list.add(Enemy('tall_red.png', 1600, 570))
+            enemy_list.add(Enemy('LeftFacingBlackScientist.png', 'RightFacingBlackScientist.png', 1350, 241))
+            enemy_list.add(Enemy('LeftFacingBlackScientist.png', 'RightFacingBlackScientist.png', 1600, 601))
             
         if lvl == 1:
             # First screen
-            enemy_list.add(Enemy('tall_red.png', 680, 570))
-            enemy_list.add(Enemy('tall_red.png', 560, 30))
+            enemy_list.add(Enemy('LeftFacingBlackScientist.png', 'RightFacingBlackScientist.png', 680, 601))
+            enemy_list.add(Enemy('LeftFacingBlackScientist.png', 'RightFacingBlackScientist.png', 560, 61))
             # Second screen
-            enemy_list.add(Enemy('tall_red.png', 1150, 390))
-            enemy_list.add(Enemy('tall_red.png', 1570, 390))
+            enemy_list.add(Enemy('LeftFacingBlackScientist.png', 'RightFacingBlackScientist.png', 1150, 421))
+            enemy_list.add(Enemy('LeftFacingBlackScientist.png', 'RightFacingBlackScientist.png', 1570, 421))
             # Third screen
-            enemy_list.add(Enemy('tall_red.png', 2420, 390))
-            enemy_list.add(Enemy('tall_red.png', 2580, 570))
+            enemy_list.add(Enemy('LeftFacingBlackScientist.png', 'RightFacingBlackScientist.png', 2420, 421))
+            enemy_list.add(Enemy('LeftFacingBlackScientist.png', 'RightFacingBlackScientist.png', 2580, 601))
             # Fourth screen
-            enemy_list.add(Enemy('tall_red.png', 3350, 570))
-            enemy_list.add(Enemy('tall_red.png', 3200, 30))
-            enemy_list.add(Enemy('tall_red.png', 2950, 210))
+            enemy_list.add(Enemy('LeftFacingBlackScientist.png', 'RightFacingBlackScientist.png', 3350, 601))
+            enemy_list.add(Enemy('LeftFacingBlackScientist.png', 'RightFacingBlackScientist.png', 3200, 601))
+            enemy_list.add(Enemy('LeftFacingBlackScientist.png', 'RightFacingBlackScientist.png', 2950, 241))
 
         if lvl == 2:
             # First screen
-            enemy_list.add(Enemy('tall_red.png', 560, 570))
-            enemy_list.add(Enemy('tall_red.png', 310, 390))
+            enemy_list.add(Enemy('LeftFacingBlackScientist.png', 'RightFacingBlackScientist.png', 560, 570))
+            enemy_list.add(Enemy('LeftFacingBlackScientist.png', 'RightFacingBlackScientist.png', 310, 390))
             
         return enemy_list
     
@@ -82,6 +82,8 @@ class Level():
                 powerups_list.add(Gear(((i+9)*60)+10, 250))
                 powerups_list.add(Gear(((i+9)*60)+10, 70))
             powerups_list.add(LightningRod(490, 250))
+            for i in range(25):
+            	powerups_list.add(Gear(100, 610))
             # Second screen
             for i in range(2):
                 powerups_list.add(Gear(((i+18)*60)+10, 430))
