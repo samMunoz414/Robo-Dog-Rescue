@@ -188,7 +188,7 @@ def tutorial():
     	grace.update(up, down, left, right, powerup, level, platform_list, channelTwo, jumpMusic)
     	if grace.win == True:
     		channelOne.stop() # Stop the music
-    		return 'WIN'
+    		return 'SELECTLEVEL'
     	person_list.draw(screen)
     	platform_list.draw(screen)
     	for enemy in enemy_list:
@@ -278,18 +278,26 @@ def prologue():
         pygame.display.flip()
 
 # Win screen for the tutorial
-def win():
+def win(level):
     print("On win screen")
     background = pygame.image.load("green_background.png").convert_alpha()
     backgroundbox = background.get_rect()
 
-    # List of buttons for the screen - Continue to next level and back to level select screen
-    buttons = []
-    continueimage = pygame.image.load("pink_block_40x40.png").convert_alpha()
-    continuebutton = Button(460, 340, 40, 40, 'CUTSCENE')
-    buttons.append(continuebutton)
+    lvl = level
 
-    # Create sound object to store music
+    # List of buttons - replay previous level and back to level select screen
+    buttons = []
+    replayimage = pygame.image.load("restartlevel.png").convert_alpha()
+    replaybutton = Button(360, 240, 240, 120, 'LEVEL'+str(lvl))
+    buttons.append(replaybutton)
+    selectlevelimage = pygame.image.load("backlevel.png").convert_alpha()
+    selectlevelbutton = Button(360, 400, 240, 120, 'SELECTLEVEL')
+    buttons.append(selectlevelbutton)
+    startscreenimage = pygame.image.load("backtitle.png").convert_alpha()
+    startscreenbutton = Button(360, 560, 240, 120, 'START')
+    buttons.append(startscreenbutton)
+
+    # Add Sound objects to store music
     buttonMusic = pygame.mixer.Sound("optionselect2.wav")
 
     while 1:
@@ -302,27 +310,33 @@ def win():
                     if button.isClicked(mousePosition):
                         channelOne.play(buttonMusic)
                         sleep(0.1)
+                        print(button.state)
                         return button.state
-                        
+
         screen.blit(background, backgroundbox)
-        screen.blit(continueimage, (460, 340))
+        screen.blit(replayimage, (360, 240))
+        screen.blit(selectlevelimage, (360, 400))
+        screen.blit(startscreenimage, (360, 560))
         clock.tick(30)
         pygame.display.flip()
 
 # Lose screen
-def lose():
+def lose(level):
     print("On lose screen")
     background = pygame.image.load("green_background.png").convert_alpha()
     backgroundbox = background.get_rect()
 
     # List of buttons - replay previous level and back to level select screen
     buttons = []
-    replayimage = pygame.image.load("tall_orange.png").convert_alpha()
-    replaybutton = Button(300, 300, 60, 90, 'LEVEL1')
+    replayimage = pygame.image.load("restartlevel.png").convert_alpha()
+    replaybutton = Button(360, 240, 240, 120, 'LEVEL'+str(level))
     buttons.append(replaybutton)
-    selectlevelimage = pygame.image.load("tall_yellow.png").convert_alpha()
-    selectlevelbutton = Button(500, 300, 60, 90, 'SELECTLEVEL')
+    selectlevelimage = pygame.image.load("backlevel.png").convert_alpha()
+    selectlevelbutton = Button(360, 400, 240, 120, 'SELECTLEVEL')
     buttons.append(selectlevelbutton)
+    startscreenimage = pygame.image.load("backtitle.png").convert_alpha()
+    startscreenbutton = Button(360, 560, 240, 120, 'START')
+    buttons.append(startscreenbutton)
 
     # Add Sound objects to store music
     buttonMusic = pygame.mixer.Sound("optionselect2.wav")
@@ -340,8 +354,9 @@ def lose():
                     	return button.state
 
         screen.blit(background, backgroundbox)
-        screen.blit(replayimage, (300, 300))
-        screen.blit(selectlevelimage, (500, 300))
+        screen.blit(replayimage, (360, 240))
+        screen.blit(selectlevelimage, (360, 400))
+        screen.blit(startscreenimage, (360, 560))
         clock.tick(30)
         pygame.display.flip()
 
@@ -401,7 +416,10 @@ def level(level, music):
 
     # Create a level object
     level = Level()
-    level.setTotalScreenCount(4) # Set number of screen
+    if lvl == 1 or lvl == 2:
+        level.setTotalScreenCount(4) # Levels 1 and 2 have 4 screens
+    if lvl == 3:
+        level.setTotalScreenCount(6) # Level 3 has 6 screens
 
     # Creates font to display information
     font = pygame.font.SysFont("Times New Roman", 32)
@@ -444,7 +462,8 @@ def level(level, music):
         if not grace.isAlive:
             print("You lose")
             channelOne.stop()
-            return 'LOSE', lvl
+            print('LOSE'+str(lvl))
+            return 'LOSE'+str(lvl), lvl
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -514,7 +533,9 @@ def level(level, music):
         		if frameCount == 1:
         			bullet_list.add(grace.fire())
         if grace.win == True:
-        	return 'WIN', lvl+1
+            print("Won! Win screen " + 'WIN' + str(lvl))
+            if lvl == 1 or lvl == 2:
+                return 'WIN' + str(lvl), lvl+1
         person_list.draw(screen)
         platform_list.draw(screen)
         bullet_list.draw(screen)
@@ -528,9 +549,9 @@ def level(level, music):
 
 # Fields needed for running program
 running = True
-# state = 'START'
+state = 'START'
 # state = 'TUTORIAL'
-state = 'LEVEL1'
+# state = 'LEVEL1'
 # state = 'LEVEL2'
 lvls = 1
 
@@ -557,19 +578,40 @@ while running:
         state = prologue()
     if state == 'CUTSCENE':
         state = cutscene()
-    if state == 'WIN':
-        state = win()
-    if state == 'LOSE':
-        state = lose()
+    # Win screen for levels
+    if state == 'WIN1':
+        state = win(2)
+    if state == 'WIN2':
+        state = win(3)
+    if state == 'WIN3':
+        print("In win 3 screen")
+        state = win(3)
+    # Three losing states of levels
+    if state == 'LOSE1':
+        state = lose(1)
+    if state == 'LOSE2':
+        state = lose(2)
+    if state == 'LOSE3':
+        state == lose(3)
+    # Levels
     if state == 'LEVEL1':
-        state, lvls = level(1, 'songs1and2.wav')
+        state, lvl = level(1, 'songs1and2.wav')
+        if lvl > lvls:
+            lvls = lvl
     if state == 'LEVEL2':
-        state, lvls = level(2, 'songs1and2.wav')
+        state, lvl = level(2, 'songs1and2.wav')
+        if lvl > lvls:
+            lvls = lvl
     if state == 'LEVEL3':
-        state, lvls = level(3, 'songs1and2.wav')
+        state, lvl = level(3, 'songs1and2.wav')
+        if lvl > lvls:
+            lvls = lvl
+    # Controls for game
     if state == 'CONTROLS':
         controls()
+    # Select level screen
     if state == 'SELECTLEVEL':
         state = selectlevel(lvls)
+    # End of the game
     if state == 'END':
         pass
