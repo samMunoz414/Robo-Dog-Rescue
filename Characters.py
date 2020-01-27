@@ -24,14 +24,10 @@ class Person(pygame.sprite.Sprite):
 		self.image = pygame.image.load(image).convert_alpha()
 		# stores player's rect object
 		self.rect = self.image.get_rect()
-		self.rect.x = xpos
-		self.rect.y = ypos
-		self.rect.width = 40
-		self.rect.height = 90
 		# stores the number of gears the player has
 		self.gearCount = 0
 		# string holding what powerup the character is holding on to. choices: 'none', 'lighting rod', 'laser gun', 'cosmo'
-		self.heldPowerup = "None"
+		self.powerup = None
 		# boolean tracks recent powerup changes
 		self.recentPowerupChange = False
 		# stores the life state of the player
@@ -42,61 +38,33 @@ class Person(pygame.sprite.Sprite):
 		self.animation = True
 		# boolean storing what direction Grace is facing
 		self.isFacingRight = True
-		# hold the name of the last image used
-		self.lastImage = image
 		# constant 3D array to store all image names
-		self.imageSwap = [ # [P][M][A][S]
+		self.imageSwap = [ # [P][M][A]
 			# powerup 'None'
 			[
 				# moving left
 				[
-					# list: animation True. elements: left: space False, right: True
-					["Grace9040Left1.png", "Grace9040Left1.png"], 
-					# list: animation False
-					["Grace9040Left2.png", "Grace9040Left2.png"]
+					# left: animation True; right: animation False
+					"GraceLeft1.png", "GraceLeft2.png", 
 				],
 				# moving right
 				[
-					# animation True
-					["Grace9040Right1.png", "Grace9040Right1.png"], 
-					# animation False
-					["Grace9040Right2.png", "Grace9040Right2.png"]
+					# left: animation True; right: animation False
+					"GraceRight1.png", "GraceRight2.png"
 				],
 			],
 
-			# powerup 'Lightning Rod'
+			# powerup not 'None'
 			[
 				# moving left
 				[
-					# list: animation True. elements: left: space False, right: True
-					["Grace9040Left1WithTazer.png", "Grace9040Left1WithTazer5.png"], 
-					# animation False
-					["Grace9040Left2WithTazer.png", "Grace9040Left2WithTazer5.png"]
+					# left: animation True; right: animation False
+					"GraceLeft1ArmOut.png", "GraceLeft2ArmOut.png", 
 				],
 				# moving right
 				[
-					# animation True
-					["Grace9040Right1WithTazer.png", "Grace9040Right1WithTazer5.png"], 
-					# animation False
-					["Grace9040Right2WithTazer.png", "Grace9040Right2WithTazer5.png"]
-				],
-			],
-
-			# powerup 'Laser Gun'
-			[
-				# moving left
-				[
-					# animation True (left: space False; right: True)
-					["Grace9040Left1WithGun.png", "Grace9040Left1WithGun.png"], 
-					# animation False
-					["Grace9040Left2WithGun.png", "Grace9040Left2WithGun.png"]
-				],
-				# moving right
-				[
-					# animation True
-					["Grace9040Right1WithGun.png", "Grace9040Right1WithGun.png"], 
-					# animation False
-					["Grace9040Right2WithGun.png", "Grace9040Right2WithGun.png"]
+					# left: animation True; right: animation False
+					"GraceRight1ArmOut.png", "GraceRight2ArmOut.png"
 				],
 			]
 		]
@@ -144,6 +112,13 @@ class Person(pygame.sprite.Sprite):
 		# handles collisions in the y direction
 		self.collide(0, self.movey, space, powerup, platforms)
 
+		if isinstance(self.powerup, type(None)):
+			print("Type: None")
+		elif isinstance(self.powerup, LightningRod):
+			print("Type: LightningRod")
+		elif isinstance(self.powerup, LaserGun):
+			print("Type: LaserGun")
+
 		# Changes the image of Grace
 		self.changeImage(left, right, space)
 		
@@ -165,12 +140,10 @@ class Person(pygame.sprite.Sprite):
 			self.win = True
         
 	def mapPowerup(self):
-		if self.heldPowerup == "None":
+		if isinstance(self.powerup, type(None)):
 			return 0
-		elif self.heldPowerup == "Lightning Rod":
+		elif isinstance(self.powerup, LightningRod) or isinstance(self.powerup, LaserGun):
 			return 1
-		elif self.heldPowerup == "Laser Gun":
-			return 2
 
 	def mapMotion(self, left, right):
 		if left and not right:
@@ -181,23 +154,15 @@ class Person(pygame.sprite.Sprite):
 			return 1
 		else:
 			if not self.isFacingRight:
-				return 2
+				return 0
 			else:
-				return 3
+				return 1
 
 	def changeImage(self, left, right, space):
 		powerup = self.mapPowerup()
 		motion = self.mapMotion(left, right)
-		imageName = self.imageSwap[powerup][motion%2][int(self.animation)][int(space)]
-		if not imageName == self.lastImage:
-			if (self.lastImage == "Grace9040Left1WithTazer.png" and imageName == "Grace9040Left1WithTazer5.png") or (self.lastImage == "Grace9040Left2WithTazer.png" and imageName == "Grace9040Left2WithTazer5.png"):
-				print("Repositioned back")
-				self.rect.x -= 7
-			elif (self.lastImage == "Grace9040Left1WithTazer5.png" and imageName == "Grace9040Left1WithTazer.png") or (self.lastImage == "Grace9040Left2WithTazer5.png" and imageName == "Grace9040Left2WithTazer.png"):
-				print("Repositioned forward")
-				self.rect.x += 7
-			self.image = pygame.image.load(imageName).convert_alpha()
-			self.lastImage = imageName
+		imageName = self.imageSwap[powerup][motion][int(self.animation)]
+		self.image = pygame.image.load(imageName).convert_alpha()
 		if self.isOnGround == True and not (not left and not right):
 			self.animation = not self.animation
 
@@ -227,33 +192,28 @@ class Person(pygame.sprite.Sprite):
 	def collide(self, dx, dy, space, powerup, platforms):
 		for block in platforms:
 			if pygame.sprite.collide_rect(self, block):
-				
-				if isinstance(block, LightningRod):
+				if isinstance(block, LightningRodBlock):
 					if powerup:
-						if self.heldPowerup == 'None':
-							self.heldPowerup = "Lightning Rod"
-							# self.powerupChange()
+						if isinstance(self.powerup, LightningRod):
+							self.powerup = LightningRod(self.rect.x, self.rect.y, self.isFacingRight)
 							platforms.remove(block)
 						else:
 							if self.recentPowerupChange == False:
-								platforms.add(self.createNewPowerup(self.heldPowerup, block.rect.x, block.rect.y))
-								self.heldPowerup = "Lightning Rod"
-								# self.powerupChange()
+								platforms.add(self.createNewPowerup(self.powerup, block.rect.x, block.rect.y))
+								self.powerup = LightningRod(self.rect.x, self.rect.y, self.isFacingRight)
 								platforms.remove(block)
 								self.recentPowerupChange = True
 					return
 
-				if isinstance(block, LaserGun):
+				if isinstance(block, LaserGunBlock):
 					if powerup:
-						if self.heldPowerup == 'None':
-							self.heldPowerup = 'Laser Gun'
-							# self.powerupChange()
+						if isinstance(self.powerup, type(None)):
+							self.powerup = LaserGun(self.rect.x, self.rect.y, self.isFacingRight)
 							platforms.remove(block)
 						else:
 							if self.recentPowerupChange == False:
-								platforms.add(self.createNewPowerup(self.heldPowerup, block.rect.x, block.rect.y))
-								self.heldPowerup = 'Laser Gun'
-								# self.powerupChange()
+								platforms.add(self.createNewPowerup(self.powerup, block.rect.x, block.rect.y))
+								self.powerup = LaserGun(self.rect.x, self.rect.y, self.heldPowerup)
 								platforms.remove(block)
 								self.recentPowerupChange = True
 					return

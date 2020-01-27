@@ -118,10 +118,10 @@ class Level():
                 powerups_list.add(Gear(((i+6)*60)+10, 250))
                 powerups_list.add(Gear(((i+9)*60)+10, 250))
                 powerups_list.add(Gear(((i+9)*60)+10, 70))
-            powerups_list.add(LightningRod(490, 250))
+            powerups_list.add(LightningRodBlock(490, 250))
             # for i in range(25):
             # 	powerups_list.add(Gear(100, 610))
-            powerups_list.add(LaserGun(100, 610))
+            powerups_list.add(LaserGunBlock(100, 610))
 
             # Second screen
             for i in range(2):
@@ -141,7 +141,7 @@ class Level():
                 powerups_list.add(Gear(((i+34)*60)+10, 610))
                 powerups_list.add(Gear(((i+41)*60)+10, 610))
                 powerups_list.add(Gear(((i+42)*60)+10, 250))
-            powerups_list.add(LaserGun(2290, 70))
+            powerups_list.add(LaserGunBlock(2290, 70))
             # Fourth screen
             for i in range(3):
                 powerups_list.add(Gear(((i+49)*60)+10, 610))

@@ -113,12 +113,12 @@ def tutorial():
     platform_list.add(enemy_list)
 
     # Spawn person and add input booleans
-    grace = Person('Grace9040Right2.png', 60, 570)
+    grace = Person('GraceRight2.png', 60, 570)
     person_list = pygame.sprite.Group()
     person_list.add(grace)
 
     # booleans for input
-    up = down = left = right = powerup = False
+    up = down = left = right = space = powerup = False
 
     # Creates font to display information
     font = pygame.font.SysFont("Times New Roman", 32)
@@ -438,7 +438,7 @@ def level(level, music):
     platform_list.add(enemy_list)
 
     # Spawn person and add input booleans
-    grace = Person('Grace9040Right2.png', 60, 570)
+    grace = Person('GraceRight2.png', 60, 570)
     person_list = pygame.sprite.Group()
     person_list.add(grace)
 

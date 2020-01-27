@@ -34,8 +34,24 @@ class Powerup(pygame.sprite.Sprite):
     def __init__(self):
         pygame.sprite.Sprite.__init__(self)
 
+class LaserGun(pygame.sprite.Sprite):
+	def __init__(self, xpos, ypos, facingRight):
+		pygame.sprite.Sprite.__init__(self)
+		self.image = None
+		self.loadImage(facingRight)
+		self.rect = self.image.get_rect()
+		self.rect.x = xpos
+		self.rect.y = ypos
+
+	def loadImage(self, facingRight):
+		if facingRight:
+			self.image = pygame.image.load("LaserGunLeft.png").convert_alpha()
+		else:
+			self.image = pygame.image.load("LaserGunRight.png").convert_alpha()
+
+
 # Poweup class: it's a powerup class
-class LaserGun(Powerup):
+class LaserGunBlock(Powerup):
     def __init__(self, xpos, ypos):
         super().__init__()
         self.image = pygame.image.load("powerupGreen.png").convert()
@@ -81,8 +97,27 @@ class RedBullet(Powerup):
 					return True
 		return False
 
+class LightningRod(pygame.sprite.Sprite):
+	def __init__(self, xpos, ypos, facingRight, space):
+		pygame.sprite.Sprite.__init__(self)
+		self.image = None
+		self.loadImage(facingRight, space)
+		self.rect = self.image.get_rect()
+		self.rect.x = xpos
+		self.rect.y = ypos
+		self.imageSwap = [
+			# facing left
+			# left is space = False, right is space = True
+			["TazerLeftUp.png", "TazerLeftDown.png"],
+			# facing right
+			["TazerRightUp.png", "TazerRightDown.png"]
+		]		
+
+	def loadImage(self, facingRight, space):
+		self.image = pygame.image.load(self.imageSwap[int(facingRight)][int(space)]).convert_alpha()
+
 # Poweup class: it's a powerup class
-class LightningRod(Powerup):
+class LightningRodBlock(Powerup):
     def __init__(self, xpos, ypos):
         super().__init__()
         self.image = pygame.image.load("powerupBlue.png").convert()
@@ -109,7 +144,7 @@ class Gear(Powerup):
     def update(self):
         pass
 
-# Poweup class: it's a powerup class
+# Defines Cosmo object
 class Cosmo(Powerup):
     def __init__(self, xpos, ypos, isFacingRight):
         super().__init__()
