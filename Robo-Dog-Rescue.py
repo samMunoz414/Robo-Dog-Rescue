@@ -530,7 +530,7 @@ def level(level, music):
         	if frameCount == 3:
         		space = False
         		frameCount = 0
-        	if grace.heldPowerup == "Laser Gun":
+        	if isinstance(grace.powerup, LaserGun):
         		if frameCount == 1:
         			bullet_list.add(grace.fire())
         if grace.win == True:
@@ -541,6 +541,8 @@ def level(level, music):
         platform_list.draw(screen)
         bullet_list.draw(screen)
         cosmo_list.draw(screen)
+        if not grace.powerup == None:
+        	screen.blit(grace.powerup.image, grace.powerup.rect)
         for enemy in enemy_list:
         	enemy.move()
         clock.tick(30)

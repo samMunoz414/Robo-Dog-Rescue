@@ -24,6 +24,11 @@ class Person(pygame.sprite.Sprite):
 		self.image = pygame.image.load(image).convert_alpha()
 		# stores player's rect object
 		self.rect = self.image.get_rect()
+		# sets starting position for character
+		self.rect.x = xpos
+		self.rect.y = ypos
+		self.rect.width = 31
+		self.rect.height = 87
 		# stores the number of gears the player has
 		self.gearCount = 0
 		# string holding what powerup the character is holding on to. choices: 'none', 'lighting rod', 'laser gun', 'cosmo'
@@ -112,15 +117,12 @@ class Person(pygame.sprite.Sprite):
 		# handles collisions in the y direction
 		self.collide(0, self.movey, space, powerup, platforms)
 
-		if isinstance(self.powerup, type(None)):
-			print("Type: None")
-		elif isinstance(self.powerup, LightningRod):
-			print("Type: LightningRod")
-		elif isinstance(self.powerup, LaserGun):
-			print("Type: LaserGun")
-
 		# Changes the image of Grace
 		self.changeImage(left, right, space)
+
+		# updates the weapon variable
+		if not self.powerup == None:
+			self.powerup.update(self.rect.x, self.rect.y, self.isFacingRight, space, platforms)
 		
 		# Scrolling screen: move everything a screen width to left or right
 		if self.rect.x <= 10 and level.screenCount > 1:
@@ -167,10 +169,10 @@ class Person(pygame.sprite.Sprite):
 			self.animation = not self.animation
 
 	def createNewPowerup(self, blockType, xpos, ypos):
-		if blockType == "Lightning Rod":
-			return LightningRod(xpos, ypos)
-		elif blockType == "Laser Gun":
-			return LaserGun(xpos, ypos)
+		if isinstance(blockType, LightningRod):
+			return LightningRodBlock(xpos, ypos)
+		elif isinstance(blockType, LaserGun):
+			return LaserGunBlock(xpos, ypos)
 
 	def incrementGear(self):
 		if self.gearCount < 100:
@@ -179,9 +181,9 @@ class Person(pygame.sprite.Sprite):
 
 	def fire(self):
 		if self.isFacingRight == True:
-			return RedBullet(self.rect.x + self.rect.width, self.rect.y + 31, self.isFacingRight)
+			return RedBullet(self.rect.x + self.rect.width + 14, self.rect.y + 31, self.isFacingRight)
 		else:
-			return RedBullet(self.rect.x, self.rect.y + 31, self.isFacingRight)
+			return RedBullet(self.rect.x - 14, self.rect.y + 31, self.isFacingRight)
 
 	def activateCosmo(self):
 		if self.gearCount >= 25:
@@ -194,13 +196,15 @@ class Person(pygame.sprite.Sprite):
 			if pygame.sprite.collide_rect(self, block):
 				if isinstance(block, LightningRodBlock):
 					if powerup:
-						if isinstance(self.powerup, LightningRod):
-							self.powerup = LightningRod(self.rect.x, self.rect.y, self.isFacingRight)
+						if isinstance(self.powerup, type(None)):
+							self.powerup = LightningRod(self.rect.x, self.rect.y, self.isFacingRight, space)
+							self.rect.width = 46
+							self.rect.height = 87
 							platforms.remove(block)
 						else:
 							if self.recentPowerupChange == False:
 								platforms.add(self.createNewPowerup(self.powerup, block.rect.x, block.rect.y))
-								self.powerup = LightningRod(self.rect.x, self.rect.y, self.isFacingRight)
+								self.powerup = LightningRod(self.rect.x, self.rect.y, self.isFacingRight, space)
 								platforms.remove(block)
 								self.recentPowerupChange = True
 					return
@@ -209,11 +213,13 @@ class Person(pygame.sprite.Sprite):
 					if powerup:
 						if isinstance(self.powerup, type(None)):
 							self.powerup = LaserGun(self.rect.x, self.rect.y, self.isFacingRight)
+							self.rect.width = 46
+							self.rect.height = 87
 							platforms.remove(block)
 						else:
 							if self.recentPowerupChange == False:
 								platforms.add(self.createNewPowerup(self.powerup, block.rect.x, block.rect.y))
-								self.powerup = LaserGun(self.rect.x, self.rect.y, self.heldPowerup)
+								self.powerup = LaserGun(self.rect.x, self.rect.y, self.isFacingRight)
 								platforms.remove(block)
 								self.recentPowerupChange = True
 					return
@@ -224,10 +230,6 @@ class Person(pygame.sprite.Sprite):
 					return
 
 				if isinstance(block, Enemy):
-					if self.heldPowerup == "Lightning Rod":
-						if space == True:
-							platforms.remove(block)
-							return
 					self.isAlive = False
 					return
 

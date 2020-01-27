@@ -40,14 +40,29 @@ class LaserGun(pygame.sprite.Sprite):
 		self.image = None
 		self.loadImage(facingRight)
 		self.rect = self.image.get_rect()
-		self.rect.x = xpos
-		self.rect.y = ypos
+		self.isFacingRight = facingRight
+		if facingRight:
+			self.rect.x = xpos + 43 
+		else:
+			self.rect.x = xpos - 14
+		self.rect.y = ypos + 28
+
+	def update(self, playerX, playerY, facingRight, space, platforms):
+		if not self.isFacingRight == facingRight:
+			self.loadImage(facingRight)
+			self.isFacingRight = facingRight
+		if facingRight:
+			self.rect.x = playerX + 43
+		else:
+			self.rect.x = playerX - 14
+		self.rect.y = playerY + 28
+
 
 	def loadImage(self, facingRight):
 		if facingRight:
-			self.image = pygame.image.load("LaserGunLeft.png").convert_alpha()
-		else:
 			self.image = pygame.image.load("LaserGunRight.png").convert_alpha()
+		else:
+			self.image = pygame.image.load("LaserGunLeft.png").convert_alpha()
 
 
 # Poweup class: it's a powerup class
@@ -101,10 +116,6 @@ class LightningRod(pygame.sprite.Sprite):
 	def __init__(self, xpos, ypos, facingRight, space):
 		pygame.sprite.Sprite.__init__(self)
 		self.image = None
-		self.loadImage(facingRight, space)
-		self.rect = self.image.get_rect()
-		self.rect.x = xpos
-		self.rect.y = ypos
 		self.imageSwap = [
 			# facing left
 			# left is space = False, right is space = True
@@ -112,9 +123,63 @@ class LightningRod(pygame.sprite.Sprite):
 			# facing right
 			["TazerRightUp.png", "TazerRightDown.png"]
 		]		
+		self.image = None
+		self.rect = None
+		self.imageName = ""
+		self.loadImage(facingRight, space)
+		self.isFacingRight = facingRight
+		self.lastSpace = space
+		
+		if self.imageName == "TazerLeftUp.png":
+			self.rect.x = xpos - 10
+			self.rect.y = ypos + 5
+		elif self.imageName == "TazerLeftDown.png":
+			self.rect.x = xpos - 10
+			self.rect.y = ypos + 29
+		elif self.imageName == "TazerRightUp.png":
+			self.rect.x = xpos + 43
+			self.rect.y = ypos + 5
+		elif self.imageName == "TazerRightDown.png":
+			self.rect.x = xpos + 47
+			self.rect.y = ypos + 29
+
+	def update(self, playerX, playerY, facingRight, space, platforms):
+		if not self.isFacingRight == facingRight or not self.lastSpace == space:
+			self.loadImage(facingRight, space)
+			self.isFacingRight = facingRight
+			self.lastSpace = space
+
+		if self.imageName == "TazerLeftUp.png":
+			self.rect.x = playerX - 10
+			self.rect.y = playerY + 5
+		elif self.imageName == "TazerLeftDown.png":
+			self.rect.x = playerX - 30
+			self.rect.y = playerY + 29
+		elif self.imageName == "TazerRightUp.png":
+			self.rect.x = playerX + 45
+			self.rect.y = playerY + 5
+		elif self.imageName == "TazerRightDown.png":
+			self.rect.x = playerX + 47
+			self.rect.y = playerY + 29
+		self.collide(platforms)
+
+
+	def collide(self, platforms):
+		for block in platforms:
+			if pygame.sprite.collide_rect(self, block):
+				if isinstance(block, Characters.Enemy):
+					platforms.remove(block)
 
 	def loadImage(self, facingRight, space):
 		self.image = pygame.image.load(self.imageSwap[int(facingRight)][int(space)]).convert_alpha()
+		self.rect = self.image.get_rect()
+		if space:
+			self.rect.width = 30
+			self.rect.height = 6
+		else:
+			self.rect.width = 12
+			self.rect.height = 35
+		self.imageName = self.imageSwap[int(facingRight)][int(space)]
 
 # Poweup class: it's a powerup class
 class LightningRodBlock(Powerup):

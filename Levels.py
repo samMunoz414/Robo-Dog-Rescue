@@ -43,18 +43,18 @@ class Level():
             
         if lvl == 1:
             # First screen
-            enemy_list.add(Enemy('LeftFacingBlackScientist.png', 'RightFacingBlackScientist.png', 680, 601))
-            enemy_list.add(Enemy('LeftFacingBlackScientist.png', 'RightFacingBlackScientist.png', 560, 61))
+            enemy_list.add(Enemy('LeftFacingBlackScientist.png', 'RightFacingBlackScientist.png', 680, 586))
+            enemy_list.add(Enemy('LeftFacingBlackScientist.png', 'RightFacingBlackScientist.png', 560, 46))
             # Second screen
-            enemy_list.add(Enemy('LeftFacingBlackScientist.png', 'RightFacingBlackScientist.png', 1150, 421))
-            enemy_list.add(Enemy('LeftFacingBlackScientist.png', 'RightFacingBlackScientist.png', 1570, 421))
+            enemy_list.add(Enemy('LeftFacingBlackScientist.png', 'RightFacingBlackScientist.png', 1150, 406))
+            enemy_list.add(Enemy('LeftFacingBlackScientist.png', 'RightFacingBlackScientist.png', 1570, 406))
             # Third screen
-            enemy_list.add(Enemy('LeftFacingBlackScientist.png', 'RightFacingBlackScientist.png', 2420, 421))
-            enemy_list.add(Enemy('LeftFacingBlackScientist.png', 'RightFacingBlackScientist.png', 2580, 601))
+            enemy_list.add(Enemy('LeftFacingBlackScientist.png', 'RightFacingBlackScientist.png', 2420, 406))
+            enemy_list.add(Enemy('LeftFacingBlackScientist.png', 'RightFacingBlackScientist.png', 2580, 586))
             # Fourth screen
-            enemy_list.add(Enemy('LeftFacingBlackScientist.png', 'RightFacingBlackScientist.png', 3350, 601))
-            enemy_list.add(Enemy('LeftFacingBlackScientist.png', 'RightFacingBlackScientist.png', 3200, 601))
-            enemy_list.add(Enemy('LeftFacingBlackScientist.png', 'RightFacingBlackScientist.png', 2950, 241))
+            enemy_list.add(Enemy('LeftFacingBlackScientist.png', 'RightFacingBlackScientist.png', 3350, 586))
+            enemy_list.add(Enemy('LeftFacingBlackScientist.png', 'RightFacingBlackScientist.png', 3200, 586))
+            enemy_list.add(Enemy('LeftFacingBlackScientist.png', 'RightFacingBlackScientist.png', 2950, 265))
 
         if lvl == 2:
             # First screen
@@ -121,7 +121,7 @@ class Level():
             powerups_list.add(LightningRodBlock(490, 250))
             # for i in range(25):
             # 	powerups_list.add(Gear(100, 610))
-            powerups_list.add(LaserGunBlock(100, 610))
+            # powerups_list.add(LaserGunBlock(100, 610))
 
             # Second screen
             for i in range(2):
@@ -346,6 +346,7 @@ class Level():
                 platform_list.add(Platform("tempblock.png", (i+56)*60, 300))
             for i in range(4):
                 platform_list.add(Platform("tempblock.png", (i+59)*60, 480))
+            platform_list.add(Platform("tempblock.png", 100, 580))
 
         if lvl == 2:
             # Spikes for all screens
