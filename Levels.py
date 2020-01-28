@@ -119,9 +119,10 @@ class Level():
                 powerups_list.add(Gear(((i+9)*60)+10, 250))
                 powerups_list.add(Gear(((i+9)*60)+10, 70))
             powerups_list.add(LightningRodBlock(490, 250))
+            
             # for i in range(25):
             # 	powerups_list.add(Gear(100, 610))
-            # powerups_list.add(LaserGunBlock(100, 610))
+            powerups_list.add(LaserGunBlock(100, 610))
 
             # Second screen
             for i in range(2):
@@ -198,7 +199,7 @@ class Level():
             for i in range(2):
                 powerups_list.add(Gear(((i+2)*60)+10, 430))
                 powerups_list.add(Gear(((i+9)*120)+10, 430))
-            powerups_list.add(LightningRod(250, 430))
+            # powerups_list.add(LightningRod(250, 430))
             # Second screen
             for i in range(5):
                 powerups_list.add(Gear(((i+21)*60)+10, 250))
@@ -346,7 +347,7 @@ class Level():
                 platform_list.add(Platform("tempblock.png", (i+56)*60, 300))
             for i in range(4):
                 platform_list.add(Platform("tempblock.png", (i+59)*60, 480))
-            platform_list.add(Platform("tempblock.png", 100, 580))
+            # platform_list.add(Platform("tempblock.png", 100, 580))
 
         if lvl == 2:
             # Spikes for all screens

@@ -532,7 +532,9 @@ def level(level, music):
         		frameCount = 0
         	if isinstance(grace.powerup, LaserGun):
         		if frameCount == 1:
-        			bullet_list.add(grace.fire())
+        			bullet = grace.fire()
+        			if not bullet == None:
+        				bullet_list.add(bullet)
         if grace.win == True:
             print("Won! Win screen " + 'WIN' + str(lvl))
             if lvl == 1 or lvl == 2:

@@ -64,12 +64,12 @@ class Person(pygame.sprite.Sprite):
 				# moving left
 				[
 					# left: animation True; right: animation False
-					"GraceLeft1ArmOut.png", "GraceLeft2ArmOut.png", 
+					"GraceLeft1MissingArm.png", "GraceLeft2MissingArm.png", 
 				],
 				# moving right
 				[
 					# left: animation True; right: animation False
-					"GraceRight1ArmOut.png", "GraceRight2ArmOut.png"
+					"GraceRight1MissingArm.png", "GraceRight2MissingArm.png"
 				],
 			]
 		]
@@ -172,7 +172,7 @@ class Person(pygame.sprite.Sprite):
 		if isinstance(blockType, LightningRod):
 			return LightningRodBlock(xpos, ypos)
 		elif isinstance(blockType, LaserGun):
-			return LaserGunBlock(xpos, ypos)
+			return LaserGunBlock(xpos, ypos, self.powerup.ammo)
 
 	def incrementGear(self):
 		if self.gearCount < 100:
@@ -180,10 +180,19 @@ class Person(pygame.sprite.Sprite):
 			print("Gear Count: " + str(self.gearCount))
 
 	def fire(self):
-		if self.isFacingRight == True:
-			return RedBullet(self.rect.x + self.rect.width + 14, self.rect.y + 31, self.isFacingRight)
+		if self.powerup.ammo <= 0:
+			self.powerup = None
+			return None
 		else:
-			return RedBullet(self.rect.x - 14, self.rect.y + 31, self.isFacingRight)
+			self.powerup.ammo -= 1
+			if self.powerup.ammo == 0:
+				self.powerup = None
+				self.rect.width = 31
+			if self.isFacingRight == True:
+				return RedBullet(self.rect.x + self.rect.width + 15, self.rect.y + 26, self.isFacingRight)
+			else:
+				return RedBullet(self.rect.x - 15, self.rect.y + 26, self.isFacingRight)
+
 
 	def activateCosmo(self):
 		if self.gearCount >= 25:
@@ -198,8 +207,6 @@ class Person(pygame.sprite.Sprite):
 					if powerup:
 						if isinstance(self.powerup, type(None)):
 							self.powerup = LightningRod(self.rect.x, self.rect.y, self.isFacingRight, space)
-							self.rect.width = 46
-							self.rect.height = 87
 							platforms.remove(block)
 						else:
 							if self.recentPowerupChange == False:
@@ -212,14 +219,12 @@ class Person(pygame.sprite.Sprite):
 				if isinstance(block, LaserGunBlock):
 					if powerup:
 						if isinstance(self.powerup, type(None)):
-							self.powerup = LaserGun(self.rect.x, self.rect.y, self.isFacingRight)
-							self.rect.width = 46
-							self.rect.height = 87
+							self.powerup = LaserGun(self.rect.x, self.rect.y, self.isFacingRight, block.ammo)
 							platforms.remove(block)
 						else:
 							if self.recentPowerupChange == False:
 								platforms.add(self.createNewPowerup(self.powerup, block.rect.x, block.rect.y))
-								self.powerup = LaserGun(self.rect.x, self.rect.y, self.isFacingRight)
+								self.powerup = LaserGun(self.rect.x, self.rect.y, self.isFacingRight, block.ammo)
 								platforms.remove(block)
 								self.recentPowerupChange = True
 					return
