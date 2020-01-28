@@ -52,12 +52,12 @@ class Person(pygame.sprite.Sprite):
 				# moving left
 				[
 					# left: animation True; right: animation False
-					"GraceLeft1.png", "GraceLeft2.png", 
+					"assets/GraceLeft1.png", "assets/GraceLeft2.png", 
 				],
 				# moving right
 				[
 					# left: animation True; right: animation False
-					"GraceRight1.png", "GraceRight2.png"
+					"assets/GraceRight1.png", "assets/GraceRight2.png"
 				],
 			],
 
@@ -66,12 +66,12 @@ class Person(pygame.sprite.Sprite):
 				# moving left
 				[
 					# left: animation True; right: animation False
-					"GraceLeft1MissingArm.png", "GraceLeft2MissingArm.png", 
+					"assets/GraceLeft1MissingArm.png", "assets/GraceLeft2MissingArm.png", 
 				],
 				# moving right
 				[
 					# left: animation True; right: animation False
-					"GraceRight1MissingArm.png", "GraceRight2MissingArm.png"
+					"assets/GraceRight1MissingArm.png", "assets/GraceRight2MissingArm.png"
 				],
 			]
 		]
@@ -317,7 +317,7 @@ class Enemy(pygame.sprite.Sprite):
 
     def deathAnimation(self):
     	if self.frameCount == 0:
-    		self.image = pygame.image.load("DeadBlackScientist.png").convert_alpha()
+    		self.image = pygame.image.load("assets/DeadBlackScientist.png").convert_alpha()
     	self.frameCount += 1
     	if self.frameCount == 15:
     		self.state = "dead"

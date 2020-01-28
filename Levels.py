@@ -36,68 +36,68 @@ class Level():
         enemy_list = pygame.sprite.Group() # Create enemy group
         if lvl == 0:
             # First screen
-            enemy_list.add(Enemy('LeftFacingBlackScientist.png', 'RightFacingBlackScientist.png', 500, 586))
+            enemy_list.add(Enemy('assets/LeftFacingBlackScientist.png', 'assets/RightFacingBlackScientist.png', 500, 586))
             # Second screen
-            enemy_list.add(Enemy('LeftFacingBlackScientist.png', 'RightFacingBlackScientist.png', 1350, 226))
-            enemy_list.add(Enemy('LeftFacingBlackScientist.png', 'RightFacingBlackScientist.png', 1600, 586))
+            enemy_list.add(Enemy('assets/LeftFacingBlackScientist.png', 'assets/RightFacingBlackScientist.png', 1350, 226))
+            enemy_list.add(Enemy('assets/LeftFacingBlackScientist.png', 'assets/RightFacingBlackScientist.png', 1600, 586))
             
         if lvl == 1:
             # First screen
-            enemy_list.add(Enemy('LeftFacingBlackScientist.png', 'RightFacingBlackScientist.png', 680, 586))
-            enemy_list.add(Enemy('LeftFacingBlackScientist.png', 'RightFacingBlackScientist.png', 560, 46))
+            enemy_list.add(Enemy('assets/LeftFacingBlackScientist.png', 'assets/RightFacingBlackScientist.png', 680, 586))
+            enemy_list.add(Enemy('assets/LeftFacingBlackScientist.png', 'assets/RightFacingBlackScientist.png', 560, 46))
             # Second screen
-            enemy_list.add(Enemy('LeftFacingBlackScientist.png', 'RightFacingBlackScientist.png', 1150, 406))
-            enemy_list.add(Enemy('LeftFacingBlackScientist.png', 'RightFacingBlackScientist.png', 1570, 406))
+            enemy_list.add(Enemy('assets/LeftFacingBlackScientist.png', 'assets/RightFacingBlackScientist.png', 1150, 406))
+            enemy_list.add(Enemy('assets/LeftFacingBlackScientist.png', 'assets/RightFacingBlackScientist.png', 1570, 406))
             # Third screen
-            enemy_list.add(Enemy('LeftFacingBlackScientist.png', 'RightFacingBlackScientist.png', 2420, 406))
-            enemy_list.add(Enemy('LeftFacingBlackScientist.png', 'RightFacingBlackScientist.png', 2580, 586))
+            enemy_list.add(Enemy('assets/LeftFacingBlackScientist.png', 'assets/RightFacingBlackScientist.png', 2420, 406))
+            enemy_list.add(Enemy('assets/LeftFacingBlackScientist.png', 'assets/RightFacingBlackScientist.png', 2580, 586))
             # Fourth screen
-            enemy_list.add(Enemy('LeftFacingBlackScientist.png', 'RightFacingBlackScientist.png', 3350, 586))
-            enemy_list.add(Enemy('LeftFacingBlackScientist.png', 'RightFacingBlackScientist.png', 3200, 586))
-            enemy_list.add(Enemy('LeftFacingBlackScientist.png', 'RightFacingBlackScientist.png', 2950, 226))
+            enemy_list.add(Enemy('assets/LeftFacingBlackScientist.png', 'assets/RightFacingBlackScientist.png', 3350, 586))
+            enemy_list.add(Enemy('assets/LeftFacingBlackScientist.png', 'assets/RightFacingBlackScientist.png', 3200, 586))
+            enemy_list.add(Enemy('assets/LeftFacingBlackScientist.png', 'assets/RightFacingBlackScientist.png', 2950, 226))
 
         if lvl == 2:
             # First screen
-            enemy_list.add(Enemy('LeftFacingBlackScientist.png', 'RightFacingBlackScientist.png', 560, 586))
-            enemy_list.add(Enemy('LeftFacingBlackScientist.png', 'RightFacingBlackScientist.png', 310, 406))
-            enemy_list.add(Enemy('LeftFacingBlackScientist.png', 'RightFacingBlackScientist.png', 560, 586))
-            enemy_list.add(Enemy('LeftFacingBlackScientist.png', 'RightFacingBlackScientist.png', 310, 406))
+            enemy_list.add(Enemy('assets/LeftFacingBlackScientist.png', 'assets/RightFacingBlackScientist.png', 560, 586))
+            enemy_list.add(Enemy('assets/LeftFacingBlackScientist.png', 'assets/RightFacingBlackScientist.png', 310, 406))
+            enemy_list.add(Enemy('assets/LeftFacingBlackScientist.png', 'assets/RightFacingBlackScientist.png', 560, 586))
+            enemy_list.add(Enemy('assets/LeftFacingBlackScientist.png', 'assets/RightFacingBlackScientist.png', 310, 406))
             # Second screen
-            enemy_list.add(Enemy('LeftFacingBlackScientist.png', 'RightFacingBlackScientist.png', 1200, 46))
-            enemy_list.add(Enemy('LeftFacingBlackScientist.png', 'RightFacingBlackScientist.png', 1040, 226))
+            enemy_list.add(Enemy('assets/LeftFacingBlackScientist.png', 'assets/RightFacingBlackScientist.png', 1200, 46))
+            enemy_list.add(Enemy('assets/LeftFacingBlackScientist.png', 'assets/RightFacingBlackScientist.png', 1040, 226))
             # Third screen
-            enemy_list.add(Enemy('LeftFacingBlackScientist.png', 'RightFacingBlackScientist.png', 2360, 226))
-            enemy_list.add(Enemy('LeftFacingBlackScientist.png', 'RightFacingBlackScientist.png', 2600, 406))
+            enemy_list.add(Enemy('assets/LeftFacingBlackScientist.png', 'assets/RightFacingBlackScientist.png', 2360, 226))
+            enemy_list.add(Enemy('assets/LeftFacingBlackScientist.png', 'assets/RightFacingBlackScientist.png', 2600, 406))
             # Fourth screen
-            enemy_list.add(Enemy('LeftFacingBlackScientist.png', 'RightFacingBlackScientist.png', 3320, 586))
-            enemy_list.add(Enemy('LeftFacingBlackScientist.png', 'RightFacingBlackScientist.png', 3420, 226))
-            enemy_list.add(Enemy('LeftFacingBlackScientist.png', 'RightFacingBlackScientist.png', 3060, 46))
+            enemy_list.add(Enemy('assets/LeftFacingBlackScientist.png', 'assets/RightFacingBlackScientist.png', 3320, 586))
+            enemy_list.add(Enemy('assets/LeftFacingBlackScientist.png', 'assets/RightFacingBlackScientist.png', 3420, 226))
+            enemy_list.add(Enemy('assets/LeftFacingBlackScientist.png', 'assets/RightFacingBlackScientist.png', 3060, 46))
 
         if lvl == 3:
             # First screen
-            enemy_list.add(Enemy('LeftFacingBlackScientist.png', 'RightFacingBlackScientist.png', 190, 406))
-            enemy_list.add(Enemy('LeftFacingBlackScientist.png', 'RightFacingBlackScientist.png', 420, 406))
+            enemy_list.add(Enemy('assets/LeftFacingBlackScientist.png', 'assets/RightFacingBlackScientist.png', 190, 406))
+            enemy_list.add(Enemy('assets/LeftFacingBlackScientist.png', 'assets/RightFacingBlackScientist.png', 420, 406))
             # Second screen
-            enemy_list.add(Enemy('LeftFacingBlackScientist.png', 'RightFacingBlackScientist.png', 1560, 46))
+            enemy_list.add(Enemy('assets/LeftFacingBlackScientist.png', 'assets/RightFacingBlackScientist.png', 1560, 46))
             # Third screen
-            enemy_list.add(Enemy('LeftFacingBlackScientist.png', 'RightFacingBlackScientist.png', 2060, 406))
-            enemy_list.add(Enemy('LeftFacingBlackScientist.png', 'RightFacingBlackScientist.png', 2600, 406))
+            enemy_list.add(Enemy('assets/LeftFacingBlackScientist.png', 'assets/RightFacingBlackScientist.png', 2060, 406))
+            enemy_list.add(Enemy('assets/LeftFacingBlackScientist.png', 'assets/RightFacingBlackScientist.png', 2600, 406))
             # Fourth screen
-            enemy_list.add(Enemy('LeftFacingBlackScientist.png', 'RightFacingBlackScientist.png', 3080, 406))
-            enemy_list.add(Enemy('LeftFacingBlackScientist.png', 'RightFacingBlackScientist.png', 3220, 226))
-            enemy_list.add(Enemy('LeftFacingBlackScientist.png', 'RightFacingBlackScientist.png', 3520, 406))
+            enemy_list.add(Enemy('assets/LeftFacingBlackScientist.png', 'assets/RightFacingBlackScientist.png', 3080, 406))
+            enemy_list.add(Enemy('assets/LeftFacingBlackScientist.png', 'assets/RightFacingBlackScientist.png', 3220, 226))
+            enemy_list.add(Enemy('assets/LeftFacingBlackScientist.png', 'assets/RightFacingBlackScientist.png', 3520, 406))
             # Fifth screen
-            enemy_list.add(Enemy('LeftFacingBlackScientist.png', 'RightFacingBlackScientist.png', 4060, 406))
-            enemy_list.add(Enemy('LeftFacingBlackScientist.png', 'RightFacingBlackScientist.png', 4340, 226))
-            enemy_list.add(Enemy('LeftFacingBlackScientist.png', 'RightFacingBlackScientist.png', 4200, 586))
+            enemy_list.add(Enemy('assets/LeftFacingBlackScientist.png', 'assets/RightFacingBlackScientist.png', 4060, 406))
+            enemy_list.add(Enemy('assets/LeftFacingBlackScientist.png', 'assets/RightFacingBlackScientist.png', 4340, 226))
+            enemy_list.add(Enemy('assets/LeftFacingBlackScientist.png', 'assets/RightFacingBlackScientist.png', 4200, 586))
             # Sixth screen
-            enemy_list.add(Enemy('LeftFacingBlackScientist.png', 'RightFacingBlackScientist.png', 4920, 406))
-            enemy_list.add(Enemy('LeftFacingBlackScientist.png', 'RightFacingBlackScientist.png', 5300, 226))
-            enemy_list.add(Enemy('LeftFacingBlackScientist.png', 'RightFacingBlackScientist.png', 5100, 226))
-            enemy_list.add(Enemy('LeftFacingBlackScientist.png', 'RightFacingBlackScientist.png', 5360, 46))
-            enemy_list.add(Enemy('LeftFacingBlackScientist.png', 'RightFacingBlackScientist.png', 5540, 406))
-            enemy_list.add(Enemy('LeftFacingBlackScientist.png', 'RightFacingBlackScientist.png', 5180, 586))
-            enemy_list.add(Enemy('LeftFacingBlackScientist.png', 'RightFacingBlackScientist.png', 5280, 586))
+            enemy_list.add(Enemy('assets/LeftFacingBlackScientist.png', 'assets/RightFacingBlackScientist.png', 4920, 406))
+            enemy_list.add(Enemy('assets/LeftFacingBlackScientist.png', 'assets/RightFacingBlackScientist.png', 5300, 226))
+            enemy_list.add(Enemy('assets/LeftFacingBlackScientist.png', 'assets/RightFacingBlackScientist.png', 5100, 226))
+            enemy_list.add(Enemy('assets/LeftFacingBlackScientist.png', 'assets/RightFacingBlackScientist.png', 5360, 46))
+            enemy_list.add(Enemy('assets/LeftFacingBlackScientist.png', 'assets/RightFacingBlackScientist.png', 5540, 406))
+            enemy_list.add(Enemy('assets/LeftFacingBlackScientist.png', 'assets/RightFacingBlackScientist.png', 5180, 586))
+            enemy_list.add(Enemy('assets/LeftFacingBlackScientist.png', 'assets/RightFacingBlackScientist.png', 5280, 586))
         return enemy_list
     
     def powerups(lvl):
@@ -246,17 +246,17 @@ class Level():
         floor_list = pygame.sprite.Group()
         if lvl == 0:
             for i in range(32): # 2 screens of floor blocks
-                floor_list.add(Platform("block1_60x60.png", i*60, 660))
+                floor_list.add(Platform("assets/block1_60x60.png", i*60, 660))
 
         if lvl == 1 or lvl == 2:
             # Used for levels 1 and 2
             for i in range(64): # 4 screens of floor blocks
-                floor_list.add(Platform("block1.png", i*60, 660))
+                floor_list.add(Platform("assets/block1.png", i*60, 660))
 
         if lvl == 3:
             # Used for level 3
             for i in range(96):
-                floor_list.add(Platform("block1_60x60.png", i*60, 660))
+                floor_list.add(Platform("assets/block1_60x60.png", i*60, 660))
 
         return floor_list
 
@@ -268,41 +268,41 @@ class Level():
         if lvl == 0:
             # Ceiling blocks
             for i in range(32):
-                platform_list.add(Platform("tempblock.png", i*60, -60))
+                platform_list.add(Platform("assets/tempblock.png", i*60, -60))
             platform_list.add(Spike(240, 640))
             # First screen
             for i in range(3):
-                platform_list.add(Platform("tempblock.png", (i+3)*60, 480))
+                platform_list.add(Platform("assets/tempblock.png", (i+3)*60, 480))
             for i in range(3):
-                platform_list.add(Platform("tempblock.png", (i+6)*60, 300))
+                platform_list.add(Platform("assets/tempblock.png", (i+6)*60, 300))
             for i in range(3):
-                platform_list.add(Platform("tempblock.png", ((i+8)*60)+30, 480))
+                platform_list.add(Platform("assets/tempblock.png", ((i+8)*60)+30, 480))
             # Second screen
             for i in range(5):
-                platform_list.add(Platform("tempblock.png", (i+21)*60, 300))
+                platform_list.add(Platform("assets/tempblock.png", (i+21)*60, 300))
             for i in range(3):
-                platform_list.add(Platform("tempblock.png", (i+17)*60, 480))
+                platform_list.add(Platform("assets/tempblock.png", (i+17)*60, 480))
             for i in range(3):
-                platform_list.add(Platform("tempblock.png", (i+24)*60, 120))
+                platform_list.add(Platform("assets/tempblock.png", (i+24)*60, 120))
             # Block off beginning of game
             for i in range(12):
-                platform_list.add(Platform("tempblock.png", -60, i*60))
+                platform_list.add(Platform("assets/tempblock.png", -60, i*60))
             
         if lvl == 1 or lvl == 2:
             # Ceiling blocks
             for i in range(64):
-                platform_list.add(Platform("tempblock.png", i*60, -60))
+                platform_list.add(Platform("assets/tempblock.png", i*60, -60))
             # Block off beginning of game
             for i in range(12):
-                platform_list.add(Platform("tempblock.png", -60, i*60))
+                platform_list.add(Platform("assets/tempblock.png", -60, i*60))
 
         if lvl == 3:
             # Ceiling blocks
             for i in range(96):
-                platform_list.add(Platform("tempblock.png", i*60, -60))
+                platform_list.add(Platform("assets/tempblock.png", i*60, -60))
             # Block off beginning of game
             for i in range(12):
-                platform_list.add(Platform("tempblock.png", -60, i*60))
+                platform_list.add(Platform("assets/tempblock.png", -60, i*60))
 
 
         if lvl == 1:
@@ -313,39 +313,39 @@ class Level():
                 platform_list.add(Spike((i+20)*60, 640))
             # First screen
             for i in range(4):
-                platform_list.add(Platform("tempblock.png", (i+3)*60, 480))
+                platform_list.add(Platform("assets/tempblock.png", (i+3)*60, 480))
             for i in range(5):
-                platform_list.add(Platform("tempblock.png", (i+6)*60, 300))
+                platform_list.add(Platform("assets/tempblock.png", (i+6)*60, 300))
             for i in range(4):
-                platform_list.add(Platform("tempblock.png", (i+9)*60, 120))
+                platform_list.add(Platform("assets/tempblock.png", (i+9)*60, 120))
             # Second screen
             for i in range(5):
-                platform_list.add(Platform("tempblock.png", (i+18)*60, 480))
+                platform_list.add(Platform("assets/tempblock.png", (i+18)*60, 480))
             for i in range(3):
-                platform_list.add(Platform("tempblock.png", (i+21)*60, 120))
+                platform_list.add(Platform("assets/tempblock.png", (i+21)*60, 120))
             for i in range(3):
-                platform_list.add(Platform("tempblock.png", (i+23)*60, 300))
+                platform_list.add(Platform("assets/tempblock.png", (i+23)*60, 300))
             for i in range(5):
-                platform_list.add(Platform("tempblock.png", (i+25)*60, 480))
+                platform_list.add(Platform("assets/tempblock.png", (i+25)*60, 480))
             # Third screen
             for i in range(3):
-                platform_list.add(Platform("tempblock.png", (i+34)*60, 480))
+                platform_list.add(Platform("assets/tempblock.png", (i+34)*60, 480))
             for i in range(5):
-                platform_list.add(Platform("tempblock.png", (i+36)*60, 120))
+                platform_list.add(Platform("assets/tempblock.png", (i+36)*60, 120))
             for i in range(3):
-                platform_list.add(Platform("tempblock.png", (i+42)*60, 300))
+                platform_list.add(Platform("assets/tempblock.png", (i+42)*60, 300))
             for i in range(4):
-                platform_list.add(Platform("tempblock.png", (i+40)*60, 480))
+                platform_list.add(Platform("assets/tempblock.png", (i+40)*60, 480))
             # Fourth screen
             for i in range(5):
-                platform_list.add(Platform("tempblock.png", (i+49)*60, 300))
+                platform_list.add(Platform("assets/tempblock.png", (i+49)*60, 300))
             for i in range(5):
-                platform_list.add(Platform("tempblock.png", (i+52)*60, 120))
+                platform_list.add(Platform("assets/tempblock.png", (i+52)*60, 120))
             for i in range(3):
-                platform_list.add(Platform("tempblock.png", (i+56)*60, 300))
+                platform_list.add(Platform("assets/tempblock.png", (i+56)*60, 300))
             for i in range(4):
-                platform_list.add(Platform("tempblock.png", (i+59)*60, 480))
-            # platform_list.add(Platform("tempblock.png", 100, 580))
+                platform_list.add(Platform("assets/tempblock.png", (i+59)*60, 480))
+            # platform_list.add(Platform("assets/tempblock.png", 100, 580))
 
         if lvl == 2:
             # Spikes for all screens
@@ -362,39 +362,39 @@ class Level():
                 platform_list.add(Spike(((i+45)*60)+10, 640))
             # First screen
             for i in range(5):
-                platform_list.add(Platform("tempblock.png", (i+4)*60, 480))
+                platform_list.add(Platform("assets/tempblock.png", (i+4)*60, 480))
             for i in range(4):
-                platform_list.add(Platform("tempblock.png", (i+11)*60, 480))
+                platform_list.add(Platform("assets/tempblock.png", (i+11)*60, 480))
             for i in range(2):
-                platform_list.add(Platform("tempblock.png", (i+6)*60, 300))
-                platform_list.add(Platform("tempblock.png", (i+10)*60, 300))
+                platform_list.add(Platform("assets/tempblock.png", (i+6)*60, 300))
+                platform_list.add(Platform("assets/tempblock.png", (i+10)*60, 300))
             for i in range(3):
-                platform_list.add(Platform("tempblock.png", (i+3)*60, 120))
+                platform_list.add(Platform("assets/tempblock.png", (i+3)*60, 120))
             # Second screen
             for i in range(4):
-                platform_list.add(Platform("tempblock.png", (i+17)*60, 300))
+                platform_list.add(Platform("assets/tempblock.png", (i+17)*60, 300))
             for i in range(5):
-                platform_list.add(Platform("tempblock.png", (i+22)*60, 480))
+                platform_list.add(Platform("assets/tempblock.png", (i+22)*60, 480))
             for i in range(5):
-                platform_list.add(Platform("tempblock.png", (i+20)*60, 120))
+                platform_list.add(Platform("assets/tempblock.png", (i+20)*60, 120))
             for i in range(4):
-                platform_list.add(Platform("tempblock.png", (i+27)*60, 300))
+                platform_list.add(Platform("assets/tempblock.png", (i+27)*60, 300))
             # Third screen
             for i in range(5):
-                platform_list.add(Platform("tempblock.png", (i+34)*60, 120))
+                platform_list.add(Platform("assets/tempblock.png", (i+34)*60, 120))
             for i in range(3):
-                platform_list.add(Platform("tempblock.png", (i+36)*60, 480))
+                platform_list.add(Platform("assets/tempblock.png", (i+36)*60, 480))
             for i in range(5):
-                platform_list.add(Platform("tempblock.png", (i+38)*60, 300))
+                platform_list.add(Platform("assets/tempblock.png", (i+38)*60, 300))
             for i in range(9):
-                platform_list.add(Platform("tempblock.png", (i+42)*60, 480))
+                platform_list.add(Platform("assets/tempblock.png", (i+42)*60, 480))
             # Fourth screen
             for i in range(5):
-                platform_list.add(Platform("tempblock.png", (i+50)*60, 120))
+                platform_list.add(Platform("assets/tempblock.png", (i+50)*60, 120))
             for i in range(3):
-                platform_list.add(Platform("tempblock.png", (i+54)*60, 480))
+                platform_list.add(Platform("assets/tempblock.png", (i+54)*60, 480))
             for i in range(5):
-                platform_list.add(Platform("tempblock.png", (i+57)*60, 300))
+                platform_list.add(Platform("assets/tempblock.png", (i+57)*60, 300))
 
         if lvl == 3:
             # Spikes for all screens
@@ -420,51 +420,51 @@ class Level():
             platform_list.add(Spike(5700, 460))
             # First screen
             for i in range(9):
-                platform_list.add(Platform("tempblock.png", (i+2)*60, 480))
+                platform_list.add(Platform("assets/tempblock.png", (i+2)*60, 480))
             for i in range(4):
-                platform_list.add(Platform("tempblock.png", (i+8)*60, 300))
+                platform_list.add(Platform("assets/tempblock.png", (i+8)*60, 300))
             # Second screen
             for i in range(3):
-                platform_list.add(Platform("tempblock.png", (i+18)*60, 480))
+                platform_list.add(Platform("assets/tempblock.png", (i+18)*60, 480))
             for i in range(7):
-                platform_list.add(Platform("tempblock.png", (i+20)*60, 300))
+                platform_list.add(Platform("assets/tempblock.png", (i+20)*60, 300))
             for i in range(5):
-                platform_list.add(Platform("tempblock.png", (i+26)*60, 120))
+                platform_list.add(Platform("assets/tempblock.png", (i+26)*60, 120))
             # Third screen
             for i in range(4):
-                platform_list.add(Platform("tempblock.png", (i+34)*60, 480))
+                platform_list.add(Platform("assets/tempblock.png", (i+34)*60, 480))
             for i in range(5):
-                platform_list.add(Platform("tempblock.png", (i+42)*60, 480))
+                platform_list.add(Platform("assets/tempblock.png", (i+42)*60, 480))
             for i in range(4):
-                platform_list.add(Platform("tempblock.png", (i+38)*60, 300))
+                platform_list.add(Platform("assets/tempblock.png", (i+38)*60, 300))
             # Fourth screen
             for i in range(5):
-                platform_list.add(Platform("tempblock.png", (i+50)*60, 480))
+                platform_list.add(Platform("assets/tempblock.png", (i+50)*60, 480))
             for i in range(5):
-                platform_list.add(Platform("tempblock.png", (i+54)*60, 300))
+                platform_list.add(Platform("assets/tempblock.png", (i+54)*60, 300))
             for i in range(4):
-                platform_list.add(Platform("tempblock.png", (i+59)*60, 480))
+                platform_list.add(Platform("assets/tempblock.png", (i+59)*60, 480))
             # Fifth screen
             for i in range(3):
-                platform_list.add(Platform("tempblock.png", (i+66)*60, 300))
+                platform_list.add(Platform("assets/tempblock.png", (i+66)*60, 300))
             for i in range(3):
-                platform_list.add(Platform("tempblock.png", (i+68)*60, 480))
+                platform_list.add(Platform("assets/tempblock.png", (i+68)*60, 480))
             for i in range(2):
-                platform_list.add(Platform("tempblock.png", (i+70)*60, 120))
+                platform_list.add(Platform("assets/tempblock.png", (i+70)*60, 120))
             for i in range(3):
-                platform_list.add(Platform("tempblock.png", (i+73)*60, 480))
+                platform_list.add(Platform("assets/tempblock.png", (i+73)*60, 480))
             for i in range(4):
-                platform_list.add(Platform("tempblock.png", (i+72)*60, 300))
+                platform_list.add(Platform("assets/tempblock.png", (i+72)*60, 300))
             for i in range(8):
-                platform_list.add(Platform("tempblock.png", (i+78)*60, 480))
+                platform_list.add(Platform("assets/tempblock.png", (i+78)*60, 480))
             # Sixth screen
             for i in range(7):
-                platform_list.add(Platform("tempblock.png", (i+85)*60, 300))
+                platform_list.add(Platform("assets/tempblock.png", (i+85)*60, 300))
             for i in range(4):
-                platform_list.add(Platform("tempblock.png", (i+88)*60, 120))
+                platform_list.add(Platform("assets/tempblock.png", (i+88)*60, 120))
             for i in range(2):
-                platform_list.add(Platform("tempblock.png", (i+94)*60, 120))
+                platform_list.add(Platform("assets/tempblock.png", (i+94)*60, 120))
             for i in range(4):
-                platform_list.add(Platform("tempblock.png", (i+92)*60, 480))
+                platform_list.add(Platform("assets/tempblock.png", (i+92)*60, 480))
             
         return platform_list

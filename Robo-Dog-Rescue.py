@@ -30,7 +30,7 @@ except:
 # Start screen
 def start():
 	print('On start screen')
-	background = pygame.image.load('startscreen.png').convert_alpha()
+	background = pygame.image.load('assets/startscreen.png').convert_alpha()
 	backgroundbox = background.get_rect()
 
 	# Buttons on the start screen
@@ -71,12 +71,12 @@ def start():
 # Show the controls to the player
 def controls():
 	print("In control screen")
-	background = pygame.image.load("howtoplay.png").convert_alpha()
+	background = pygame.image.load("assets/howtoplay.png").convert_alpha()
 	backgroundbox = background.get_rect()
 
 	# Button
 	backbutton = Button(360, 590, 240, 120, 'START')
-	backimage = pygame.image.load("backtitle.png").convert_alpha()
+	backimage = pygame.image.load("assets/backtitle.png").convert_alpha()
 
 	while 1:
 		for event in pygame.event.get():
@@ -97,11 +97,11 @@ def controls():
 # Game loop for tutorial
 def tutorial():
 	print('In level one function')
-	background = pygame.image.load("Tutorial_Background2.png").convert_alpha()
+	background = pygame.image.load("assets/Tutorial_Background2.png").convert_alpha()
 	backgroundbox = background.get_rect()
 
 	# Skip image and button for corner of screen
-	skipimage = pygame.image.load('skipbutton.png')
+	skipimage = pygame.image.load('assets/skipbutton.png')
 	skipbutton = Button(860, 10, 90, 60, 'CUTSCENE')
 
 	# Stop all channels from playing music
@@ -119,7 +119,7 @@ def tutorial():
 	platform_list.add(enemy_list)
 
 	# Spawn person and add input booleans
-	grace = Person('GraceRight2.png', 60, 570)
+	grace = Person('assets/GraceRight2.png', 60, 570)
 	person_list = pygame.sprite.Group()
 	person_list.add(grace)
 
@@ -133,7 +133,7 @@ def tutorial():
 	font = pygame.font.SysFont("Futura", 26)
 
 	# Blit door on last screen
-	door = pygame.image.load("Door.png").convert_alpha()
+	door = pygame.image.load("assets/Door.png").convert_alpha()
 
 	frameCount = 0
 
@@ -277,11 +277,11 @@ def tutorial():
 # Cut scene - after the tutorial level and before the level selection screen
 def cutscene():
 	print("In cut scene")
-	background = pygame.image.load("panel5.png").convert_alpha()
+	background = pygame.image.load("assets/panel5.png").convert_alpha()
 	backgroundbox = background.get_rect()
 
 	# Next image and button
-	nextimage = pygame.image.load('nextpurple.png')
+	nextimage = pygame.image.load('assets/nextpurple.png')
 	nextbutton = Button(860, 650, 90, 60, 'SELECTLEVEL')
 
 	while 1:
@@ -299,12 +299,12 @@ def cutscene():
 
 # End credits scene
 def end():
-	background = pygame.image.load("end.png").convert_alpha()
+	background = pygame.image.load("assets/end.png").convert_alpha()
 	backgroundbox = background.get_rect()
 
 	# buttons
 	buttons = []
-	nextimage = pygame.image.load('nextpurple.png')
+	nextimage = pygame.image.load('assets/nextpurple.png')
 	nextbutton = Button(860, 650, 90, 60, 'CREDITS')
 	buttons.append(nextbutton)
 
@@ -326,15 +326,12 @@ def end():
 # Show the controls - can restart game
 def credits():
 	print("In credits screen")
-	background = pygame.image.load("credits.png").convert_alpha()
+	background = pygame.image.load("assets/credits.png").convert_alpha()
 	backgroundbox = background.get_rect()
 
 	# Button
 	backbutton = Button(710, 10, 240, 120, 'START')
-	backimage = pygame.image.load("restartgame.png").convert_alpha()
-
-	# Sound object to hold music
-	buttonMusic = pygame.mixer.Sound("optionselect2.wav")
+	backimage = pygame.image.load("assets/restartgame.png").convert_alpha()
 
 	while 1:
 		for event in pygame.event.get():
@@ -359,16 +356,16 @@ def prologue():
 	# Backgrounds for prologue
 	backgrounds = [] # Put the backgrounds in a list
 	for i in range(4):
-		backgrounds.append('panel'+ str(i+1) + '.png')
+		backgrounds.append('assets/panel'+ str(i+1) + '.png')
 	background = pygame.image.load(backgrounds[0]).convert_alpha()
 	backgroundbox = background.get_rect()
 
 	# Next image and button
-	nextimage = pygame.image.load('nextpurple.png')
+	nextimage = pygame.image.load('assets/nextpurple.png')
 	nextbutton = Button(860, 650, 90, 60, 'TUTORIAL')
 
 	# Skip image and button
-	skipimage = pygame.image.load('skippurple.png')
+	skipimage = pygame.image.load('assets/skippurple.png')
 	skipbutton = Button(860, 10, 90, 60, 'TUTORIAL')
 
 	# sets the volume for each song
@@ -408,7 +405,7 @@ def prologue():
 # Win screen for the tutorial
 def win(level, score):
 	print("On win screen")
-	background = pygame.image.load("win.png").convert_alpha()
+	background = pygame.image.load("assets/win.png").convert_alpha()
 	backgroundbox = background.get_rect()
 
 	lvl = level
@@ -418,13 +415,13 @@ def win(level, score):
 
 	# List of buttons - replay previous level and back to level select screen
 	buttons = []
-	replayimage = pygame.image.load("nextlevel.png").convert_alpha()
+	replayimage = pygame.image.load("assets/nextlevel.png").convert_alpha()
 	replaybutton = Button(360, 240, 240, 120, 'LEVEL'+str(lvl))
 	buttons.append(replaybutton)
-	selectlevelimage = pygame.image.load("backlevel.png").convert_alpha()
+	selectlevelimage = pygame.image.load("assets/backlevel.png").convert_alpha()
 	selectlevelbutton = Button(360, 400, 240, 120, 'SELECTLEVEL')
 	buttons.append(selectlevelbutton)
-	startscreenimage = pygame.image.load("backtitle.png").convert_alpha()
+	startscreenimage = pygame.image.load("assets/backtitle.png").convert_alpha()
 	startscreenbutton = Button(360, 560, 240, 120, 'START')
 	buttons.append(startscreenbutton)
 
@@ -455,20 +452,20 @@ def win(level, score):
 # Lose screen
 def lose(level):
 	print("On lose screen")
-	background = pygame.image.load("lose.png").convert_alpha()
+	background = pygame.image.load("assets/lose.png").convert_alpha()
 	backgroundbox = background.get_rect()
 
 	level = lvl
 
 	# List of buttons - replay previous level and back to level select screen
 	buttons = []
-	replayimage = pygame.image.load("bluerestartlevel.png").convert_alpha()
+	replayimage = pygame.image.load("assets/bluerestartlevel.png").convert_alpha()
 	replaybutton = Button(360, 240, 240, 120, 'LEVEL'+str(lvl))
 	buttons.append(replaybutton)
-	selectlevelimage = pygame.image.load("bluebacklevel.png").convert_alpha()
+	selectlevelimage = pygame.image.load("assets/bluebacklevel.png").convert_alpha()
 	selectlevelbutton = Button(360, 400, 240, 120, 'SELECTLEVEL')
 	buttons.append(selectlevelbutton)
-	startscreenimage = pygame.image.load("bluebacktitle.png").convert_alpha()
+	startscreenimage = pygame.image.load("assets/bluebacktitle.png").convert_alpha()
 	startscreenbutton = Button(360, 560, 240, 120, 'START')
 	buttons.append(startscreenbutton)
 
@@ -494,7 +491,7 @@ def lose(level):
 # Allow the user to select what level they are on
 def selectlevel(lvls):
 	print("In select level screen")
-	background = pygame.image.load("selectscreen.png").convert_alpha()
+	background = pygame.image.load("assets/selectscreen.png").convert_alpha()
 	backgroundbox = background.get_rect()
 
 	# List of buttons
@@ -508,9 +505,9 @@ def selectlevel(lvls):
 	yesimages = []
 	noimages = []
 	for i in range(3):
-		yesimage = pygame.image.load("green" + str(i+1) + ".png").convert_alpha()
+		yesimage = pygame.image.load("assets/green" + str(i+1) + ".png").convert_alpha()
 		yesimages.append(yesimage)
-		noimage = pygame.image.load("red" + str(i+1) + ".png").convert_alpha()
+		noimage = pygame.image.load("assets/red" + str(i+1) + ".png").convert_alpha()
 		noimages.append(noimage)
 
 	while 1:
@@ -539,7 +536,7 @@ def selectlevel(lvls):
 def level(level):
 	lvl = level
 	print("In level " + str(lvl))
-	background = pygame.image.load("Background.png").convert_alpha()
+	background = pygame.image.load("assets/Background.png").convert_alpha()
 	backgroundbox = background.get_rect()
 
 	# Stop all channels from playing music
@@ -564,7 +561,7 @@ def level(level):
 	platform_list.add(enemy_list)
 
 	# Spawn person and add input booleans
-	grace = Person('GraceRight2.png', 60, 570)
+	grace = Person('assets/GraceRight2.png', 60, 570)
 	person_list = pygame.sprite.Group()
 	person_list.add(grace)
 
@@ -582,7 +579,7 @@ def level(level):
 	minutes = 0
 
 	# Blit door on last screen
-	door = pygame.image.load("Door.png").convert_alpha()
+	door = pygame.image.load("assets/Door.png").convert_alpha()
 
 	# balance channel volumes
 	levelmusic.set_volume(0.2)
@@ -720,8 +717,8 @@ def level(level):
 
 # Fields needed for running program
 running = True
-# state = 'START'
-state = 'TUTORIAL'
+state = 'START'
+# state = 'TUTORIAL'
 # state = 'LEVEL1'
 # state = 'LEVEL2'
 # state = 'LEVEL3'
@@ -744,17 +741,17 @@ for i in range(8):
 	channelList.append(pygame.mixer.Channel(i))
 
 # Create sound objects
-jumpMusic = pygame.mixer.Sound("jump.wav")
-mainMusic = pygame.mixer.Sound("maintitletheme.wav")
-backgroundMusic = pygame.mixer.Sound("Varun - RoboDog Rescue 135 No Rythm.wav")
-woofwoof = pygame.mixer.Sound("woofwoof.wav")
-buttonMusic = pygame.mixer.Sound("optionselect2.wav")
-glassBreaking = pygame.mixer.Sound("glassbreak.wav")
-laserFiring = pygame.mixer.Sound("laser.wav")
-zapMusic = pygame.mixer.Sound("zap.wav")
-levelmusic = pygame.mixer.Sound('songs1and2.wav')
-coinMusic = pygame.mixer.Sound("coin.wav")
-powerupMusic = pygame.mixer.Sound("powerup.wav")
+jumpMusic = pygame.mixer.Sound("music/jump.wav")
+mainMusic = pygame.mixer.Sound("music/maintitletheme.wav")
+backgroundMusic = pygame.mixer.Sound("music/Varun - RoboDog Rescue 135 No Rythm.wav")
+woofwoof = pygame.mixer.Sound("music/woofwoof.wav")
+buttonMusic = pygame.mixer.Sound("music/optionselect2.wav")
+glassBreaking = pygame.mixer.Sound("music/glassbreak.wav")
+laserFiring = pygame.mixer.Sound("music/laser.wav")
+zapMusic = pygame.mixer.Sound("music/zap.wav")
+levelmusic = pygame.mixer.Sound('music/songs1and2.wav')
+coinMusic = pygame.mixer.Sound("music/coin.wav")
+powerupMusic = pygame.mixer.Sound("music/powerup.wav")
 
 
 while running:
