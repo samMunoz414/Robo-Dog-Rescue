@@ -40,17 +40,12 @@ def start():
     startbutton = Button(770, 640, 130, 30, 'PROLOGUE')
     buttons.append(startbutton)
 
-    # Create Sound objects to store music
-    mainMusic = pygame.mixer.Sound("maintitletheme.wav")
-    buttonMusic = pygame.mixer.Sound("optionselect2.wav")
-    woofwoof = pygame.mixer.Sound("woofwoof.wav")
-
     # Balance volumes between the channels
     mainMusic.set_volume(0.2)
     woofwoof.set_volume(1.0)
 
     # Run music
-    channelOne.play(mainMusic, loops=-1)
+    channelList[0].play(mainMusic, loops=-1)
 
     while 1:
         for event in pygame.event.get():
@@ -61,13 +56,13 @@ def start():
                 for button in buttons:
                     if button.isClicked(mousePosition):
                     	if button.state == 'CONTROLS':
-                    		channelTwo.play(buttonMusic)
+                    		channelList[1].play(buttonMusic)
                     		sleep(0.5)
                     	if button.state == 'PROLOGUE':
-                            channelTwo.play(woofwoof)
+                            channelList[1].play(woofwoof)
                             sleep(0.7)
-                    	channelOne.stop()
-                    	channelTwo.stop()
+                    	channelList[0].stop()
+                    	channelList[1].stop()
                     	return button.state
         screen.blit(background, backgroundbox)
         clock.tick(30)
@@ -83,9 +78,6 @@ def controls():
     backbutton = Button(360, 590, 240, 120, 'START')
     backimage = pygame.image.load("backtitle.png").convert_alpha()
 
-    # Sound object to hold music
-    buttonMusic = pygame.mixer.Sound("optionselect2.wav")
-
     while 1:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -93,7 +85,7 @@ def controls():
             if event.type == pygame.MOUSEBUTTONUP:
                 mousePosition = pygame.mouse.get_pos()
                 if backbutton.isClicked(mousePosition):
-                    channelTwo.play(buttonMusic)
+                    channelList[1].play(buttonMusic)
                     sleep(0.5)
                     return backbutton.state
 
@@ -112,10 +104,9 @@ def tutorial():
     skipimage = pygame.image.load('skipbutton.png')
     skipbutton = Button(860, 10, 90, 60, 'CUTSCENE')
 
-    # Creates Sound object to store music
-    music_theme = pygame.mixer.Sound("songs1and2.wav")
-    buttonMusic = pygame.mixer.Sound("optionselect2.wav")
-    jumpMusic =  pygame.mixer.Sound("jump.wav")
+    # Stop all channels from playing music
+    for i in range(8):
+    	channelList[i].stop()
 
     # create a level object
     level = Level()
@@ -135,9 +126,6 @@ def tutorial():
     # Creates bullet list
     bullet_list = pygame.sprite.Group()
 
-    # Creates cosmo list
-    cosmo_list = pygame.sprite.Group()
-
     # booleans for input
     up = down = left = right = space = cosmo = powerup = False
 
@@ -148,8 +136,8 @@ def tutorial():
     frameCount = 0
 
     # Start playing music
-    music_theme.set_volume(0.2)
-    channelOne.play(music_theme, loops=-1)
+    levelmusic.set_volume(0.2)
+    channelList[0].play(levelmusic, loops=-1)
     jumpMusic.set_volume(0.1)
     buttonMusic.set_volume(1.0)
 
@@ -157,7 +145,7 @@ def tutorial():
     	# run death sequence if player dies
     	if not grace.isAlive:
     		print("You lose")
-    		channelOne.stop()
+    		channelList[0].stop()
     		return 'START' # Change to lose screen later
 
     	for event in pygame.event.get():
@@ -207,9 +195,9 @@ def tutorial():
     		if event.type == pygame.MOUSEBUTTONUP:
     			mousePosition = pygame.mouse.get_pos()
     			if skipbutton.isClicked(mousePosition):
-    				channelTwo.play(buttonMusic)
+    				channelList[1].play(buttonMusic)
     				sleep(0.1)
-    				channelOne.stop() # Stop the music
+    				channelList[0].stop() # Stop the music
     				return skipbutton.state
 
     		if event.type == pygame.QUIT:
@@ -219,18 +207,18 @@ def tutorial():
     	screen.blit(skipimage, (860, 10))
     	displayGearCount = font.render("Gears: " + str(grace.gearCount), True, (255, 255, 255) )
     	screen.blit(displayGearCount, (10 ,10))
-    	grace.update(up, down, left, right, space, powerup, level, platform_list, channelTwo, jumpMusic)
+    	grace.update(up, down, left, right, space, powerup, level, platform_list, channelList, jumpMusic, coinMusic, powerupMusic, zapMusic)
     	if cosmo:
-    		cosmo = grace.activateCosmo()
-    		if isinstance(cosmo, Cosmo):
-    			cosmo_list.add(cosmo)
+    		grace.activateCosmo(channelList[5], woofwoof)
     	for bullet in bullet_list:
     		removeBullet = bullet.update(platform_list)
     		if removeBullet:
     			print("Removed bullet")
     			bullet_list.remove(bullet)
-    	for cosmo in cosmo_list:
-    		cosmo.update(platform_list)
+    	if not grace.cosmo == None:
+    		removeCosmo = grace.cosmo.update(platform_list)
+    		if removeCosmo:
+    			grace.cosmo = None
     	if space:
     		frameCount += 1
     		if frameCount == 3:
@@ -242,16 +230,19 @@ def tutorial():
     				if not bullet == None:
     					bullet_list.add(bullet)
     	if grace.win == True:
-    		channelOne.stop() # Stop the music
+    		channelList[0].stop() # Stop the music
     		return 'SELECTLEVEL'
+    	for enemy in enemy_list:
+    		removeEnemy = enemy.update()
+    		if removeEnemy:
+    			platform_list.remove(enemy)
     	person_list.draw(screen)
     	platform_list.draw(screen)
     	bullet_list.draw(screen)
-    	cosmo_list.draw(screen)
     	if not grace.powerup == None:
     		screen.blit(grace.powerup.image, grace.powerup.rect)
-    	for enemy in enemy_list:
-    		enemy.move()
+    	if not grace.cosmo == None:
+    		screen.blit(grace.cosmo.image, grace.cosmo.rect)
     	clock.tick(30)
     	pygame.display.flip()
 
@@ -297,18 +288,13 @@ def prologue():
     skipimage = pygame.image.load('skippurple.png')
     skipbutton = Button(860, 10, 90, 60, 'TUTORIAL')
 
-    # Create sound objects to store music
-    backgroundMusic = pygame.mixer.Sound("Varun - RoboDog Rescue 135 No Rythm.wav")
-    buttonMusic = pygame.mixer.Sound("optionselect2.wav")
-    glassBreaking = pygame.mixer.Sound("glassbreak.wav")
-
     # sets the volume for each song
     backgroundMusic.set_volume(0.2)
     buttonMusic.set_volume(1.0)
     glassBreaking.set_volume(0.2)
 
     # Plays background music
-    channelOne.play(backgroundMusic, loops=-1)
+    channelList[0].play(backgroundMusic, loops=-1)
     j = 1
     while 1:
         for event in pygame.event.get():
@@ -317,17 +303,17 @@ def prologue():
             if event.type == pygame.MOUSEBUTTONUP:
                 mousePosition = pygame.mouse.get_pos()
                 if nextbutton.isClicked(mousePosition):
-                    channelTwo.play(buttonMusic)
+                    channelList[1].play(buttonMusic)
                     sleep(0.1)
                     if j<4:
                         background = pygame.image.load(backgrounds[j]).convert_alpha()
                         if j == 2:
-                            channelTwo.play(glassBreaking)
+                            channelList[1].play(glassBreaking)
                         j += 1 
                     else:
                         return nextbutton.state
                 if skipbutton.isClicked(mousePosition):
-                    channelTwo.play(buttonMusic)
+                    channelList[1].play(buttonMusic)
                     sleep(0.1)
                     return skipbutton.state
         screen.blit(background, backgroundbox)
@@ -356,9 +342,6 @@ def win(level):
     startscreenbutton = Button(360, 560, 240, 120, 'START')
     buttons.append(startscreenbutton)
 
-    # Add Sound objects to store music
-    buttonMusic = pygame.mixer.Sound("optionselect2.wav")
-
     while 1:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -367,7 +350,7 @@ def win(level):
                 mousePosition = pygame.mouse.get_pos()
                 for button in buttons:
                     if button.isClicked(mousePosition):
-                        channelOne.play(buttonMusic)
+                        channelList[0].play(buttonMusic)
                         sleep(0.1)
                         print(button.state)
                         return button.state
@@ -399,9 +382,6 @@ def lose(level):
     startscreenbutton = Button(360, 560, 240, 120, 'START')
     buttons.append(startscreenbutton)
 
-    # Add Sound objects to store music
-    buttonMusic = pygame.mixer.Sound("optionselect2.wav")
-
     while 1:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -410,7 +390,7 @@ def lose(level):
                 mousePosition = pygame.mouse.get_pos()
                 for button in buttons:
                     if button.isClicked(mousePosition):
-                        channelOne.play(buttonMusic)
+                        channelList[0].play(buttonMusic)
                         sleep(0.1)
                         return button.state
 
@@ -443,9 +423,6 @@ def selectlevel(lvls):
         noimage = pygame.image.load("red" + str(i+1) + ".png").convert_alpha()
         noimages.append(noimage)
 
-    # Sound objects to store music
-    buttonMusic = pygame.mixer.Sound("optionselect2.wav")
-
     while 1:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -455,7 +432,7 @@ def selectlevel(lvls):
                 seenbuttons = buttons[:lvls] # User can only click on what levels they have achieved
                 for button in seenbuttons:
                     if button.isClicked(mousePosition):
-                    	channelOne.play(buttonMusic)
+                    	channelList[0].play(buttonMusic)
                     	sleep(0.1)
                     	return button.state
         screen.blit(background, backgroundbox)
@@ -469,11 +446,15 @@ def selectlevel(lvls):
         pygame.display.flip()
 
 # Levels of the game
-def level(level, music):
+def level(level):
     lvl = level
     print("In level " + str(lvl))
     background = pygame.image.load("Background.png").convert_alpha()
     backgroundbox = background.get_rect()
+
+    # Stop all channels from playing music
+    for i in range(8):
+    	channelList[i].stop()
 
     # Create a level object
     level = Level()
@@ -485,10 +466,6 @@ def level(level, music):
     # Creates font to display information
     font = pygame.font.SysFont("Times New Roman", 32)
     smallfont = pygame.font.SysFont("Times New Roman", 26)
-
-    # Create sound objects
-    jumpMusic = pygame.mixer.Sound("jump.wav")
-    levelmusic = pygame.mixer.Sound(music)
 
     # Make a list of platforms (floor, powerup, enemies, etc.)
     platform_list = Level.platform(lvl)
@@ -505,9 +482,6 @@ def level(level, music):
     # Create bullet list
     bullet_list = pygame.sprite.Group()
 
-    # Creates cosmo list
-    cosmo_list = pygame.sprite.Group()
-
     # booleans for input
     up = down = left = right = space = cosmo = powerup = False
 
@@ -516,13 +490,13 @@ def level(level, music):
     # balance channel volumes
     levelmusic.set_volume(0.2)
     jumpMusic.set_volume(0.1)
-    channelOne.play(levelmusic, loops=-1)
+    channelList[0].play(levelmusic, loops=-1)
 
     while 1:
         # run death sequence if player dies
         if not grace.isAlive:
             print("You lose")
-            channelOne.stop()
+            channelList[0].stop()
             print('LOSE'+str(lvl))
             return 'LOSE'+str(lvl), lvl
 
@@ -573,18 +547,20 @@ def level(level, music):
         screen.blit(background, backgroundbox)
         displayGearCount = font.render("Gears: " + str(grace.gearCount), True, (255, 255, 255) )
         screen.blit(displayGearCount, (10 ,15))
-        grace.update(up, down, left, right, space, powerup, level, platform_list, channelTwo, jumpMusic)
+        grace.update(up, down, left, right, space, powerup, level, platform_list, channelList, jumpMusic, coinMusic, powerupMusic, zapMusic)
         if cosmo == True:
-        	cosmo = grace.activateCosmo()
-        	if isinstance(cosmo, Cosmo):
-        		cosmo_list.add(cosmo)
+        	grace.activateCosmo(channelList[5], woofwoof)
         for bullet in bullet_list:
         	removeBullet = bullet.update(platform_list)
+        	print(removeBullet)
         	if removeBullet:
         		print("Removed bullet")
         		bullet_list.remove(bullet)
-        for cosmo in cosmo_list:
-        	cosmo.update(platform_list)
+       	if not grace.cosmo == None:
+        	removeCosmo = grace.cosmo.update(platform_list)
+        	if removeCosmo:
+        		print("removed cosmo")
+        		grace.cosmo = None
         if space == True:
         	frameCount += 1
         	if frameCount == 3:
@@ -599,14 +575,17 @@ def level(level, music):
             print("Won! Win screen " + 'WIN' + str(lvl))
             if lvl == 1 or lvl == 2:
                 return 'WIN' + str(lvl), lvl+1
+        for enemy in enemy_list:
+        	removeEnemy = enemy.update()
+        	if removeEnemy:
+        		platform_list.remove(enemy)
         person_list.draw(screen)
         platform_list.draw(screen)
         bullet_list.draw(screen)
-        cosmo_list.draw(screen)
         if not grace.powerup == None:
         	screen.blit(grace.powerup.image, grace.powerup.rect)
-        for enemy in enemy_list:
-        	enemy.move()
+        if not grace.cosmo == None:
+        	screen.blit(grace.cosmo.image, grace.cosmo.rect)
         clock.tick(30)
         pygame.display.flip()
         
@@ -631,8 +610,22 @@ pygame.display.set_caption('Robo-Dog Rescue')
 clock = pygame.time.Clock()
 
 # Creating channels to play music
-channelOne = pygame.mixer.Channel(0)
-channelTwo = pygame.mixer.Channel(1)
+channelList = []
+for i in range(8):
+	channelList.append(pygame.mixer.Channel(i))
+
+# Create sound objects
+jumpMusic = pygame.mixer.Sound("jump.wav")
+mainMusic = pygame.mixer.Sound("maintitletheme.wav")
+backgroundMusic = pygame.mixer.Sound("Varun - RoboDog Rescue 135 No Rythm.wav")
+woofwoof = pygame.mixer.Sound("woofwoof.wav")
+buttonMusic = pygame.mixer.Sound("optionselect2.wav")
+glassBreaking = pygame.mixer.Sound("glassbreak.wav")
+zapMusic = pygame.mixer.Sound("zap.wav")
+levelmusic = pygame.mixer.Sound('songs1and2.wav')
+coinMusic = pygame.mixer.Sound("coin.wav")
+powerupMusic = pygame.mixer.Sound("powerup.wav")
+
 
 while running:
     print(state)
@@ -660,15 +653,15 @@ while running:
         state = lose(3)
     # Levels
     if state == 'LEVEL1':
-        state, lvl = level(1, 'songs1and2.wav')
+        state, lvl = level(1)
         if lvl > lvls:
             lvls = lvl
     if state == 'LEVEL2':
-        state, lvl = level(2, 'songs1and2.wav')
+        state, lvl = level(2)
         if lvl > lvls:
             lvls = lvl
     if state == 'LEVEL3':
-        state, lvl = level(3, 'songs1and2.wav')
+        state, lvl = level(3)
         if lvl > lvls:
             lvls = lvl
     # Controls for game

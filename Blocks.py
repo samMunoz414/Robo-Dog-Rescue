@@ -48,7 +48,7 @@ class LaserGun(pygame.sprite.Sprite):
 			self.rect.x = xpos - 27
 		self.rect.y = ypos + 28
 
-	def update(self, playerX, playerY, facingRight, space, platforms):
+	def update(self, playerX, playerY, facingRight, space, platforms, channel, zapMusic):
 		if not self.isFacingRight == facingRight:
 			self.loadImage(facingRight)
 			self.isFacingRight = facingRight
@@ -107,7 +107,7 @@ class RedBullet(Powerup):
 		for block in platforms:
 			if pygame.sprite.collide_rect(self, block):
 				if isinstance(block, Characters.Enemy):
-					platforms.remove(block)
+					block.state = "death animation"
 					return True
 				if isinstance(block, Platform):
 					return True
@@ -144,7 +144,7 @@ class LightningRod(pygame.sprite.Sprite):
 			self.rect.x = xpos + 17
 			self.rect.y = ypos + 29
 
-	def update(self, playerX, playerY, facingRight, space, platforms):
+	def update(self, playerX, playerY, facingRight, space, platforms, channel, zapMusic):
 		if not self.isFacingRight == facingRight or not self.lastSpace == space:
 			self.loadImage(facingRight, space)
 			self.isFacingRight = facingRight
@@ -163,14 +163,15 @@ class LightningRod(pygame.sprite.Sprite):
 			self.rect.x = playerX + 17
 			self.rect.y = playerY + 29
 		if space:
-			self.collide(platforms)
+			self.collide(platforms, channel, zapMusic)
 
 
-	def collide(self, platforms):
+	def collide(self, platforms, channel, zapMusic):
 		for block in platforms:
 			if pygame.sprite.collide_rect(self, block):
 				if isinstance(block, Characters.Enemy):
-					platforms.remove(block)
+					channel.play(zapMusic)
+					block.state = "death animation"
 
 	def loadImage(self, facingRight, space):
 		self.image = pygame.image.load(self.imageSwap[int(facingRight)][int(space)]).convert_alpha()
@@ -224,6 +225,8 @@ class Cosmo(Powerup):
         self.rect = self.image.get_rect()
         self.rect.x = xpos
         self.rect.y = ypos
+        self.rect.width = 51
+        self.rect.height = 35
         self.animation = True
 
     def update(self, platforms):
@@ -247,9 +250,9 @@ class Cosmo(Powerup):
     def collide(self, platforms):
     	for block in platforms:
     		if pygame.sprite.collide_rect(self, block):
-    			if isinstance(block, Characters.Enemy):
-    				platforms.remove(block)
-    			if isinstance(self, Platform):
+    			if isinstance(block, Platform):
     				return True
+    			elif isinstance(block, Characters.Enemy):
+    				block.state = "death animation"
     	return False
         
