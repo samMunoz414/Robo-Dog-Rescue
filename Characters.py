@@ -179,9 +179,8 @@ class Person(pygame.sprite.Sprite):
 	def incrementGear(self):
 		if self.gearCount < 100:
 			self.gearCount += 1
-			print("Gear Count: " + str(self.gearCount))
 
-	def fire(self):
+	def fire(self, channel, music):
 		if self.powerup.ammo <= 0:
 			self.powerup = None
 			return None
@@ -191,8 +190,10 @@ class Person(pygame.sprite.Sprite):
 				self.powerup = None
 				self.rect.width = 31
 			if self.isFacingRight == True:
+				channel.play(music)
 				return RedBullet(self.rect.x + self.rect.width + 26, self.rect.y + 26, self.isFacingRight)
 			else:
+				channel.play(music)
 				return RedBullet(self.rect.x - 30, self.rect.y + 26, self.isFacingRight)
 
 
@@ -200,7 +201,7 @@ class Person(pygame.sprite.Sprite):
 		if self.gearCount >= 25:
 			self.gearCount -= 25
 			channel.play(music)
-			self.cosmo = Cosmo(self.rect.x, self.rect.y + 55, self.isFacingRight)
+			self.cosmo = Cosmo(self.rect.x, self.rect.y, self.isFacingRight)
 
 	def collide(self, dx, dy, space, powerup, platforms, channel, coinMusic, powerupMusic):
 		for block in platforms:
@@ -252,22 +253,18 @@ class Person(pygame.sprite.Sprite):
 				# collision occured when players was moving right
 				if dx > 0:
 					self.rect.right = block.rect.left
-					print("collide right")
 				# collision occured when players was moving left
 				if dx < 0:
 					self.rect.left = block.rect.right
-					print("collide left")
 				# collision occured when players was moving down
 				if dy > 0:
 					self.rect.bottom = block.rect.top
 					self.isOnGround = True
 					self.movey = 0
-					print("collide top")
 				# collision occured when players was moving up
 				if dy < 0:
 					self.rect.top = block.rect.bottom
 					self.movey = 0
-					print("collide bottom")
 				# ----------------------------------------------
         
 # Class for enemy scientists

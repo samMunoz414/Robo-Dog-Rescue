@@ -130,8 +130,7 @@ def tutorial():
     up = down = left = right = space = cosmo = powerup = False
 
     # Creates font to display information
-    font = pygame.font.SysFont("Times New Roman", 32)
-    smallfont = pygame.font.SysFont("Times New Roman", 26)
+    font = pygame.font.SysFont("Futura", 26)
 
     frameCount = 0
 
@@ -206,6 +205,9 @@ def tutorial():
     	screen.blit(background, backgroundbox) # Add background to screen
     	screen.blit(skipimage, (860, 10))
     	displayGearCount = font.render("Gears: " + str(grace.gearCount), True, (255, 255, 255) )
+    	if isinstance(grace.powerup, LaserGun):
+    		displayBulletCount = font.render("Bullets: " + str(grace.powerup.ammo), True, (255, 255, 255) )
+    		screen.blit(displayBulletCount, (10, 60))
     	screen.blit(displayGearCount, (10 ,10))
     	grace.update(up, down, left, right, space, powerup, level, platform_list, channelList, jumpMusic, coinMusic, powerupMusic, zapMusic)
     	if cosmo:
@@ -226,7 +228,7 @@ def tutorial():
     			frameCount = 0
     		if isinstance(grace.powerup, LaserGun):
     			if frameCount == 1:
-    				bullet = grace.fire()
+    				bullet = grace.fire(channelList[4], laserFiring)
     				if not bullet == None:
     					bullet_list.add(bullet)
     	if grace.win == True:
@@ -464,8 +466,7 @@ def level(level):
         level.setTotalScreenCount(6) # Level 3 has 6 screens
 
     # Creates font to display information
-    font = pygame.font.SysFont("Times New Roman", 32)
-    smallfont = pygame.font.SysFont("Times New Roman", 26)
+    font = pygame.font.SysFont("Futura", 26)
 
     # Make a list of platforms (floor, powerup, enemies, etc.)
     platform_list = Level.platform(lvl)
@@ -505,39 +506,28 @@ def level(level):
                 sys.exit()
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_LEFT or event.key == ord('a'):
-                    print('left')
                     left = True
                 if event.key == pygame.K_RIGHT or event.key == ord('d'):
-                    print('right')
                     right = True
                 if event.key == pygame.K_UP or event.key == ord('w'):
-                    print('up')
                     up = True
                 if event.key == pygame.K_DOWN or event.key == ord('s'):
-                    print("collect powerup")
                     powerup = True
                 if event.key == pygame.K_SPACE:
-                	print("activate powerup")
                 	space = True
                	if event.key == ord('c'):
-               		print("activate cosmo")
                		cosmo = True
 
             if event.type == pygame.KEYUP:
                 if event.key == pygame.K_LEFT or event.key == ord('a'):
-                    print('left stop')
                     left = False
                 if event.key == pygame.K_RIGHT or event.key == ord('d'):
-                    print('right stop')
                     right = False
                 if event.key == pygame.K_UP or event.key == ord('w'):
-                    print('up stop')
                     up = False
                 if event.key == pygame.K_DOWN or event.key == ord('s'):
-                    print("collect powerup")
                     powerup = False
                 if event.key == ord('c'):
-                	print("deactivate cosmo")
                 	cosmo = False
                 if event.key == ord('q'):
                     print("Exiting Robo-Dog Rescue")
@@ -546,6 +536,9 @@ def level(level):
 
         screen.blit(background, backgroundbox)
         displayGearCount = font.render("Gears: " + str(grace.gearCount), True, (255, 255, 255) )
+        if isinstance(grace.powerup, LaserGun):
+        	displayBulletCount = font.render("BULLETS: " + str(grace.powerup.ammo), True, (255, 255, 255) )
+        	screen.blit(displayBulletCount, (10, 60))
         screen.blit(displayGearCount, (10 ,15))
         grace.update(up, down, left, right, space, powerup, level, platform_list, channelList, jumpMusic, coinMusic, powerupMusic, zapMusic)
         if cosmo == True:
@@ -568,7 +561,7 @@ def level(level):
         		frameCount = 0
         	if isinstance(grace.powerup, LaserGun):
         		if frameCount == 1:
-        			bullet = grace.fire()
+        			bullet = grace.fire(channelList[4], laserFiring)
         			if not bullet == None:
         				bullet_list.add(bullet)
         if grace.win == True:
@@ -593,8 +586,8 @@ def level(level):
 
 # Fields needed for running program
 running = True
-state = 'START'
-# state = 'TUTORIAL'
+# state = 'START'
+state = 'TUTORIAL'
 # state = 'LEVEL1'
 # state = 'LEVEL2'
 # state = 'LEVEL3'
@@ -621,6 +614,7 @@ backgroundMusic = pygame.mixer.Sound("Varun - RoboDog Rescue 135 No Rythm.wav")
 woofwoof = pygame.mixer.Sound("woofwoof.wav")
 buttonMusic = pygame.mixer.Sound("optionselect2.wav")
 glassBreaking = pygame.mixer.Sound("glassbreak.wav")
+laserFiring = pygame.mixer.Sound("laser.wav")
 zapMusic = pygame.mixer.Sound("zap.wav")
 levelmusic = pygame.mixer.Sound('songs1and2.wav')
 coinMusic = pygame.mixer.Sound("coin.wav")

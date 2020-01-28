@@ -105,8 +105,8 @@ class Level():
         if lvl == 0:
             for i in range(3):
                 powerups_list.add(Gear(((i+24)*60)+10, 70))
-            powerups_list.add(LightningRodBlock(1090, 430))
-            powerups_list.add(LaserGunBlock(430, 250))
+            powerups_list.add(LaserGunBlock(1090, 430))
+            powerups_list.add(LightningRodBlock(430, 250))
 
         if lvl == 1:
             # First screen
@@ -251,7 +251,7 @@ class Level():
         if lvl == 1 or lvl == 2:
             # Used for levels 1 and 2
             for i in range(64): # 4 screens of floor blocks
-                floor_list.add(Platform("block1_60x60.png", i*60, 660))
+                floor_list.add(Platform("block1.png", i*60, 660))
 
         if lvl == 3:
             # Used for level 3

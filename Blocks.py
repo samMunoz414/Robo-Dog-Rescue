@@ -218,13 +218,15 @@ class Cosmo(Powerup):
         super().__init__()
         if isFacingRight:
         	self.image = pygame.image.load("CosmoRight1.png").convert_alpha()
+        	self.rect = self.image.get_rect()
         	self.movex = 16
+        	self.rect.x = xpos + 31
         else:
         	self.image = pygame.image.load("CosmoLeft1.png").convert_alpha()
+        	self.rect = self.image.get_rect()
         	self.movex = -16
-        self.rect = self.image.get_rect()
-        self.rect.x = xpos
-        self.rect.y = ypos
+        	self.rect.x = xpos
+        self.rect.y = ypos + 52
         self.rect.width = 51
         self.rect.height = 35
         self.animation = True
@@ -251,6 +253,7 @@ class Cosmo(Powerup):
     	for block in platforms:
     		if pygame.sprite.collide_rect(self, block):
     			if isinstance(block, Platform):
+    				print("hit block")
     				return True
     			elif isinstance(block, Characters.Enemy):
     				block.state = "death animation"
