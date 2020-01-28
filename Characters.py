@@ -189,9 +189,9 @@ class Person(pygame.sprite.Sprite):
 				self.powerup = None
 				self.rect.width = 31
 			if self.isFacingRight == True:
-				return RedBullet(self.rect.x + self.rect.width + 15, self.rect.y + 26, self.isFacingRight)
+				return RedBullet(self.rect.x + self.rect.width + 26, self.rect.y + 26, self.isFacingRight)
 			else:
-				return RedBullet(self.rect.x - 15, self.rect.y + 26, self.isFacingRight)
+				return RedBullet(self.rect.x - 30, self.rect.y + 26, self.isFacingRight)
 
 
 	def activateCosmo(self):
