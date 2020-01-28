@@ -24,14 +24,15 @@ class Person(pygame.sprite.Sprite):
 		self.image = pygame.image.load(image).convert_alpha()
 		# stores player's rect object
 		self.rect = self.image.get_rect()
+		# sets starting position for character
 		self.rect.x = xpos
 		self.rect.y = ypos
-		self.rect.width = 40
-		self.rect.height = 90
+		self.rect.width = 31
+		self.rect.height = 87
 		# stores the number of gears the player has
 		self.gearCount = 0
 		# string holding what powerup the character is holding on to. choices: 'none', 'lighting rod', 'laser gun', 'cosmo'
-		self.heldPowerup = "None"
+		self.powerup = None
 		# boolean tracks recent powerup changes
 		self.recentPowerupChange = False
 		# stores the life state of the player
@@ -42,6 +43,36 @@ class Person(pygame.sprite.Sprite):
 		self.animation = True
 		# boolean storing what direction Grace is facing
 		self.isFacingRight = True
+		# constant 3D array to store all image names
+		self.imageSwap = [ # [P][M][A]
+			# powerup 'None'
+			[
+				# moving left
+				[
+					# left: animation True; right: animation False
+					"GraceLeft1.png", "GraceLeft2.png", 
+				],
+				# moving right
+				[
+					# left: animation True; right: animation False
+					"GraceRight1.png", "GraceRight2.png"
+				],
+			],
+
+			# powerup not 'None'
+			[
+				# moving left
+				[
+					# left: animation True; right: animation False
+					"GraceLeft1MissingArm.png", "GraceLeft2MissingArm.png", 
+				],
+				# moving right
+				[
+					# left: animation True; right: animation False
+					"GraceRight1MissingArm.png", "GraceRight2MissingArm.png"
+				],
+			]
+		]
 
 	# Handles any updates based on keyboard inputs and 
 	# up -> boolean storing if the player moves up
@@ -58,18 +89,19 @@ class Person(pygame.sprite.Sprite):
 		# if the down button if pressed 
 		if down:
 			pass
-		if left:
+		if left and not right:
 			self.movex = -8
-		if right:
+		elif right and not left:
 			self.movex = 8
+		# sets velocity to zero when either the left or right key are pressed
+		elif not (left or right):
+			self.movex = 0
 		if not self.isOnGround:
 			# this is gravity
 			self.movey += 1
 			# caps max velocity in the y direction
 			if self.movey > 100:
 				self.movey = 100
-		if not (left or right):
-			self.movex = 0
 
 		if powerup == False:
 			self.recentPowerupChange = False
@@ -87,6 +119,10 @@ class Person(pygame.sprite.Sprite):
 
 		# Changes the image of Grace
 		self.changeImage(left, right, space)
+
+		# updates the weapon variable
+		if not self.powerup == None:
+			self.powerup.update(self.rect.x, self.rect.y, self.isFacingRight, space, platforms)
 		
 		# Scrolling screen: move everything a screen width to left or right
 		if self.rect.x <= 10 and level.screenCount > 1:
@@ -105,154 +141,38 @@ class Person(pygame.sprite.Sprite):
 		if self.rect.x >= 920 and level.screenCount == level.totalScreenCount:
 			self.win = True
         
+	def mapPowerup(self):
+		if isinstance(self.powerup, type(None)):
+			return 0
+		elif isinstance(self.powerup, LightningRod) or isinstance(self.powerup, LaserGun):
+			return 1
+
+	def mapMotion(self, left, right):
+		if left and not right:
+			self.isFacingRight = False
+			return 0
+		elif not left and right:
+			self.isFacingRight = True
+			return 1
+		else:
+			if not self.isFacingRight:
+				return 0
+			else:
+				return 1
+
 	def changeImage(self, left, right, space):
-		if self.heldPowerup == "None":
-			if not self.rect.width == 33:
-				self.rect.width = 33
-			if not self.rect.height == 90:
-				self.rect.height = 90
-
-			if left:
-				if not self.isFacingRight == False:
-					self.isFacingRight = False
-				if self.animation == True:
-					self.image = pygame.image.load("Grace9040Left1.png").convert_alpha()
-				elif self.animation == False:
-					self.image = pygame.image.load("Grace9040Left2.png").convert_alpha()
-				if self.isOnGround:
-					self.animation = not self.animation
-
-			elif right:
-				if not self.isFacingRight == True:
-					self.isFacingRight = True
-				if self.animation == True:
-					self.image = pygame.image.load("Grace9040Right1.png").convert_alpha()
-				elif self.animation == False:
-					self.image = pygame.image.load("Grace9040Right2.png").convert_alpha()
-				if self.isOnGround:
-					self.animation = not self.animation
-					
-			else:
-				if self.animation == True:
-					if self.isFacingRight:
-						self.image = pygame.image.load("Grace9040Right1.png").convert_alpha()
-					else:
-						self.image = pygame.image.load("Grace9040Left1.png").convert_alpha()
-				else:
-					if self.isFacingRight:
-						self.image = pygame.image.load("Grace9040Right2.png").convert_alpha()
-					else:
-						self.image = pygame.image.load("Grace9040Left2.png").convert_alpha()
-
-
-		elif self.heldPowerup  == "Lightning Rod":
-			if space:
-				if not self.rect.width == 75:
-					self.rect.width = 75
-			else:
-				if not self.rect.width == 57:
-					self.rect.width = 57
-			if not self.rect.height == 90:
-				self.rect.height = 90
-
-			if left:
-				if not self.isFacingRight == False:
-					self.isFacingRight = False
-				if self.animation == True:
-					if space:
-						self.image = pygame.image.load("Grace9040Left1WithTazer5.png").convert_alpha()
-					else:
-						self.image = pygame.image.load("Grace9040Left1WithTazer.png").convert_alpha()
-				elif self.animation == False:
-					if space:
-						self.image = pygame.image.load("Grace9040Left2WithTazer5.png").convert_alpha()
-					else:
-						self.image = pygame.image.load("Grace9040Left2WithTazer.png").convert_alpha()
-				if self.isOnGround:
-					self.animation = not self.animation
-
-			elif right:
-				if not self.isFacingRight == True:
-					self.isFacingRight = True
-				if self.animation == True:
-					if space:
-						self.image = pygame.image.load("Grace9040Right1WithTazer5.png").convert_alpha()
-					else:
-						self.image = pygame.image.load("Grace9040Right1WithTazer.png").convert_alpha()
-				elif self.animation == False:
-					if space:
-						self.image = pygame.image.load("Grace9040Right2WithTazer5.png").convert_alpha()
-					else:
-						self.image = pygame.image.load("Grace9040Right2WithTazer.png").convert_alpha()
-				if self.isOnGround:
-					self.animation = not self.animation
-			else:
-				if self.animation == True:
-					if self.isFacingRight:
-						if space:
-							self.image = pygame.image.load("Grace9040Right1WithTazer5.png").convert_alpha()
-						else:
-							self.image = pygame.image.load("Grace9040Right1WithTazer.png").convert_alpha()
-					else:
-						if space:
-							self.image = pygame.image.load("Grace9040Left1WithTazer5.png").convert_alpha()
-						else:
-							self.image = pygame.image.load("Grace9040Left1WithTazer.png").convert_alpha()
-
-				else:
-					if self.isFacingRight == True:
-						if space:
-							self.image = pygame.image.load("Grace9040Right2WithTazer5.png").convert_alpha()
-						else:
-							self.image = pygame.image.load("Grace9040Right2WithTazer.png").convert_alpha()
-					else:
-						if space:
-							self.image = pygame.image.load("Grace9040Left2WithTazer5.png").convert_alpha()
-						else:
-							self.image = pygame.image.load("Grace9040Left2WithTazer.png").convert_alpha()
-
-
-		elif self.heldPowerup == "Laser Gun":
-			if not self.rect.width == 59:
-				self.rect.width = 59
-			if not self.rect.height == 90:
-				self.rect.height = 90
-			if left:
-				if self.animation == True:
-					self.image = pygame.image.load("Grace9040Left1WithGun.png").convert_alpha()
-				elif self.animation == False:
-					self.image = pygame.image.load("Grace9040Left2WithGun.png").convert_alpha()
-				if self.isOnGround:
-					self.animation = not self.animation
-				if not self.isFacingRight == False:
-					self.isFacingRight = False
-			elif right:
-				if self.animation == True:
-					self.image = pygame.image.load("Grace9040Right1WithGun.png").convert_alpha()
-				elif self.animation == False:
-					self.image = pygame.image.load("Grace9040Right2WithGun.png").convert_alpha()
-				if self.isOnGround:
-					self.animation = not self.animation
-				if not self.isFacingRight == True:
-					self.isFacingRight = True
-			# if standing still
-			else:
-				if self.animation == True:
-					if self.isFacingRight == True:
-						self.image = pygame.image.load("Grace9040Right1WithGun.png").convert_alpha()
-					else:
-						self.image = pygame.image.load("Grace9040Left1WithGun.png").convert_alpha()
-				else:
-					if self.isFacingRight == True:
-						self.image = pygame.image.load("Grace9040Right2WithGun.png").convert_alpha()
-					else:
-						self.image = pygame.image.load("Grace9040Left2WithGun.png").convert_alpha()
+		powerup = self.mapPowerup()
+		motion = self.mapMotion(left, right)
+		imageName = self.imageSwap[powerup][motion][int(self.animation)]
+		self.image = pygame.image.load(imageName).convert_alpha()
+		if self.isOnGround == True and not (not left and not right):
+			self.animation = not self.animation
 
 	def createNewPowerup(self, blockType, xpos, ypos):
-		if blockType == "Lightning Rod":
-			return LightningRod(xpos, ypos)
-		elif blockType == "Laser Gun":
-			return LaserGun(xpos, ypos)
+		if isinstance(blockType, LightningRod):
+			return LightningRodBlock(xpos, ypos)
+		elif isinstance(blockType, LaserGun):
+			return LaserGunBlock(xpos, ypos, self.powerup.ammo)
 
 	def incrementGear(self):
 		if self.gearCount < 100:
@@ -260,10 +180,19 @@ class Person(pygame.sprite.Sprite):
 			print("Gear Count: " + str(self.gearCount))
 
 	def fire(self):
-		if self.isFacingRight == True:
-			return RedBullet(self.rect.x + self.rect.width, self.rect.y + 31, self.isFacingRight)
+		if self.powerup.ammo <= 0:
+			self.powerup = None
+			return None
 		else:
-			return RedBullet(self.rect.x, self.rect.y + 31, self.isFacingRight)
+			self.powerup.ammo -= 1
+			if self.powerup.ammo == 0:
+				self.powerup = None
+				self.rect.width = 31
+			if self.isFacingRight == True:
+				return RedBullet(self.rect.x + self.rect.width + 15, self.rect.y + 26, self.isFacingRight)
+			else:
+				return RedBullet(self.rect.x - 15, self.rect.y + 26, self.isFacingRight)
+
 
 	def activateCosmo(self):
 		if self.gearCount >= 25:
@@ -274,33 +203,28 @@ class Person(pygame.sprite.Sprite):
 	def collide(self, dx, dy, space, powerup, platforms):
 		for block in platforms:
 			if pygame.sprite.collide_rect(self, block):
-				
-				if isinstance(block, LightningRod):
+				if isinstance(block, LightningRodBlock):
 					if powerup:
-						if self.heldPowerup == 'None':
-							self.heldPowerup = "Lightning Rod"
-							# self.powerupChange()
+						if isinstance(self.powerup, type(None)):
+							self.powerup = LightningRod(self.rect.x, self.rect.y, self.isFacingRight, space)
 							platforms.remove(block)
 						else:
 							if self.recentPowerupChange == False:
-								platforms.add(self.createNewPowerup(self.heldPowerup, block.rect.x, block.rect.y))
-								self.heldPowerup = "Lightning Rod"
-								# self.powerupChange()
+								platforms.add(self.createNewPowerup(self.powerup, block.rect.x, block.rect.y))
+								self.powerup = LightningRod(self.rect.x, self.rect.y, self.isFacingRight, space)
 								platforms.remove(block)
 								self.recentPowerupChange = True
 					return
 
-				if isinstance(block, LaserGun):
+				if isinstance(block, LaserGunBlock):
 					if powerup:
-						if self.heldPowerup == 'None':
-							self.heldPowerup = 'Laser Gun'
-							# self.powerupChange()
+						if isinstance(self.powerup, type(None)):
+							self.powerup = LaserGun(self.rect.x, self.rect.y, self.isFacingRight, block.ammo)
 							platforms.remove(block)
 						else:
 							if self.recentPowerupChange == False:
-								platforms.add(self.createNewPowerup(self.heldPowerup, block.rect.x, block.rect.y))
-								self.heldPowerup = 'Laser Gun'
-								# self.powerupChange()
+								platforms.add(self.createNewPowerup(self.powerup, block.rect.x, block.rect.y))
+								self.powerup = LaserGun(self.rect.x, self.rect.y, self.isFacingRight, block.ammo)
 								platforms.remove(block)
 								self.recentPowerupChange = True
 					return
@@ -311,10 +235,6 @@ class Person(pygame.sprite.Sprite):
 					return
 
 				if isinstance(block, Enemy):
-					if self.heldPowerup == "Lightning Rod":
-						if space == True:
-							platforms.remove(block)
-							return
 					self.isAlive = False
 					return
 
