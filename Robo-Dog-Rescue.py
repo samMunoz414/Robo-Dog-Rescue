@@ -76,14 +76,29 @@ def start():
 # Show the controls to the player
 def controls():
     print("In control screen")
-    background = pygame.image.load("green_background.png").convert_alpha()
+    background = pygame.image.load("howtoplay.png").convert_alpha()
     backgroundbox = background.get_rect()
+
+    # Button
+    backbutton = Button(360, 590, 240, 120, 'START')
+    backimage = pygame.image.load("backtitle.png").convert_alpha()
+
+    # Sound object to hold music
+    buttonMusic = pygame.mixer.Sound("optionselect2.wav")
 
     while 1:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 sys.exit()
+            if event.type == pygame.MOUSEBUTTONUP:
+                mousePosition = pygame.mouse.get_pos()
+                if backbutton.isClicked(mousePosition):
+                    channelTwo.play(buttonMusic)
+                    sleep(0.5)
+                    return backbutton.state
+
         screen.blit(background, backgroundbox)
+        screen.blit(backimage, (360, 590))
         clock.tick(30)
         pygame.display.flip()
 
@@ -118,7 +133,7 @@ def tutorial():
     person_list.add(grace)
 
     # booleans for input
-    up = down = left = right = powerup = False
+    up = down = left = right = space = powerup = False
 
     # Creates font to display information
     font = pygame.font.SysFont("Times New Roman", 32)
@@ -185,7 +200,7 @@ def tutorial():
     	screen.blit(skipimage, (860, 10))
     	displayGearCount = font.render("Gears: " + str(grace.gearCount), True, (255, 255, 255) )
     	screen.blit(displayGearCount, (10 ,10))
-    	grace.update(up, down, left, right, powerup, level, platform_list, channelTwo, jumpMusic)
+    	grace.update(up, down, left, right, space, powerup, level, platform_list, channelTwo, jumpMusic)
     	if grace.win == True:
     		channelOne.stop() # Stop the music
     		return 'SELECTLEVEL'
@@ -199,11 +214,11 @@ def tutorial():
 # Cut scene - after the tutorial level and before the level selection screen
 def cutscene():
     print("In cut scene")
-    background = pygame.image.load("blue_background1.png").convert_alpha()
+    background = pygame.image.load("panel5.png").convert_alpha()
     backgroundbox = background.get_rect()
 
     # Next image and button
-    nextimage = pygame.image.load('arrowbutton.png')
+    nextimage = pygame.image.load('nextpurple.png')
     nextbutton = Button(860, 650, 90, 60, 'SELECTLEVEL')
 
     while 1:
@@ -231,11 +246,11 @@ def prologue():
     backgroundbox = background.get_rect()
 
     # Next image and button
-    nextimage = pygame.image.load('arrowbutton.png')
+    nextimage = pygame.image.load('nextpurple.png')
     nextbutton = Button(860, 650, 90, 60, 'TUTORIAL')
 
     # Skip image and button
-    skipimage = pygame.image.load('skipbutton.png')
+    skipimage = pygame.image.load('skippurple.png')
     skipbutton = Button(860, 10, 90, 60, 'TUTORIAL')
 
     # Create sound objects to store music
@@ -280,14 +295,14 @@ def prologue():
 # Win screen for the tutorial
 def win(level):
     print("On win screen")
-    background = pygame.image.load("green_background.png").convert_alpha()
+    background = pygame.image.load("win.png").convert_alpha()
     backgroundbox = background.get_rect()
 
     lvl = level
 
     # List of buttons - replay previous level and back to level select screen
     buttons = []
-    replayimage = pygame.image.load("restartlevel.png").convert_alpha()
+    replayimage = pygame.image.load("nextlevel.png").convert_alpha()
     replaybutton = Button(360, 240, 240, 120, 'LEVEL'+str(lvl))
     buttons.append(replaybutton)
     selectlevelimage = pygame.image.load("backlevel.png").convert_alpha()
@@ -323,18 +338,20 @@ def win(level):
 # Lose screen
 def lose(level):
     print("On lose screen")
-    background = pygame.image.load("green_background.png").convert_alpha()
+    background = pygame.image.load("lose.png").convert_alpha()
     backgroundbox = background.get_rect()
+
+    level = lvl
 
     # List of buttons - replay previous level and back to level select screen
     buttons = []
-    replayimage = pygame.image.load("restartlevel.png").convert_alpha()
-    replaybutton = Button(360, 240, 240, 120, 'LEVEL'+str(level))
+    replayimage = pygame.image.load("bluerestartlevel.png").convert_alpha()
+    replaybutton = Button(360, 240, 240, 120, 'LEVEL'+str(lvl))
     buttons.append(replaybutton)
-    selectlevelimage = pygame.image.load("backlevel.png").convert_alpha()
+    selectlevelimage = pygame.image.load("bluebacklevel.png").convert_alpha()
     selectlevelbutton = Button(360, 400, 240, 120, 'SELECTLEVEL')
     buttons.append(selectlevelbutton)
-    startscreenimage = pygame.image.load("backtitle.png").convert_alpha()
+    startscreenimage = pygame.image.load("bluebacktitle.png").convert_alpha()
     startscreenbutton = Button(360, 560, 240, 120, 'START')
     buttons.append(startscreenbutton)
 
@@ -349,9 +366,9 @@ def lose(level):
                 mousePosition = pygame.mouse.get_pos()
                 for button in buttons:
                     if button.isClicked(mousePosition):
-                    	channelOne.play(buttonMusic)
-                    	sleep(0.1)
-                    	return button.state
+                        channelOne.play(buttonMusic)
+                        sleep(0.1)
+                        return button.state
 
         screen.blit(background, backgroundbox)
         screen.blit(replayimage, (360, 240))
@@ -377,7 +394,7 @@ def selectlevel(lvls):
     yesimages = []
     noimages = []
     for i in range(3):
-        yesimage = pygame.image.load("unlocked" + str(i+1) + ".png").convert_alpha()
+        yesimage = pygame.image.load("green" + str(i+1) + ".png").convert_alpha()
         yesimages.append(yesimage)
         noimage = pygame.image.load("red" + str(i+1) + ".png").convert_alpha()
         noimages.append(noimage)
@@ -411,7 +428,7 @@ def selectlevel(lvls):
 def level(level, music):
     lvl = level
     print("In level " + str(lvl))
-    background = pygame.image.load("blue_background1.png").convert_alpha()
+    background = pygame.image.load("Background.png").convert_alpha()
     backgroundbox = background.get_rect()
 
     # Create a level object
@@ -511,7 +528,7 @@ def level(level, music):
 
         screen.blit(background, backgroundbox)
         displayGearCount = font.render("Gears: " + str(grace.gearCount), True, (255, 255, 255) )
-        screen.blit(displayGearCount, (10 ,10))
+        screen.blit(displayGearCount, (10 ,15))
         grace.update(up, down, left, right, space, powerup, level, platform_list, channelTwo, jumpMusic)
         if cosmo == True:
         	cosmo = grace.activateCosmo()
@@ -551,8 +568,7 @@ def level(level, music):
 running = True
 # state = 'START'
 # state = 'TUTORIAL'
-state = 'LEVEL1'
-# state = 'LEVEL2'
+state = 'LEVEL3'
 lvls = 1
 
 # Create a screen (width, height)
@@ -584,7 +600,6 @@ while running:
     if state == 'WIN2':
         state = win(3)
     if state == 'WIN3':
-        print("In win 3 screen")
         state = win(3)
     # Three losing states of levels
     if state == 'LOSE1':
@@ -592,7 +607,7 @@ while running:
     if state == 'LOSE2':
         state = lose(2)
     if state == 'LOSE3':
-        state == lose(3)
+        state = lose(3)
     # Levels
     if state == 'LEVEL1':
         state, lvl = level(1, 'songs1and2.wav')
@@ -608,7 +623,7 @@ while running:
             lvls = lvl
     # Controls for game
     if state == 'CONTROLS':
-        controls()
+        state = controls()
     # Select level screen
     if state == 'SELECTLEVEL':
         state = selectlevel(lvls)
