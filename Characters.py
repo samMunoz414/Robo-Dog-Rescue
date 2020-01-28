@@ -31,8 +31,10 @@ class Person(pygame.sprite.Sprite):
 		self.rect.height = 87
 		# stores the number of gears the player has
 		self.gearCount = 0
-		# string holding what powerup the character is holding on to. choices: 'none', 'lighting rod', 'laser gun', 'cosmo'
+		# Object holding powerup object
 		self.powerup = None
+		# object holding cosmo when activiated
+		self.cosmo = None
 		# boolean tracks recent powerup changes
 		self.recentPowerupChange = False
 		# stores the life state of the player
@@ -50,12 +52,12 @@ class Person(pygame.sprite.Sprite):
 				# moving left
 				[
 					# left: animation True; right: animation False
-					"GraceLeft1.png", "GraceLeft2.png", 
+					"assets/GraceLeft1.png", "assets/GraceLeft2.png", 
 				],
 				# moving right
 				[
 					# left: animation True; right: animation False
-					"GraceRight1.png", "GraceRight2.png"
+					"assets/GraceRight1.png", "assets/GraceRight2.png"
 				],
 			],
 
@@ -64,12 +66,12 @@ class Person(pygame.sprite.Sprite):
 				# moving left
 				[
 					# left: animation True; right: animation False
-					"GraceLeft1MissingArm.png", "GraceLeft2MissingArm.png", 
+					"assets/GraceLeft1MissingArm.png", "assets/GraceLeft2MissingArm.png", 
 				],
 				# moving right
 				[
 					# left: animation True; right: animation False
-					"GraceRight1MissingArm.png", "GraceRight2MissingArm.png"
+					"assets/GraceRight1MissingArm.png", "assets/GraceRight2MissingArm.png"
 				],
 			]
 		]
@@ -80,12 +82,12 @@ class Person(pygame.sprite.Sprite):
 	# left -> boolean storing if the player moves up
 	# right -> boolean storing if the player moves up
 	# platforms -> list storing all the platforms
-	def update(self, up, down, left, right, space, powerup, level, platforms, channel, music):
+	def update(self, up, down, left, right, space, powerup, level, platforms, channel, jumpMusic, coinMusic, powerupMusic, zapMusic):
 		if up:
 			# only jumps if the player is on the ground
 			if self.isOnGround:
 				self.movey -= 20
-				channel.play(music)
+				channel[1].play(jumpMusic)
 		# if the down button if pressed 
 		if down:
 			pass
@@ -109,20 +111,20 @@ class Person(pygame.sprite.Sprite):
 		# increments in the x direction
 		self.rect.left += self.movex
 		# handles collisions in the x direction
-		self.collide(self.movex, 0, space, powerup, platforms)
+		self.collide(self.movex, 0, space, powerup, platforms, channel, coinMusic, powerupMusic)
 		# increments in the y direction
 		self.rect.top += self.movey
 		# assuming player is in the air
 		self.isOnGround = False
 		# handles collisions in the y direction
-		self.collide(0, self.movey, space, powerup, platforms)
+		self.collide(0, self.movey, space, powerup, platforms, channel, coinMusic, powerupMusic)
 
 		# Changes the image of Grace
 		self.changeImage(left, right, space)
 
 		# updates the weapon variable
 		if not self.powerup == None:
-			self.powerup.update(self.rect.x, self.rect.y, self.isFacingRight, space, platforms)
+			self.powerup.update(self.rect.x, self.rect.y, self.isFacingRight, space, platforms, channel[4], zapMusic)
 		
 		# Scrolling screen: move everything a screen width to left or right
 		if self.rect.x <= 10 and level.screenCount > 1:
@@ -177,9 +179,8 @@ class Person(pygame.sprite.Sprite):
 	def incrementGear(self):
 		if self.gearCount < 100:
 			self.gearCount += 1
-			print("Gear Count: " + str(self.gearCount))
 
-	def fire(self):
+	def fire(self, channel, music):
 		if self.powerup.ammo <= 0:
 			self.powerup = None
 			return None
@@ -189,22 +190,25 @@ class Person(pygame.sprite.Sprite):
 				self.powerup = None
 				self.rect.width = 31
 			if self.isFacingRight == True:
-				return RedBullet(self.rect.x + self.rect.width + 15, self.rect.y + 26, self.isFacingRight)
+				channel.play(music)
+				return RedBullet(self.rect.x + self.rect.width + 26, self.rect.y + 26, self.isFacingRight)
 			else:
-				return RedBullet(self.rect.x - 15, self.rect.y + 26, self.isFacingRight)
+				channel.play(music)
+				return RedBullet(self.rect.x - 30, self.rect.y + 26, self.isFacingRight)
 
 
-	def activateCosmo(self):
+	def activateCosmo(self, channel, music):
 		if self.gearCount >= 25:
 			self.gearCount -= 25
-			return Cosmo(self.rect.x, self.rect.y + 55, self.isFacingRight)
-		return None
+			channel.play(music)
+			self.cosmo = Cosmo(self.rect.x, self.rect.y, self.isFacingRight)
 
-	def collide(self, dx, dy, space, powerup, platforms):
+	def collide(self, dx, dy, space, powerup, platforms, channel, coinMusic, powerupMusic):
 		for block in platforms:
 			if pygame.sprite.collide_rect(self, block):
 				if isinstance(block, LightningRodBlock):
 					if powerup:
+						channel[2].play(powerupMusic)
 						if isinstance(self.powerup, type(None)):
 							self.powerup = LightningRod(self.rect.x, self.rect.y, self.isFacingRight, space)
 							platforms.remove(block)
@@ -218,6 +222,7 @@ class Person(pygame.sprite.Sprite):
 
 				if isinstance(block, LaserGunBlock):
 					if powerup:
+						channel[2].play(powerupMusic)
 						if isinstance(self.powerup, type(None)):
 							self.powerup = LaserGun(self.rect.x, self.rect.y, self.isFacingRight, block.ammo)
 							platforms.remove(block)
@@ -231,11 +236,13 @@ class Person(pygame.sprite.Sprite):
 
 				if isinstance(block, Gear):
 					self.incrementGear()
+					channel[3].play(coinMusic)
 					platforms.remove(block)
 					return
 
 				if isinstance(block, Enemy):
-					self.isAlive = False
+					if block.state == "alive":
+						self.isAlive = False
 					return
 
 				if isinstance(block, Spike):
@@ -246,22 +253,18 @@ class Person(pygame.sprite.Sprite):
 				# collision occured when players was moving right
 				if dx > 0:
 					self.rect.right = block.rect.left
-					print("collide right")
 				# collision occured when players was moving left
 				if dx < 0:
 					self.rect.left = block.rect.right
-					print("collide left")
 				# collision occured when players was moving down
 				if dy > 0:
 					self.rect.bottom = block.rect.top
 					self.isOnGround = True
 					self.movey = 0
-					print("collide top")
 				# collision occured when players was moving up
 				if dy < 0:
 					self.rect.top = block.rect.bottom
 					self.movey = 0
-					print("collide bottom")
 				# ----------------------------------------------
         
 # Class for enemy scientists
@@ -278,6 +281,18 @@ class Enemy(pygame.sprite.Sprite):
         self.rect.width = 37
         self.rect.height = 59
         self.counter = 0
+        self.state = "alive"
+        self.frameCount = 0
+
+    def update(self):
+    	if self.state == "alive":
+    		self.move()
+    		return False
+    	elif self.state == "death animation":
+    		self.deathAnimation()
+    		return False
+    	elif self.state == "dead":
+    		return True
     
     # Control automated movement of enemy
     def move(self):
@@ -299,3 +314,10 @@ class Enemy(pygame.sprite.Sprite):
             self.counter = 0
             
         self.counter += 1
+
+    def deathAnimation(self):
+    	if self.frameCount == 0:
+    		self.image = pygame.image.load("assets/DeadBlackScientist.png").convert_alpha()
+    	self.frameCount += 1
+    	if self.frameCount == 15:
+    		self.state = "dead"

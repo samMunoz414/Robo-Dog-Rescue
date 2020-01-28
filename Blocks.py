@@ -25,7 +25,7 @@ class Platform(pygame.sprite.Sprite):
 class Spike(pygame.sprite.Sprite):
 	def __init__(self, xpos, ypos):
 		pygame.sprite.Sprite.__init__(self)
-		self.image = pygame.image.load("spikeFiller.png").convert_alpha()
+		self.image = pygame.image.load("assets/spikes.png").convert_alpha()
 		self.rect = self.image.get_rect()
 		self.rect.x = xpos
 		self.rect.y = ypos
@@ -48,7 +48,7 @@ class LaserGun(pygame.sprite.Sprite):
 			self.rect.x = xpos - 27
 		self.rect.y = ypos + 28
 
-	def update(self, playerX, playerY, facingRight, space, platforms):
+	def update(self, playerX, playerY, facingRight, space, platforms, channel, zapMusic):
 		if not self.isFacingRight == facingRight:
 			self.loadImage(facingRight)
 			self.isFacingRight = facingRight
@@ -60,16 +60,16 @@ class LaserGun(pygame.sprite.Sprite):
 
 	def loadImage(self, facingRight):
 		if facingRight:
-			self.image = pygame.image.load("LaserGunRight.png").convert_alpha()
+			self.image = pygame.image.load("assets/LaserGunRight.png").convert_alpha()
 		else:
-			self.image = pygame.image.load("LaserGunLeft.png").convert_alpha()
+			self.image = pygame.image.load("assets/LaserGunLeft.png").convert_alpha()
 
 
 # Poweup class: it's a powerup class
 class LaserGunBlock(Powerup):
     def __init__(self, xpos, ypos, ammo=10):
         super().__init__()
-        self.image = pygame.image.load("powerupGreen.png").convert()
+        self.image = pygame.image.load("assets/powerupGreen.png").convert()
         self.image.convert_alpha()
         self.rect = self.image.get_rect()
         self.rect.x = xpos
@@ -83,7 +83,7 @@ class LaserGunBlock(Powerup):
 class RedBullet(Powerup):
 	def __init__(self, xpos, ypos, isFacingRight):
 		super().__init__()
-		self.image = pygame.image.load("redGunProjectile.png").convert_alpha()
+		self.image = pygame.image.load("assets/redGunProjectile.png").convert_alpha()
 		self.rect = self.image.get_rect()
 		self.rect.width = self.rect.height = 7
 		self.rect.x = xpos
@@ -107,7 +107,7 @@ class RedBullet(Powerup):
 		for block in platforms:
 			if pygame.sprite.collide_rect(self, block):
 				if isinstance(block, Characters.Enemy):
-					platforms.remove(block)
+					block.state = "death animation"
 					return True
 				if isinstance(block, Platform):
 					return True
@@ -120,9 +120,9 @@ class LightningRod(pygame.sprite.Sprite):
 		self.imageSwap = [
 			# facing left
 			# left is space = False, right is space = True
-			["TazerLeftUp.png", "TazerLeftDown.png"],
+			["assets/TazerLeftUp.png", "assets/TazerLeftDown.png"],
 			# facing right
-			["TazerRightUp.png", "TazerRightDown.png"]
+			["assets/TazerRightUp.png", "assets/TazerRightDown.png"]
 		]		
 		self.image = None
 		self.rect = None
@@ -131,46 +131,47 @@ class LightningRod(pygame.sprite.Sprite):
 		self.isFacingRight = facingRight
 		self.lastSpace = space
 		
-		if self.imageName == "TazerLeftUp.png":
+		if self.imageName == "assets/TazerLeftUp.png":
 			self.rect.x = xpos - 25
 			self.rect.y = ypos + 6
-		elif self.imageName == "TazerLeftDown.png":
+		elif self.imageName == "assets/TazerLeftDown.png":
 			self.rect.x = xpos - 44
 			self.rect.y = ypos + 29
-		elif self.imageName == "TazerRightUp.png":
+		elif self.imageName == "assets/TazerRightUp.png":
 			self.rect.x = xpos + 17
 			self.rect.y = ypos + 6
-		elif self.imageName == "TazerRightDown.png":
+		elif self.imageName == "assets/TazerRightDown.png":
 			self.rect.x = xpos + 17
 			self.rect.y = ypos + 29
 
-	def update(self, playerX, playerY, facingRight, space, platforms):
+	def update(self, playerX, playerY, facingRight, space, platforms, channel, zapMusic):
 		if not self.isFacingRight == facingRight or not self.lastSpace == space:
 			self.loadImage(facingRight, space)
 			self.isFacingRight = facingRight
 			self.lastSpace = space
 
-		if self.imageName == "TazerLeftUp.png":
+		if self.imageName == "assets/TazerLeftUp.png":
 			self.rect.x = playerX - 25
 			self.rect.y = playerY + 6
-		elif self.imageName == "TazerLeftDown.png":
+		elif self.imageName == "assets/TazerLeftDown.png":
 			self.rect.x = playerX - 44
 			self.rect.y = playerY + 29
-		elif self.imageName == "TazerRightUp.png":
+		elif self.imageName == "assets/TazerRightUp.png":
 			self.rect.x = playerX + 17
 			self.rect.y = playerY + 6
-		elif self.imageName == "TazerRightDown.png":
+		elif self.imageName == "assets/TazerRightDown.png":
 			self.rect.x = playerX + 17
 			self.rect.y = playerY + 29
 		if space:
-			self.collide(platforms)
+			self.collide(platforms, channel, zapMusic)
 
 
-	def collide(self, platforms):
+	def collide(self, platforms, channel, zapMusic):
 		for block in platforms:
 			if pygame.sprite.collide_rect(self, block):
 				if isinstance(block, Characters.Enemy):
-					platforms.remove(block)
+					channel.play(zapMusic)
+					block.state = "death animation"
 
 	def loadImage(self, facingRight, space):
 		self.image = pygame.image.load(self.imageSwap[int(facingRight)][int(space)]).convert_alpha()
@@ -187,7 +188,7 @@ class LightningRod(pygame.sprite.Sprite):
 class LightningRodBlock(Powerup):
     def __init__(self, xpos, ypos):
         super().__init__()
-        self.image = pygame.image.load("powerupBlue.png").convert()
+        self.image = pygame.image.load("assets/powerupBlue.png").convert_alpha()
         self.image.convert_alpha()
         self.rect = self.image.get_rect()
         self.rect.x = xpos
@@ -201,7 +202,7 @@ class LightningRodBlock(Powerup):
 class Gear(Powerup):
     def __init__(self, xpos, ypos):
         super().__init__()
-        self.image = pygame.image.load("coin.png").convert()
+        self.image = pygame.image.load("assets/coin.png").convert_alpha()
         self.image.convert_alpha()
         self.rect = self.image.get_rect()
         self.rect.x = xpos
@@ -216,28 +217,32 @@ class Cosmo(Powerup):
     def __init__(self, xpos, ypos, isFacingRight):
         super().__init__()
         if isFacingRight:
-        	self.image = pygame.image.load("CosmoRight1.png").convert_alpha()
+        	self.image = pygame.image.load("assets/CosmoRight1.png").convert_alpha()
+        	self.rect = self.image.get_rect()
         	self.movex = 16
+        	self.rect.x = xpos + 31
         else:
-        	self.image = pygame.image.load("CosmoLeft1.png").convert_alpha()
+        	self.image = pygame.image.load("assets/CosmoLeft1.png").convert_alpha()
+        	self.rect = self.image.get_rect()
         	self.movex = -16
-        self.rect = self.image.get_rect()
-        self.rect.x = xpos
-        self.rect.y = ypos
+        	self.rect.x = xpos
+        self.rect.y = ypos + 52
+        self.rect.width = 51
+        self.rect.height = 35
         self.animation = True
 
     def update(self, platforms):
     	self.rect.x += self.movex
     	if self.movex > 0:
     		if self.animation == True:
-    			self.image = pygame.image.load("CosmoRight1.png").convert_alpha()
+    			self.image = pygame.image.load("assets/CosmoRight1.png").convert_alpha()
     		else:
-    			self.image = pygame.image.load("CosmoRight2.png").convert_alpha()
+    			self.image = pygame.image.load("assets/CosmoRight2.png").convert_alpha()
     	else:
     		if self.animation == True:
-    			self.image = pygame.image.load("CosmoLeft1.png").convert_alpha()
+    			self.image = pygame.image.load("assets/CosmoLeft1.png").convert_alpha()
     		else:
-    			self.image = pygame.image.load("CosmoLeft2.png").convert_alpha()
+    			self.image = pygame.image.load("assets/CosmoLeft2.png").convert_alpha()
     	self.animation = not self.animation
 
     	if self.rect.x < 0 or self.rect.x > 960:
@@ -247,9 +252,10 @@ class Cosmo(Powerup):
     def collide(self, platforms):
     	for block in platforms:
     		if pygame.sprite.collide_rect(self, block):
-    			if isinstance(block, Characters.Enemy):
-    				platforms.remove(block)
-    			if isinstance(self, Platform):
+    			if isinstance(block, Platform):
+    				print("hit block")
     				return True
+    			elif isinstance(block, Characters.Enemy):
+    				block.state = "death animation"
     	return False
         
