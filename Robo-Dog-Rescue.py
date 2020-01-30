@@ -227,7 +227,7 @@ def tutorial():
 		screen.blit(background, backgroundbox) # Add background to screen
 		if level.screenCount == 1:
 			screen.blit(keyButton, pygame.Rect(101,102,162,102))
-			screen.blit(shootButton, pygame.Rect(45,185,272,143))
+			screen.blit(shootButton, pygame.Rect(90,225,272,143))
 			screen.blit(weaponButton, pygame.Rect(640,100,280,102))
 			screen.blit(cosmoButton, pygame.Rect(640,185,280,102))
 		screen.blit(skipimage, (860, 10))
