@@ -97,8 +97,14 @@ def controls():
 # Game loop for tutorial
 def tutorial():
 	print('In level one function')
-	background = pygame.image.load("assets/Tutorial_Background2.png").convert_alpha()
+	background = pygame.image.load("assets/Tutorial_BackgroundWithGrapelookinglight.png").convert_alpha()
 	backgroundbox = background.get_rect()
+
+	# tutorial buttons
+	weaponButton = pygame.image.load("assets/Weapons2.png").convert_alpha()
+	keyButton = pygame.image.load("assets/Keys.png").convert_alpha()
+	shootButton = pygame.image.load("assets/Shoot2.png").convert_alpha()
+	cosmoButton = pygame.image.load("assets/Cosmo.png").convert_alpha()
 
 	# Skip image and button for corner of screen
 	skipimage = pygame.image.load('assets/skipbutton.png')
@@ -219,6 +225,11 @@ def tutorial():
 				sys.exit()
 
 		screen.blit(background, backgroundbox) # Add background to screen
+		if level.screenCount == 1:
+			screen.blit(keyButton, pygame.Rect(101,102,162,102))
+			screen.blit(shootButton, pygame.Rect(45,185,272,143))
+			screen.blit(weaponButton, pygame.Rect(640,100,280,102))
+			screen.blit(cosmoButton, pygame.Rect(640,185,280,102))
 		screen.blit(skipimage, (860, 10))
 		displayGearCount = font.render("GEARS: " + str(grace.gearCount), True, (255, 255, 255) )
 		if seconds_to_display < 10:
@@ -284,6 +295,7 @@ def cutscene():
 	nextimage = pygame.image.load('assets/nextpurple.png')
 	nextbutton = Button(860, 650, 90, 60, 'SELECTLEVEL')
 
+	channelList[0].play(backgroundMusic, loops=-1)
 	while 1:
 		for event in pygame.event.get():
 			if event.type == pygame.QUIT:
@@ -291,7 +303,8 @@ def cutscene():
 			if event.type == pygame.MOUSEBUTTONUP:
 				mousePosition = pygame.mouse.get_pos()
 				if nextbutton.isClicked(mousePosition):
-					channelList[0].play(buttonMusic)
+					channelList[1].play(buttonMusic)
+					channelList[0].stop()
 					return nextbutton.state
 		screen.blit(background, backgroundbox)
 		screen.blit(nextimage, (860, 650))
@@ -312,7 +325,9 @@ def end(score):
 	nextbutton = Button(860, 650, 90, 60, 'CREDITS')
 	buttons.append(nextbutton)
 
+	mainMusic.set_volume(0.2)
 
+	channelList[0].play(mainMusic, loops=-1)
 	while 1:
 		for event in pygame.event.get():
 			if event.type == pygame.QUIT:
@@ -321,7 +336,7 @@ def end(score):
 				mousePosition = pygame.mouse.get_pos()
 				for button in buttons:
 					if button.isClicked(mousePosition):
-						channelList[0].play(buttonMusic)
+						channelList[1].play(buttonMusic)
 						return button.state
 		screen.blit(background, backgroundbox)
 		displayScore = font.render("SCORE: " + str(score), True, (0, 0, 0) )
@@ -349,6 +364,7 @@ def credits():
 				if backbutton.isClicked(mousePosition):
 					channelList[1].play(buttonMusic)
 					sleep(0.5)
+					channelList[0].stop()
 					return backbutton.state, 1
 
 		screen.blit(background, backgroundbox)
@@ -590,8 +606,12 @@ def level(level):
 
 	# balance channel volumes
 	levelmusic.set_volume(0.2)
+	level3music.set_volume(0.5)
 	jumpMusic.set_volume(0.1)
-	channelList[0].play(levelmusic, loops=-1)
+	if not lvl == 3:
+		channelList[0].play(levelmusic, loops=-1)
+	else:
+		channelList[0].play(level3music, loops=-1)
 
 	startTime = pygame.time.get_ticks()
 
@@ -703,6 +723,8 @@ def level(level):
 					if not bullet == None:
 						bullet_list.add(bullet)
 		if grace.win == True:
+			for channel in channelList:
+				channel.stop()
 			print("Won! Win screen " + 'WIN' + str(lvl))
 			if lvl == 1 or lvl == 2:
 				return 'WIN' + str(lvl), lvl+1, score
@@ -726,8 +748,8 @@ def level(level):
 
 # Fields needed for running program
 running = True
-state = 'START'
-# state = 'TUTORIAL'
+# state = 'START'
+state = 'TUTORIAL'
 # state = 'LEVEL1'
 # state = 'LEVEL2'
 # state = 'LEVEL3'
@@ -759,6 +781,7 @@ glassBreaking = pygame.mixer.Sound("music/glassbreak.wav")
 laserFiring = pygame.mixer.Sound("music/laser.wav")
 zapMusic = pygame.mixer.Sound("music/zap.wav")
 levelmusic = pygame.mixer.Sound('music/songs1and2.wav')
+level3music = pygame.mixer.Sound("music/song4.wav")
 coinMusic = pygame.mixer.Sound("music/coin.wav")
 powerupMusic = pygame.mixer.Sound("music/powerup.wav")
 

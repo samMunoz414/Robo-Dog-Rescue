@@ -269,11 +269,12 @@ class Person(pygame.sprite.Sprite):
         
 # Class for enemy scientists
 class Enemy(pygame.sprite.Sprite):
-    def __init__(self, leftImage, rightImage, deadImage, xpos, ypos):
+    def __init__(self, leftImage, rightImage, deadImage1, deadImage2, xpos, ypos):
         pygame.sprite.Sprite.__init__(self)
         self.leftImage = leftImage
         self.rightImage = rightImage
-        self.deadImage = deadImage
+        self.deadImage1 = deadImage1
+        self.deadImage2 = deadImage2
         self.isRight = True
         self.image = pygame.image.load(rightImage).convert_alpha()
         self.rect = self.image.get_rect()
@@ -318,7 +319,9 @@ class Enemy(pygame.sprite.Sprite):
 
     def deathAnimation(self):
     	if self.frameCount == 0:
-    		self.image = pygame.image.load(self.deadImage).convert_alpha()
+    		self.image = pygame.image.load(self.deadImage1).convert_alpha()
+    	if self.frameCount == 8:
+    		self.image = pygame.image.load(self.deadImage2).convert_alpha()
     	self.frameCount += 1
     	if self.frameCount == 15:
     		self.state = "dead"
