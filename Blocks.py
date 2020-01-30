@@ -202,7 +202,7 @@ class LightningRodBlock(Powerup):
 class Gear(Powerup):
     def __init__(self, xpos, ypos):
         super().__init__()
-        self.image = pygame.image.load("assets/coin.png").convert_alpha()
+        self.image = pygame.image.load("assets/Gear1.png").convert_alpha()
         self.image.convert_alpha()
         self.rect = self.image.get_rect()
         self.rect.x = xpos

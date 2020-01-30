@@ -133,7 +133,7 @@ def tutorial():
 	font = pygame.font.SysFont("Futura", 26)
 
 	# Blit door on last screen
-	door = pygame.image.load("assets/Door.png").convert_alpha()
+	door = pygame.image.load("assets/WoodenDoor.png").convert_alpha()
 
 	frameCount = 0
 
@@ -234,7 +234,7 @@ def tutorial():
 		screen.blit(displayGearCount, (10 ,15))
 		screen.blit(displayTime, (10, 50))
 		if level.screenCount == level.totalScreenCount:
-			screen.blit(door, (910, 570))
+			screen.blit(door, (892, 556))
 		grace.update(up, down, left, right, space, powerup, level, platform_list, channelList, jumpMusic, coinMusic, powerupMusic, zapMusic)
 		if cosmo:
 			grace.activateCosmo(channelList[5], woofwoof)
@@ -299,9 +299,12 @@ def cutscene():
 		pygame.display.flip()
 
 # End credits scene
-def end():
+def end(score):
 	background = pygame.image.load("assets/end.png").convert_alpha()
-	backgroundbox = background.get_rect()
+	backgroundbox = background.get_rect()\
+
+	# Creates font to display information
+	font = pygame.font.SysFont("Futura", 50)
 
 	# buttons
 	buttons = []
@@ -318,8 +321,11 @@ def end():
 				mousePosition = pygame.mouse.get_pos()
 				for button in buttons:
 					if button.isClicked(mousePosition):
+						channelList[0].play(buttonMusic)
 						return button.state
 		screen.blit(background, backgroundbox)
+		displayScore = font.render("SCORE: " + str(score), True, (0, 0, 0) )
+		screen.blit(displayScore, (252, 50) )
 		screen.blit(nextimage, (860, 650))
 		clock.tick(30)
 		pygame.display.flip()
@@ -700,7 +706,7 @@ def level(level):
 			print("Won! Win screen " + 'WIN' + str(lvl))
 			if lvl == 1 or lvl == 2:
 				return 'WIN' + str(lvl), lvl+1, score
-			elif lvl == 3:
+			if lvl == 3:
 				return 'END', lvl, score
 		for enemy in enemy_list:
 			removeEnemy = enemy.update()
@@ -802,7 +808,7 @@ while running:
 		state = selectlevel(lvls)
 	# End of the game
 	if state == 'END':
-		state = end()
+		state = end(score)
 	# Credits
 	if state == 'CREDITS':
 		state, lvls = credits()
