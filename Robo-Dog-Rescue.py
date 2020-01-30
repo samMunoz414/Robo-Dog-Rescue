@@ -291,6 +291,7 @@ def cutscene():
 			if event.type == pygame.MOUSEBUTTONUP:
 				mousePosition = pygame.mouse.get_pos()
 				if nextbutton.isClicked(mousePosition):
+					channelList[0].play(buttonMusic)
 					return nextbutton.state
 		screen.blit(background, backgroundbox)
 		screen.blit(nextimage, (860, 650))
@@ -699,6 +700,8 @@ def level(level):
 			print("Won! Win screen " + 'WIN' + str(lvl))
 			if lvl == 1 or lvl == 2:
 				return 'WIN' + str(lvl), lvl+1, score
+			elif lvl == 3:
+				return 'END', lvl, score
 		for enemy in enemy_list:
 			removeEnemy = enemy.update()
 			if removeEnemy:
