@@ -36,68 +36,66 @@ class Level():
         enemy_list = pygame.sprite.Group() # Create enemy group
         if lvl == 0:
             # First screen
-            enemy_list.add(Enemy('assets/LeftFacingBlackScientist.png', 'assets/RightFacingBlackScientist.png', 500, 586))
+            enemy_list.add(Enemy('assets/LeftFacingBlackScientist.png', 'assets/RightFacingBlackScientist.png', 'assets/DeadBlackScientist.png', 500, 586))
             # Second screen
-            enemy_list.add(Enemy('assets/LeftFacingBlackScientist.png', 'assets/RightFacingBlackScientist.png', 1350, 226))
-            enemy_list.add(Enemy('assets/LeftFacingBlackScientist.png', 'assets/RightFacingBlackScientist.png', 1600, 586))
+            enemy_list.add(Enemy('assets/LeftFacingWhiteScientist.png', 'assets/RightFacingWhiteScientist.png', 'assets/DeadWhiteScientist.png', 1350, 226))
+            enemy_list.add(Enemy('assets/LeftFacingBlackScientist.png', 'assets/RightFacingBlackScientist.png', 'assets/DeadBlackScientist.png', 1600, 586))
             
         if lvl == 1:
             # First screen
-            enemy_list.add(Enemy('assets/LeftFacingBlackScientist.png', 'assets/RightFacingBlackScientist.png', 680, 586))
-            enemy_list.add(Enemy('assets/LeftFacingBlackScientist.png', 'assets/RightFacingBlackScientist.png', 560, 46))
+            enemy_list.add(Enemy('assets/LeftFacingWhiteScientist.png', 'assets/RightFacingWhiteScientist.png', 'assets/DeadWhiteScientist.png', 680, 586))
+            enemy_list.add(Enemy('assets/LeftFacingBlackScientist.png', 'assets/RightFacingBlackScientist.png', 'assets/DeadBlackScientist.png', 560, 46))
             # Second screen
-            enemy_list.add(Enemy('assets/LeftFacingBlackScientist.png', 'assets/RightFacingBlackScientist.png', 1150, 406))
-            enemy_list.add(Enemy('assets/LeftFacingBlackScientist.png', 'assets/RightFacingBlackScientist.png', 1570, 406))
+            enemy_list.add(Enemy('assets/LeftFacingBlackScientist.png', 'assets/RightFacingBlackScientist.png', 'assets/DeadBlackScientist.png', 1150, 406))
+            enemy_list.add(Enemy('assets/LeftFacingWhiteScientist.png', 'assets/RightFacingWhiteScientist.png', 'assets/DeadWhiteScientist.png', 1570, 406))
             # Third screen
-            enemy_list.add(Enemy('assets/LeftFacingBlackScientist.png', 'assets/RightFacingBlackScientist.png', 2420, 406))
-            enemy_list.add(Enemy('assets/LeftFacingBlackScientist.png', 'assets/RightFacingBlackScientist.png', 2580, 586))
+            enemy_list.add(Enemy('assets/LeftFacingBlackScientist.png', 'assets/RightFacingBlackScientist.png', 'assets/DeadBlackScientist.png', 2420, 406))
+            enemy_list.add(Enemy('assets/LeftFacingWhiteScientist.png', 'assets/RightFacingWhiteScientist.png', 'assets/DeadWhiteScientist.png', 2580, 586))
             # Fourth screen
-            enemy_list.add(Enemy('assets/LeftFacingBlackScientist.png', 'assets/RightFacingBlackScientist.png', 3350, 586))
-            enemy_list.add(Enemy('assets/LeftFacingBlackScientist.png', 'assets/RightFacingBlackScientist.png', 3200, 586))
-            enemy_list.add(Enemy('assets/LeftFacingBlackScientist.png', 'assets/RightFacingBlackScientist.png', 2950, 226))
+            enemy_list.add(Enemy('assets/LeftFacingBlackScientist.png', 'assets/RightFacingBlackScientist.png', 'assets/DeadBlackScientist.png', 3350, 586))
+            enemy_list.add(Enemy('assets/LeftFacingWhiteScientist.png', 'assets/RightFacingWhiteScientist.png', 'assets/DeadWhiteScientist.png', 3200, 586))
+            enemy_list.add(Enemy('assets/LeftFacingWhiteScientist.png', 'assets/RightFacingWhiteScientist.png', 'assets/DeadWhiteScientist.png', 2950, 226))
 
         if lvl == 2:
             # First screen
-            enemy_list.add(Enemy('assets/LeftFacingBlackScientist.png', 'assets/RightFacingBlackScientist.png', 560, 586))
-            enemy_list.add(Enemy('assets/LeftFacingBlackScientist.png', 'assets/RightFacingBlackScientist.png', 310, 406))
-            enemy_list.add(Enemy('assets/LeftFacingBlackScientist.png', 'assets/RightFacingBlackScientist.png', 560, 586))
-            enemy_list.add(Enemy('assets/LeftFacingBlackScientist.png', 'assets/RightFacingBlackScientist.png', 310, 406))
+            enemy_list.add(Enemy('assets/LeftFacingWhiteScientist.png', 'assets/RightFacingWhiteScientist.png', 'assets/DeadWhiteScientist.png', 560, 586))
+            enemy_list.add(Enemy('assets/LeftFacingBlackScientist.png', 'assets/RightFacingBlackScientist.png', 'assets/DeadBlackScientist.png', 310, 406))
             # Second screen
-            enemy_list.add(Enemy('assets/LeftFacingBlackScientist.png', 'assets/RightFacingBlackScientist.png', 1200, 46))
-            enemy_list.add(Enemy('assets/LeftFacingBlackScientist.png', 'assets/RightFacingBlackScientist.png', 1040, 226))
+            enemy_list.add(Enemy('assets/LeftFacingWhiteScientist.png', 'assets/RightFacingWhiteScientist.png', 'assets/DeadWhiteScientist.png', 1200, 46))
+            enemy_list.add(Enemy('assets/LeftFacingBlackScientist.png', 'assets/RightFacingBlackScientist.png', 'assets/DeadBlackScientist.png', 1040, 226))
             # Third screen
-            enemy_list.add(Enemy('assets/LeftFacingBlackScientist.png', 'assets/RightFacingBlackScientist.png', 2360, 226))
-            enemy_list.add(Enemy('assets/LeftFacingBlackScientist.png', 'assets/RightFacingBlackScientist.png', 2600, 406))
+            enemy_list.add(Enemy('assets/LeftFacingBlackScientist.png', 'assets/RightFacingBlackScientist.png', 'assets/DeadBlackScientist.png', 2360, 226))
+            enemy_list.add(Enemy('assets/LeftFacingWhiteScientist.png', 'assets/RightFacingWhiteScientist.png', 'assets/DeadWhiteScientist.png', 2600, 406))
             # Fourth screen
-            enemy_list.add(Enemy('assets/LeftFacingBlackScientist.png', 'assets/RightFacingBlackScientist.png', 3320, 586))
-            enemy_list.add(Enemy('assets/LeftFacingBlackScientist.png', 'assets/RightFacingBlackScientist.png', 3420, 226))
-            enemy_list.add(Enemy('assets/LeftFacingBlackScientist.png', 'assets/RightFacingBlackScientist.png', 3060, 46))
+            enemy_list.add(Enemy('assets/LeftFacingBlackScientist.png', 'assets/RightFacingBlackScientist.png', 'assets/DeadBlackScientist.png', 3320, 586))
+            enemy_list.add(Enemy('assets/LeftFacingWhiteScientist.png', 'assets/RightFacingWhiteScientist.png', 'assets/DeadWhiteScientist.png', 3420, 226))
+            enemy_list.add(Enemy('assets/LeftFacingBlackScientist.png', 'assets/RightFacingBlackScientist.png', 'assets/DeadBlackScientist.png', 3060, 46))
 
         if lvl == 3:
             # First screen
-            enemy_list.add(Enemy('assets/LeftFacingBlackScientist.png', 'assets/RightFacingBlackScientist.png', 190, 406))
-            enemy_list.add(Enemy('assets/LeftFacingBlackScientist.png', 'assets/RightFacingBlackScientist.png', 420, 406))
+            enemy_list.add(Enemy('assets/LeftFacingBlackScientist.png', 'assets/RightFacingBlackScientist.png', 'assets/DeadBlackScientist.png', 190, 406))
+            enemy_list.add(Enemy('assets/LeftFacingWhiteScientist.png', 'assets/RightFacingWhiteScientist.png', 'assets/DeadWhiteScientist.png', 420, 406))
             # Second screen
-            enemy_list.add(Enemy('assets/LeftFacingBlackScientist.png', 'assets/RightFacingBlackScientist.png', 1560, 46))
+            enemy_list.add(Enemy('assets/LeftFacingBlackScientist.png', 'assets/RightFacingBlackScientist.png', 'assets/DeadBlackScientist.png', 1560, 46))
             # Third screen
-            enemy_list.add(Enemy('assets/LeftFacingBlackScientist.png', 'assets/RightFacingBlackScientist.png', 2060, 406))
-            enemy_list.add(Enemy('assets/LeftFacingBlackScientist.png', 'assets/RightFacingBlackScientist.png', 2600, 406))
+            enemy_list.add(Enemy('assets/LeftFacingWhiteScientist.png', 'assets/RightFacingWhiteScientist.png', 'assets/DeadWhiteScientist.png', 2060, 406))
+            enemy_list.add(Enemy('assets/LeftFacingWhiteScientist.png', 'assets/RightFacingWhiteScientist.png', 'assets/DeadWhiteScientist.png', 2600, 406))
             # Fourth screen
-            enemy_list.add(Enemy('assets/LeftFacingBlackScientist.png', 'assets/RightFacingBlackScientist.png', 3080, 406))
-            enemy_list.add(Enemy('assets/LeftFacingBlackScientist.png', 'assets/RightFacingBlackScientist.png', 3220, 226))
-            enemy_list.add(Enemy('assets/LeftFacingBlackScientist.png', 'assets/RightFacingBlackScientist.png', 3520, 406))
+            enemy_list.add(Enemy('assets/LeftFacingWhiteScientist.png', 'assets/RightFacingWhiteScientist.png', 'assets/DeadWhiteScientist.png', 3080, 406))
+            enemy_list.add(Enemy('assets/LeftFacingBlackScientist.png', 'assets/RightFacingBlackScientist.png', 'assets/DeadBlackScientist.png', 3220, 226))
+            enemy_list.add(Enemy('assets/LeftFacingWhiteScientist.png', 'assets/RightFacingWhiteScientist.png', 'assets/DeadWhiteScientist.png', 3520, 406))
             # Fifth screen
-            enemy_list.add(Enemy('assets/LeftFacingBlackScientist.png', 'assets/RightFacingBlackScientist.png', 4060, 406))
-            enemy_list.add(Enemy('assets/LeftFacingBlackScientist.png', 'assets/RightFacingBlackScientist.png', 4340, 226))
-            enemy_list.add(Enemy('assets/LeftFacingBlackScientist.png', 'assets/RightFacingBlackScientist.png', 4200, 586))
+            enemy_list.add(Enemy('assets/LeftFacingWhiteScientist.png', 'assets/RightFacingWhiteScientist.png', 'assets/DeadWhiteScientist.png', 4060, 406))
+            enemy_list.add(Enemy('assets/LeftFacingBlackScientist.png', 'assets/RightFacingBlackScientist.png', 'assets/DeadBlackScientist.png', 4340, 226))
+            enemy_list.add(Enemy('assets/LeftFacingBlackScientist.png', 'assets/RightFacingBlackScientist.png', 'assets/DeadBlackScientist.png', 4200, 586))
             # Sixth screen
-            enemy_list.add(Enemy('assets/LeftFacingBlackScientist.png', 'assets/RightFacingBlackScientist.png', 4920, 406))
-            enemy_list.add(Enemy('assets/LeftFacingBlackScientist.png', 'assets/RightFacingBlackScientist.png', 5300, 226))
-            enemy_list.add(Enemy('assets/LeftFacingBlackScientist.png', 'assets/RightFacingBlackScientist.png', 5100, 226))
-            enemy_list.add(Enemy('assets/LeftFacingBlackScientist.png', 'assets/RightFacingBlackScientist.png', 5360, 46))
-            enemy_list.add(Enemy('assets/LeftFacingBlackScientist.png', 'assets/RightFacingBlackScientist.png', 5540, 406))
-            enemy_list.add(Enemy('assets/LeftFacingBlackScientist.png', 'assets/RightFacingBlackScientist.png', 5180, 586))
-            enemy_list.add(Enemy('assets/LeftFacingBlackScientist.png', 'assets/RightFacingBlackScientist.png', 5280, 586))
+            enemy_list.add(Enemy('assets/LeftFacingBlackScientist.png', 'assets/RightFacingBlackScientist.png', 'assets/DeadBlackScientist.png', 4920, 406))
+            enemy_list.add(Enemy('assets/LeftFacingBlackScientist.png', 'assets/RightFacingBlackScientist.png', 'assets/DeadBlackScientist.png', 5300, 226))
+            enemy_list.add(Enemy('assets/LeftFacingBlackScientist.png', 'assets/RightFacingBlackScientist.png', 'assets/DeadBlackScientist.png', 5100, 226))
+            enemy_list.add(Enemy('assets/LeftFacingWhiteScientist.png', 'assets/RightFacingWhiteScientist.png', 'assets/DeadWhiteScientist.png', 5360, 46))
+            enemy_list.add(Enemy('assets/LeftFacingWhiteScientist.png', 'assets/RightFacingWhiteScientist.png', 'assets/DeadWhiteScientist.png', 5540, 406))
+            enemy_list.add(Enemy('assets/LeftFacingBlackScientist.png', 'assets/RightFacingBlackScientist.png', 'assets/DeadBlackScientist.png', 5180, 586))
+            enemy_list.add(Enemy('assets/LeftFacingWhiteScientist.png', 'assets/RightFacingWhiteScientist.png', 'assets/DeadWhiteScientist.png', 5280, 586))
         return enemy_list
     
     def powerups(lvl):
@@ -106,7 +104,7 @@ class Level():
             for i in range(3):
                 powerups_list.add(Gear(((i+24)*60)+15, 75))
             powerups_list.add(LaserGunBlock(1090, 430))
-            powerups_list.add(LightningRodBlock(430, 250))
+            powerups_list.add(LightningRodBlock(430, 255))
 
         if lvl == 1:
             # First screen
@@ -118,7 +116,7 @@ class Level():
                 powerups_list.add(Gear(((i+6)*60)+15, 255))
                 powerups_list.add(Gear(((i+9)*60)+15, 255))
                 powerups_list.add(Gear(((i+9)*60)+15, 75))
-            powerups_list.add(LightningRodBlock(490, 250))
+            powerups_list.add(LightningRodBlock(490, 255))
 
             # Second screen
             for i in range(2):
@@ -150,7 +148,7 @@ class Level():
         if lvl == 2:
             # First screen
             for i in range(3):
-                powerups_list.add(Gear(((i+2)*60)+35, 615))
+                powerups_list.add(Gear(((i+2)*60)+40, 615))
                 powerups_list.add(Gear(((i+11)*60)+15, 435))
             for i in range(2):
                 powerups_list.add(Gear(((i+6)*60)+40, 615))
@@ -256,7 +254,7 @@ class Level():
         if lvl == 3:
             # Used for level 3
             for i in range(96):
-                floor_list.add(Platform("assets/block1_60x60.png", i*60, 660))
+                floor_list.add(Platform("assets/new_floor.png", i*60, 660))
 
         return floor_list
 

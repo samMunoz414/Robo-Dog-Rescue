@@ -25,7 +25,7 @@ class Platform(pygame.sprite.Sprite):
 class Spike(pygame.sprite.Sprite):
 	def __init__(self, xpos, ypos):
 		pygame.sprite.Sprite.__init__(self)
-		self.image = pygame.image.load("assets/NewSpikes.png").convert_alpha()
+		self.image = pygame.image.load("assets/spikes.png").convert_alpha()
 		self.rect = self.image.get_rect()
 		self.rect.x = xpos
 		self.rect.y = ypos

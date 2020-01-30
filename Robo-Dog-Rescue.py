@@ -291,6 +291,7 @@ def cutscene():
 			if event.type == pygame.MOUSEBUTTONUP:
 				mousePosition = pygame.mouse.get_pos()
 				if nextbutton.isClicked(mousePosition):
+					channelList[0].play(buttonMusic)
 					return nextbutton.state
 		screen.blit(background, backgroundbox)
 		screen.blit(nextimage, (860, 650))
@@ -298,9 +299,12 @@ def cutscene():
 		pygame.display.flip()
 
 # End credits scene
-def end():
+def end(score):
 	background = pygame.image.load("assets/end.png").convert_alpha()
-	backgroundbox = background.get_rect()
+	backgroundbox = background.get_rect()\
+
+	# Creates font to display information
+	font = pygame.font.SysFont("Futura", 50)
 
 	# buttons
 	buttons = []
@@ -317,8 +321,11 @@ def end():
 				mousePosition = pygame.mouse.get_pos()
 				for button in buttons:
 					if button.isClicked(mousePosition):
+						channelList[0].play(buttonMusic)
 						return button.state
 		screen.blit(background, backgroundbox)
+		displayScore = font.render("SCORE: " + str(score), True, (0, 0, 0) )
+		screen.blit(displayScore, (252, 50) )
 		screen.blit(nextimage, (860, 650))
 		clock.tick(30)
 		pygame.display.flip()
@@ -579,7 +586,7 @@ def level(level):
 	minutes = 0
 
 	# Blit door on last screen
-	door = pygame.image.load("assets/MetalDoor.png").convert_alpha()
+	door = pygame.image.load("assets/Door.png").convert_alpha()
 
 	# balance channel volumes
 	levelmusic.set_volume(0.2)
@@ -699,6 +706,8 @@ def level(level):
 			print("Won! Win screen " + 'WIN' + str(lvl))
 			if lvl == 1 or lvl == 2:
 				return 'WIN' + str(lvl), lvl+1, score
+			if lvl == 3:
+				return 'END', lvl, score
 		for enemy in enemy_list:
 			removeEnemy = enemy.update()
 			if removeEnemy:
@@ -799,7 +808,7 @@ while running:
 		state = selectlevel(lvls)
 	# End of the game
 	if state == 'END':
-		state = end()
+		state = end(score)
 	# Credits
 	if state == 'CREDITS':
 		state, lvls = credits()
