@@ -133,7 +133,7 @@ def tutorial():
 	font = pygame.font.SysFont("Futura", 26)
 
 	# Blit door on last screen
-	door = pygame.image.load("assets/Door.png").convert_alpha()
+	door = pygame.image.load("assets/WoodenDoor.png").convert_alpha()
 
 	frameCount = 0
 
@@ -234,7 +234,7 @@ def tutorial():
 		screen.blit(displayGearCount, (10 ,15))
 		screen.blit(displayTime, (10, 50))
 		if level.screenCount == level.totalScreenCount:
-			screen.blit(door, (910, 570))
+			screen.blit(door, (892, 556))
 		grace.update(up, down, left, right, space, powerup, level, platform_list, channelList, jumpMusic, coinMusic, powerupMusic, zapMusic)
 		if cosmo:
 			grace.activateCosmo(channelList[5], woofwoof)
@@ -579,7 +579,7 @@ def level(level):
 	minutes = 0
 
 	# Blit door on last screen
-	door = pygame.image.load("assets/Door.png").convert_alpha()
+	door = pygame.image.load("assets/MetalDoor.png").convert_alpha()
 
 	# balance channel volumes
 	levelmusic.set_volume(0.2)
